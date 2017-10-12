@@ -1,0 +1,2 @@
+# kedis
+Redis desktop manager

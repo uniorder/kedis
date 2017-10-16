@@ -1,3 +1,2 @@
 # kedis
-Redis desktop manager
-Powered by kehaw
+Redis desktop manager Powered by kehaw

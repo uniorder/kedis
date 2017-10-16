@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="app" ng-controller="IndexController">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kedis</title>
+    <link rel="stylesheet" type="text/css" href="./css/all.min.css">
+    <link href="./css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript" src="./javascript/libs/angular.min.js"></script>
+    <script type="text/javascript" src="./javascript/libs/ng-drag.js"></script>
+    <script type="text/javascript" src="./javascript/app.js"></script>
+    <script type="text/javascript" src="./javascript/IndexCtrl.js"></script>
+    <script type="text/javascript" src="./javascript/ServerCtrl.js"></script>
+    <script type="text/javascript" src="./javascript/KeyCtrl.js"></script>
+    <script type="text/javascript" src="./javascript/ValueCtrl.js"></script>
+    <script type="text/javascript" src="./javascript/StringValueCtrl.js"></script>
+    <script type="text/javascript" src="./javascript/HashValueCtrl.js"></script>
+    <script type="text/javascript" src="./javascript/ZSetValueCtrl.js"></script>
+    <script type="text/javascript" src="./javascript/ListValueCtrl.js"></script>
+    <script type="text/javascript" src="./javascript/SetValueCtrl.js"></script>
+</head>
+
+<body>
+    <div class="row" style="height:100%;">
+        <!-- 服务器列表控制面板 -->
+        <div class="col-3 no-padding" ng-controller="ServerController">
+            <div class="module module-sm" ng-show="!moduleHidden" ng-hide="moduleHidden">
+                <div class="panel">
+                    <div class="panel-head">{{moduleTitle}}</div>
+                    <div class="panel-content">
+                        <input type="text" placeholder="Name" ng-model="serverModel.name" />
+                        <input type="text" placeholder="Host" ng-model="serverModel.host" />
+                        <input type="text" placeholder="Port" ng-model="serverModel.port" />
+                        <input type="text" placeholder="Auth" ng-model="serverModel.password" />
+                        <input type="text" placeholder="Keys pattern(default *)" ng-model="serverModel.pattern" />
+                    </div>
+                    <div class="panel-foot">
+                        <div class="put-left">
+                            <button class="btn btn-primary" ng-click="testServer()">Test Connection</button>
+                        </div>
+                        <div class="put-right">
+                            <button class="btn btn-warning" style="margin-left: 7px;" ng-click="moduleHidden = true">Cancel</button>
+                        </div>
+                        <div class="put-right">
+                            <button class="btn btn-primary" ng-click="newServer()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-head" style="overflow: hidden;">
+                    <div class="put-left">SERVERS</div>
+                    <div class="put-right">
+                        <button class="btn btn-xs btn-success" ng-click="moduleHidden = false">
+                            <i class="fa fa-plus"></i> Con</button>
+                        <button class="btn btn-xs btn-primary" ng-click="editServer()">
+                            <i class="fa fa-gears"></i> Edit</button>
+                        <button class="btn btn-xs btn-danger" ng-click="removeServer()">
+                            <i class="fa fa-minus"></i> Del</button>
+                    </div>
+                </div>
+                <div class="panel-content no-padding">
+                    <div style="height: calc(100% - 492px); overflow: auto;">
+                        <table class="table">
+                            <tbody>
+                                <tr ng-drop="true" ng-drop-success="dropComplete($index,$data)" ng-repeat="item in serverList track by $index" ng-click="selectServer(item)">
+                                    <td ng-class="{'bg-primary': item.selected}">{{item.host}}</td>
+                                    <td ng-class="{'bg-primary': item.selected}">{{item.name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div ng-show="showServerInfo" style="height:85px; border-top:1px solid #525252;">
+                        <div class="row" style="height:100%;">
+                            <div class="col-4 no-padding" style="height:100%;">
+                                <div class="well" ng-class="{'well-red':info.Memory.mem_fragmentation_ratio < 1.0,'well-green':info.Memory.mem_fragmentation_ratio > 1.0}"
+                                    style="text-align:center;height:100%;">
+                                    <h2>{{info.Memory.mem_fragmentation_ratio}}&nbsp;&nbsp;
+                                        <i class="fa fa-warning" ng-show="info.Memory.mem_fragmentation_ratio < 1.0"></i>
+                                    </h2>
+                                    <small title="Memory fragmentation ratio">MFR</small>
+                                </div>
+                            </div>
+                            <div class="col-4 no-padding" style="height:100%;">
+                                <div class="well" style="text-align:center;height:100%;">
+                                    <h2>{{info.Clients.blocked_clients}}</h2>
+                                    <small>Blocked clients</small>
+                                </div>
+                            </div>
+                            <div class="col-4 no-padding" style="height:100%;">
+                                <div class="well" style="text-align:center;height:100%;">
+                                    <h2>{{info.Memory.used_memory_human}}</h2>
+                                    <small>Used memory</small>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <p>Memory Fragmentation Ratio :
+                            <span ng-class="{'text-warning':info.Memory.mem_fragmentation_ratio < 1.5}">{{info.Memory.mem_fragmentation_ratio}}
+                                <i class="fa fa-warning" ng-show="info.Memory.mem_fragmentation_ratio < 1.5"></i>
+                            </span>
+                        </p>
+                        <p>Connected Clients : {{info.Clients.connected_clients}}</p> -->
+                    </div>
+                    <div ng-show="showServerInfo" style="height: 399px; border-top: 1px solid #525252;">
+                        <div style="height:50%;" id="outputChart"></div>
+                        <div style="height:50%;" id="inputChart"></div>
+                        <!-- <p>Redis Version : {{info.Server.redis_version}}</p>
+                        <p>Used memory : {{info.Memory.used_memory}}</p>
+                        <p>OS : {{info.Server.os}}</p>
+                        <p>Keyspace Hits : {{info.Stats.keyspace_hits}}</p>
+                        <p>Keyspace Misses : {{info.Stats.keyspace_misses}}</p>
+                        <p>Memory Fragmentation Ratio : <span ng-class="{'text-warning':info.Memory.mem_fragmentation_ratio < 1.5}">{{info.Memory.mem_fragmentation_ratio}} <i class="fa fa-warning" ng-show="info.Memory.mem_fragmentation_ratio < 1.5"></i></span></p>
+                        <p>Instantaneous ops per second : {{info.Stats.instantaneous_ops_per_sec}}</p>
+                        <p>Instantaneous input kbps : {{info.Stats.instantaneous_input_kbps}}</p>
+                        <p>Instantaneous output kbps : {{info.Stats.instantaneous_output_kbps}}</p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Key的控制面板 -->
+        <div class="col-3 no-padding" ng-controller="KeyController">
+            <div class="module module-sm" ng-show="!moduleHidden" ng-hide="moduleHidden">
+                <div class="panel">
+                    <div class="panel-head">New Key</div>
+                    <div class="panel-content">
+                        <label>KEY NAME
+                            <input type="text" name="" style="width: 100%;" ng-model="name">
+                        </label>
+                        <label>KEY TYPE
+                            <select style="width: 100%;" ng-model="keyType">
+                                <option>String</option>
+                                <option>Hash</option>
+                                <option>Zset</option>
+                                <option>Set</option>
+                                <option>List</option>
+                            </select>
+                        </label>
+                        <label ng-show="keyType=='String'">KEY VALUE
+                            <input type="text" name="" style="width: 100%;" ng-model="value">
+                        </label>
+                        <div ng-show="keyType=='Hash'">
+                            <label>INIT FIELD
+                                <input type="text" name="" style="width: 100%;" ng-model="key">
+                            </label>
+                            <label>INIT VALUE
+                                <input type="text" name="" style="width: 100%;" ng-model="value">
+                            </label>
+                        </div>
+                        <div ng-show="keyType=='Zset'">
+                            <label>INIT FIELD
+                                <input type="text" name="" style="width: 100%;" ng-model="key">
+                            </label>
+                            <label>INIT SCORE
+                                <input type="number" name="" style="width: 100%;" ng-model="value">
+                            </label>
+                        </div>
+                        <label ng-show="keyType=='Set'">INIT VALUE
+                            <input type="text" name="" style="width: 100%;" ng-model="value">
+                        </label>
+                        <label ng-show="keyType=='List'">INIT VALUE
+                            <input type="text" name="" style="width: 100%;" ng-model="value">
+                        </label>
+                        <label>EXPIRE
+                            <input type="number" name="" style="width: 100%;" ng-model="expire">
+                        </label>
+                    </div>
+                    <div class="panel-foot">
+                        <div class="put-right">
+                            <button class="btn btn-warning" style="margin-left: 7px;" ng-click="moduleHidden = true">Cancel</button>
+                        </div>
+                        <div class="put-right">
+                            <button class="btn btn-primary" ng-click="newKey()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-head no-padding" style="overflow: hidden;">
+                    <div class="put-left" style="padding: 7px;">KEYS</div>
+                    <div class="put-right" style="padding: 7px;">
+                        <button class="btn btn-success btn-xs" ng-click="moduleHidden = !isSelectedDatabase()">
+                            <i class="fa fa-plus"></i></button>
+                        <button class="btn btn-danger btn-xs" ng-click="delKey()">
+                            <i class="fa fa-minus"></i></button>
+                    </div>
+                    <div class="put-right" style="border-right: 1px solid #525252; padding: 5px;">
+                        <input type="text" class="input-xs" name="" style="width: 100%;" placeholder="Search" ng-change="reloadKeys()" ng-model="searchPattern"
+                        />
+                    </div>
+                </div>
+                <div class="panel-content no-padding">
+                    <div class="row">
+                        <div class="col-1 no-padding" ng-repeat="database in databases">
+                            <div ng-drop="true" ng-drop-success="dropComplete($data,$event,database.index)" class="bg-success block-btn" ng-class="{'block-selected':database.selected}"
+                                ng-click="loadKeys(database)">{{database.index}}</div>
+                        </div>
+                    </div>
+                    <div style="height: calc(100% - 95px); overflow: auto;">
+                        <table class="table" ng-hide="showNoDataText">
+                            <tbody>
+                                <tr ng-repeat="key in keys" ng-mousedown="selectKey(key)">
+                                    <td ng-drag="true" ng-drag-data="key" ng-class="{'bg-primary': key.selected}">{{key.name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h2 style="color: #cccccc; text-align: center;" ng-show="showNoDataText">This database has no data.</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Value的控制面板 -->
+        <div class="col-6 no-padding" ng-controller="ValueController">
+            <div class="panel">
+                <div class="panel-head redis-{{key.type}}" style="overflow: hidden;">
+                    <div class="put-left">{{title}}</div>
+                    <div class="put-right">{{subTitle}}</div>
+                </div>
+                <div class="panel-content no-padding">
+                    <!-- 字符串 -->
+                    <div ng-show="key.type == 'string'" style="height: calc(100% - 100px); padding: 7px;" ng-controller="StringValueController">
+                        <div class="module" ng-show="!moduleHidden" ng-hide="moduleHidden">
+                            <div class="panel">
+                                <div class="panel-head">Json View</div>
+                                <div class="panel-content" style="max-height: 500px; overflow: auto;">
+                                    <pre>{{formatValue}}</pre>
+                                </div>
+                                <div class="panel-foot">
+                                    <div class="put-right">
+                                        <button class="btn btn-warning" style="margin-left: 7px;" ng-click="moduleHidden = true">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label style="overflow: hidden;">KEY VALUE
+                            <textarea class="redis-value-str" ng-model="key.value" style="height: calc(100% - 100px);  resize:none;"></textarea>
+                        </label>
+                        <div style="overflow: hidden;">
+                            <button class="btn btn-success btn-sq put-right" ng-click="jsonFormat()">
+                                <i class="fa fa-save"></i> Json Format</button>
+                            <button class="btn btn-primary btn-sq put-right" ng-click="save()">
+                                <i class="fa fa-save"></i> Save</button>
+                        </div>
+                    </div>
+                    <!-- Hash -->
+                    <div ng-show="key.type == 'hash'" style="height: calc(100% - 100px);" ng-controller="HashValueController">
+                        <div class="module module-sm" ng-show="!moduleHidden" ng-hide="moduleHidden">
+                            <div class="panel">
+                                <div class="panel-head">New Value</div>
+                                <div class="panel-content">
+                                    <label>Field
+                                        <input type="text" name="" style="width: 100%;" ng-model="field">
+                                    </label>
+                                    <label>Value
+                                        <input type="text" name="" style="width: 100%;" ng-model="value">
+                                    </label>
+                                </div>
+                                <div class="panel-foot">
+                                    <div class="put-right">
+                                        <button class="btn btn-warning" style="margin-left: 7px;" ng-click="moduleHidden = true">Cancel</button>
+                                    </div>
+                                    <div class="put-right">
+                                        <button class="btn btn-primary" ng-click="addValue()">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <h3 class="text-warning">{{count}} records</h3>
+                            </div>
+                            <div class="col-5">
+                                <div class="row">
+                                    <div class="col-10 no-padding">
+                                        <input type="text" name="" style="width: 100%;" placeholder="Search" ng-model="searchValue">
+                                    </div>
+                                    <div class="col-1 no-padding">
+                                        <button class="btn btn-sq" style="width: 100%;" ng-click="clearSearch()">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-1 no-padding">
+                                        <button class="btn btn-primary btn-sq" style="width: 100%;" ng-click="search()">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-primary" style="width: 100%;" ng-click="loadPre()">
+                                    <i class="fa fa-backward"></i>
+                                </button>
+                            </div>
+                            <div class="col-1">
+                                <h2 style="text-align: center;">{{pageInfo}}</h2>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-primary" style="width: 100%;" ng-click="loadNext()">
+                                    <i class="fa fa-forward"></i>
+                                </button>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-success" style="width: 100%;" ng-click="moduleHidden=false">
+                                    <i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-danger" style="width: 100%;" ng-click="deleteValue()">
+                                    <i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <hr style="margin-top: 3px;" />
+                        <div style="height: calc(100% - 50px); overflow: auto;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">FIELD</th>
+                                        <th style="text-align: left;">VALUE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in hashItems" ng-click="selecteItem(item)">
+                                        <td ng-dblclick="showHashFieldInput = true" ng-class="{'no-padding':showHashFieldInput,'bg-primary':item.selected}">
+                                            <div ng-hidden="showHashFieldInput" ng-show="!showHashFieldInput">{{item.field}}</div>
+                                            <input ng-keydown="showHashFieldInput = keydownSetField($event,item)" focus-me="showHashFieldInput" type="text" name="" style="width: 100%;"
+                                                ng-show="showHashFieldInput" ng-blur="showHashFieldInput = setNewHashField(item)"
+                                                ng-model="item.field">
+                                        </td>
+                                        <td ng-dblclick="showHashValueInput = true" ng-class="{'no-padding':showHashValueInput,'bg-primary':item.selected}">
+                                            <div ng-hidden="showHashValueInput" ng-show="!showHashValueInput">{{item.value}}</div>
+                                            <input ng-keydown="showHashValueInput = keydownSetValue($event,item)" focus-me="showHashValueInput" type="text" name="" style="width: 100%;"
+                                                ng-show="showHashValueInput" ng-blur="showHashValueInput = setNewHashValue(item)"
+                                                ng-model="item.value">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- ZSet -->
+                    <div ng-show="key.type == 'zset'" style="height: calc(100% - 100px);" ng-controller="ZSetValueController">
+                        <div class="module module-sm" ng-show="!moduleHidden" ng-hide="moduleHidden">
+                            <div class="panel">
+                                <div class="panel-head">New Member</div>
+                                <div class="panel-content">
+                                    <label>Member
+                                        <input type="text" name="" style="width: 100%;" ng-model="field">
+                                    </label>
+                                    <label>Score
+                                        <input type="number" name="" style="width: 100%;" ng-model="value">
+                                    </label>
+                                </div>
+                                <div class="panel-foot">
+                                    <div class="put-right">
+                                        <button class="btn btn-warning" style="margin-left: 7px;" ng-click="moduleHidden = true">Cancel</button>
+                                    </div>
+                                    <div class="put-right">
+                                        <button class="btn btn-primary" ng-click="addValue()">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <h3 class="text-warning">{{count}} records</h3>
+                            </div>
+                            <div class="col-5">
+                                <div class="col-10 no-padding">
+                                    <input type="text" name="" style="width: 100%;" placeholder="Search" ng-model="searchValue">
+                                </div>
+                                <div class="col-1 no-padding">
+                                    <button class="btn btn-sq" style="width: 100%;" ng-click="clearSearch()">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="col-1 no-padding">
+                                    <button class="btn btn-primary btn-sq" style="width: 100%;" ng-click="search()">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-primary" style="width: 100%;" ng-click="loadPre()">
+                                    <i class="fa fa-backward"></i>
+                                </button>
+                            </div>
+                            <div class="col-1">
+                                <h2 style="text-align: center;">{{pageInfo}}</h2>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-primary" style="width: 100%;" ng-click="loadNext()">
+                                    <i class="fa fa-forward"></i>
+                                </button>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-success" style="width: 100%;" ng-click="moduleHidden=false">
+                                    <i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-danger" style="width: 100%;" ng-click="deleteValue()">
+                                    <i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div style="height: calc(100% - 50px); overflow: auto;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">MEMBER</th>
+                                        <th style="text-align: left;">SCORE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in items" ng-click="selecteItem(item)">
+                                        <td ng-dblclick="showFieldInput = true" ng-class="{'no-padding':showFieldInput,'bg-primary':item.selected}">
+                                            <div ng-hidden="showFieldInput" ng-show="!showFieldInput">{{item.key}}</div>
+                                            <input ng-keydown="showFieldInput = setFieldFromKey($event,item)" focus-me="showFieldInput" type="text" name="" style="width: 100%;"
+                                                ng-show="showFieldInput" ng-blur="showFieldInput = setNewField(item)" ng-model="item.key">
+                                        </td>
+                                        <td ng-dblclick="showValueInput = true" ng-class="{'no-padding':showValueInput,'bg-primary':item.selected}">
+                                            <div ng-hidden="showValueInput" ng-show="!showValueInput">{{item.score}}</div>
+                                            <input ng-keydown="showValueInput = setValueFromKey($event,item)" focus-me="showValueInput" type="number" name="" style="width: 100%;"
+                                                ng-show="showValueInput" ng-blur="showValueInput = setNewValue(item)" ng-model="item.score">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- List -->
+                    <div ng-show="key.type == 'list'" style="height: calc(100% - 100px);" ng-controller="ListValueController">
+                        <div class="module module-sm" ng-show="!moduleHidden" ng-hide="moduleHidden">
+                            <div class="panel">
+                                <div class="panel-head">New Member</div>
+                                <div class="panel-content">
+                                    <label>Member
+                                        <input type="text" name="" style="width: 100%;" ng-model="value">
+                                    </label>
+                                    <label>How to insert?
+                                        <select style="width: 100%;" ng-model="insertType">
+                                            <option selected value="0">RPUSH</option>
+                                            <option value="1">LPUSH</option>
+                                            <option value="2">BEFORE</option>
+                                            <option value="3">AFTER</option>
+                                        </select>
+                                    </label>
+                                    <label ng-show="insertType >= 2">
+                                        <span ng-show="insertType == 2">Before</span>
+                                        <span ng-show="insertType == 3">After</span>
+                                        <input type="text" name="" style="width: 100%;" ng-model="otherValue">
+                                    </label>
+                                </div>
+                                <div class="panel-foot">
+                                    <div class="put-right">
+                                        <button class="btn btn-warning" style="margin-left: 7px;" ng-click="moduleHidden = true">Cancel</button>
+                                    </div>
+                                    <div class="put-right">
+                                        <button class="btn btn-primary" ng-click="addValue()">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <h3 class="text-warning">{{count}} records</h3>
+                            </div>
+                            <div class="col-5">
+                                <div class="row">
+                                    <div class="col-10 no-padding">
+                                        <input type="number" min="0" step="1" style="width: 100%;" placeholder="Search index" ng-model="searchValue">
+                                    </div>
+                                    <div class="col-1 no-padding">
+                                        <button class="btn btn-sq" style="width: 100%;" ng-click="clearSearch()">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-1 no-padding">
+                                        <button class="btn btn-primary btn-sq" style="width: 100%;" ng-click="saerchIndex()">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-primary" style="width: 100%;" ng-click="loadPre()">
+                                    <i class="fa fa-backward"></i>
+                                </button>
+                            </div>
+                            <div class="col-1">
+                                <h2 style="text-align: center;">{{pageInfo}}</h2>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-primary" style="width: 100%;" ng-click="loadNext()">
+                                    <i class="fa fa-forward"></i>
+                                </button>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-success" style="width: 100%;" ng-click="moduleHidden = false">
+                                    <i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-danger" style="width: 100%;" ng-click="deleteValue()">
+                                    <i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <hr style="margin-top: 3px;" />
+                        <div style="height: calc(100% - 50px); overflow: auto;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;">INDEX</th>
+                                        <th style="text-align: left;">VALUE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in items" ng-click="selecteItem(item)">
+                                        <td ng-class="{'no-padding':showHashFieldInput,'bg-primary':item.selected}">
+                                            {{item.index}}
+                                        </td>
+                                        <td ng-dblclick="showValueInput = true" ng-class="{'no-padding':showValueInput,'bg-primary':item.selected}">
+                                            <div ng-hidden="showValueInput" ng-show="!showValueInput">{{item.value}}</div>
+                                            <input ng-keydown="showValueInput = setNewValueFromKey($event,item)" focus-me="showValueInput" type="text" name="" style="width: 100%;"
+                                                ng-show="showValueInput" ng-blur="showValueInput = setNewValue(item)" ng-model="item.value">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Set -->
+                    <div ng-show="key.type == 'set'" style="height: calc(100% - 100px);" ng-controller="SetValueController">
+                        <div class="module module-sm" ng-show="!moduleHidden" ng-hide="moduleHidden">
+                            <div class="panel">
+                                <div class="panel-head">New Value</div>
+                                <div class="panel-content">
+                                    <label>Value
+                                        <input type="text" name="" style="width: 100%;" ng-model="value">
+                                    </label>
+                                </div>
+                                <div class="panel-foot">
+                                    <div class="put-right">
+                                        <button class="btn btn-warning" style="margin-left: 7px;" ng-click="moduleHidden = true">Cancel</button>
+                                    </div>
+                                    <div class="put-right">
+                                        <button class="btn btn-primary" ng-click="addValue()">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <h3 class="text-warning">{{count}} records</h3>
+                            </div>
+                            <div class="col-5">
+                                <div class="row">
+                                    <div class="col-10 no-padding">
+                                        <input type="text" name="" style="width: 100%;" placeholder="Search" ng-model="searchValue">
+                                    </div>
+                                    <div class="col-1 no-padding">
+                                        <button class="btn btn-sq" style="width: 100%;" ng-click="clearSearch()">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-1 no-padding">
+                                        <button class="btn btn-primary btn-sq" style="width: 100%;" ng-click="search()">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-primary" style="width: 100%;" ng-click="loadPre()">
+                                    <i class="fa fa-backward"></i>
+                                </button>
+                            </div>
+                            <div class="col-1">
+                                <h2 style="text-align: center;">{{pageInfo}}</h2>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-primary" style="width: 100%;" ng-click="loadNext()">
+                                    <i class="fa fa-forward"></i>
+                                </button>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-success" style="width: 100%;" ng-click="moduleHidden=false">
+                                    <i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="col-1">
+                                <button class="btn btn-danger" style="width: 100%;" ng-click="deleteValue()">
+                                    <i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <hr style="margin-top: 3px;" />
+                        <div style="height: calc(100% - 50px); overflow: auto;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left;" width="55"></th>
+                                        <th style="text-align: left;">VALUE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in items" ng-click="selecteItem(item)">
+                                        <td>
+                                            <i class="fa fa-circle"></i>
+                                        </td>
+                                        <td ng-dblclick="showValueInput = true" ng-class="{'no-padding':showValueInput,'bg-primary':item.selected}">
+                                            <div ng-hidden="showValueInput" ng-show="!showValueInput">{{item.value}}</div>
+                                            <input ng-keydown="showValueInput = setValueFromKey($event,item)" focus-me="showValueInput" type="text" name="" style="width: 100%;"
+                                                ng-show="showValueInput" ng-blur="showValueInput = setValue(item)" ng-model="item.value">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- 属性 -->
+                    <div ng-hide="showProperties" style="color: #cccccc; text-align: center;">
+                        <div class="row">
+                            <div class="col-3">
+                            </div>
+                            <div class="col-3">
+                                <h3>We Chat</h3>
+                                <img src="./image/wx.png" style="width: 100%;" />
+                            </div>
+                            <div class="col-3">
+                                <h3>Alipay</h3>
+                                <img src="./image/zfb.png" style="width: 100%;" />
+                            </div>
+                            <div class="col-3">
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-2">
+                            </div>
+                            <div class="col-8">
+                                <h2>Kedis is free for everyone, but if you could pay me a little money for a cup of coffe, I
+                                    will be very happy.</h2>
+                                <i class="fa fa-smile-o" style="font-size: 186px;"></i>
+                                <p>Powered by Kehaw in China
+                                    <img src="./image/china.png" height="20" />.</p>
+                                <p>Visit www.kehaw.com get more informations about this app, if you have any question or find
+                                    any bug, please let me know, contact me andy_ghg@163.com, I will give you feedback as
+                                    soon as I can.</p>
+                            </div>
+                            <div class="col-2">
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-2">
+                            </div>
+                            <div class="col-8">
+                                <p>Okay, platitudes, I love my wife and my son.</p>
+                            </div>
+                            <div class="col-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="showProperties">
+                        <hr style="clear:both;" />
+                        <div class="col-6">
+                            <label>KEY NAME
+                                <div class="row">
+                                    <div class="col-10 no-padding">
+                                        <input type="text" name="" style="width: 100%;" ng-model="key.name">
+                                    </div>
+                                    <div class="col-2 no-padding">
+                                        <button class="btn btn-primary btn-sq" style="width: 100%;" ng-click="rename()">
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-6">
+                            <label>EXPIRE(TTL)
+                                <div class="row">
+                                    <div class="col-10 no-padding">
+                                        <input type="text" name="" style="width: 100%;" ng-model="key.ttl">
+                                    </div>
+                                    <div class="col-2 no-padding">
+                                        <button class="btn btn-primary btn-sq" style="width: 100%;" ng-click="setExpire()">
+                                            <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

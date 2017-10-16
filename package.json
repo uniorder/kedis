@@ -1,0 +1,36 @@
+{
+  "name": "Kedis",
+  "version": "1.0.0",
+  "description": "A redis desktop manager.",
+  "main": "main.js",
+  "author": "Kehaw",
+  "license": "CC0-1.0",
+  "scripts": {
+    "start": "electron ./app",
+    "packageWin64": "electron-packager ./app Kedis --platform=win32 --arch=x64 --icon=./app/image/logo.ico --out=./dist --asar --app-version=1.0.2",
+    "packageWin32": "electron-packager ./app Kedis --platform=win32 --arch=ia32 --icon=./app/image/logo.ico --out=./dist --asar --app-version=1.0.0",
+    "packageDarwin": "electron-packager ./app Kedis --platform=darwin --arch=x64 --icon=./app/image/logo.icns --out=./dist --asar --app-version=1.0.0",
+    "packageLinux64": "electron-packager ./app Kedis --platform=linux --arch=x64 --out=./dist --asar --app-version=1.0.0",
+    "packageLinux32": "electron-packager ./app Kedis --platform=linux --arch=ia32 --out=./dist --asar --app-version=1.0.0"
+  },
+  "keywords": [
+    "Redis"
+  ],
+  "devDependencies": {
+    "electron": "^1.7.9",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-jshint": "^2.0.4",
+    "gulp-less": "^3.3.2",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-notify": "^3.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^2.6.1",
+    "gulp-uglify": "^3.0.0",
+    "jshint": "^2.9.5"
+  },
+  "dependencies": {
+    "electron-packager": "^9.1.0"
+  }
+}

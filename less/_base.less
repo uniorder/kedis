@@ -1,0 +1,140 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    letter-spacing: 0; //font-size: 1rem;
+    font-family: 'Microsoft YaHei', serif;
+    font-weight: 200;
+    line-height: 1.6;
+    color: @brand-white;
+    background: #212121;
+    min-height: 600px;
+    min-width: 1280px;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+.h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 3px;
+    font-weight: 200;
+    margin-bottom: 3px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+.full {
+    height: 100%;
+    width: 100%;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.nb {
+    border: none !important;
+}
+
+.nb-t {
+    border-top: none !important;
+}
+
+.nb-b {
+    border-bottom: none !important;
+}
+
+.nb-l {
+    border-left: none !important;
+}
+
+.nb-r {
+    border-right: none !important;
+}
+
+.no-padding-lr {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.fix {
+    overflow: hidden;
+}
+
+.box-shadow-danger {
+    .box-shadow(0px 0px 5px @brand-danger);
+}
+
+.box-shadow-success {
+    .box-shadow(0px 0px 5px @brand-success);
+}
+
+.put-left {
+    display: inline;
+    float: left;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border: none;
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: @gray-darken;
+    margin: -2px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: @brand-amazon;
+    min-height: 150px;
+    min-width: 150px;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:vertical:hover {
+    background: darken(@brand-amazon, 20%);
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
+    background: #555555
+}
+
+@font-face {
+    font-family: 'digi';
+    src: url('/fonts/DS-DIGI.TTF');
+}
+
+.dig {
+    font-family: digi, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+label,small{
+    .user-select(none);
+}

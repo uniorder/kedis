@@ -1,0 +1,43 @@
+// Text inside hr line
+.hr-text{
+  position: relative;
+  font-size: 12px;
+  line-height: 20px;
+  text-align: left;
+  text-transform: uppercase;
+
+  &.hr-text-center {
+    text-align: center;
+    > *:first-child{
+      padding-left: 1em;
+    }
+  }
+
+  &.hr-text-right {
+    text-align: right;
+    > *:first-child{
+      padding-left: 1em;
+      padding-right: 0;
+    }
+  }
+
+  &:before{
+    position: absolute;
+    top: 50%;
+    display: block;
+    content: "";
+    width: 100%;
+    height: 1px;
+    background-color: #383838;
+  }
+
+  > *:first-child{
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    padding-right: 1em;
+    color: @brand-white;
+    vertical-align: middle;
+    background-color: #212121;
+  }
+}

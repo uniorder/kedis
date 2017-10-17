@@ -94,25 +94,10 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <p>Memory Fragmentation Ratio :
-                            <span ng-class="{'text-warning':info.Memory.mem_fragmentation_ratio < 1.5}">{{info.Memory.mem_fragmentation_ratio}}
-                                <i class="fa fa-warning" ng-show="info.Memory.mem_fragmentation_ratio < 1.5"></i>
-                            </span>
-                        </p>
-                        <p>Connected Clients : {{info.Clients.connected_clients}}</p> -->
                     </div>
                     <div ng-show="showServerInfo" style="height: 399px; border-top: 1px solid #525252;">
                         <div style="height:50%;" id="outputChart"></div>
                         <div style="height:50%;" id="inputChart"></div>
-                        <!-- <p>Redis Version : {{info.Server.redis_version}}</p>
-                        <p>Used memory : {{info.Memory.used_memory}}</p>
-                        <p>OS : {{info.Server.os}}</p>
-                        <p>Keyspace Hits : {{info.Stats.keyspace_hits}}</p>
-                        <p>Keyspace Misses : {{info.Stats.keyspace_misses}}</p>
-                        <p>Memory Fragmentation Ratio : <span ng-class="{'text-warning':info.Memory.mem_fragmentation_ratio < 1.5}">{{info.Memory.mem_fragmentation_ratio}} <i class="fa fa-warning" ng-show="info.Memory.mem_fragmentation_ratio < 1.5"></i></span></p>
-                        <p>Instantaneous ops per second : {{info.Stats.instantaneous_ops_per_sec}}</p>
-                        <p>Instantaneous input kbps : {{info.Stats.instantaneous_input_kbps}}</p>
-                        <p>Instantaneous output kbps : {{info.Stats.instantaneous_output_kbps}}</p> -->
                     </div>
                 </div>
             </div>
@@ -124,7 +109,7 @@
                     <div class="panel-head">New Key</div>
                     <div class="panel-content">
                         <label>KEY NAME
-                            <input type="text" name="" style="width: 100%;" ng-model="name">
+                            <input type="text"  style="width: 100%;" ng-model="name">
                         </label>
                         <label>KEY TYPE
                             <select style="width: 100%;" ng-model="keyType">
@@ -136,32 +121,32 @@
                             </select>
                         </label>
                         <label ng-show="keyType=='String'">KEY VALUE
-                            <input type="text" name="" style="width: 100%;" ng-model="value">
+                            <input type="text"  style="width: 100%;" ng-model="value">
                         </label>
                         <div ng-show="keyType=='Hash'">
                             <label>INIT FIELD
-                                <input type="text" name="" style="width: 100%;" ng-model="key">
+                                <input type="text"  style="width: 100%;" ng-model="key">
                             </label>
                             <label>INIT VALUE
-                                <input type="text" name="" style="width: 100%;" ng-model="value">
+                                <input type="text"  style="width: 100%;" ng-model="value">
                             </label>
                         </div>
                         <div ng-show="keyType=='Zset'">
                             <label>INIT FIELD
-                                <input type="text" name="" style="width: 100%;" ng-model="key">
+                                <input type="text"  style="width: 100%;" ng-model="key">
                             </label>
                             <label>INIT SCORE
-                                <input type="number" name="" style="width: 100%;" ng-model="value">
+                                <input type="number"  style="width: 100%;" ng-model="value">
                             </label>
                         </div>
                         <label ng-show="keyType=='Set'">INIT VALUE
-                            <input type="text" name="" style="width: 100%;" ng-model="value">
+                            <input type="text"  style="width: 100%;" ng-model="value">
                         </label>
                         <label ng-show="keyType=='List'">INIT VALUE
-                            <input type="text" name="" style="width: 100%;" ng-model="value">
+                            <input type="text"  style="width: 100%;" ng-model="value">
                         </label>
                         <label>EXPIRE
-                            <input type="number" name="" style="width: 100%;" ng-model="expire">
+                            <input type="number"  style="width: 100%;" ng-model="expire">
                         </label>
                     </div>
                     <div class="panel-foot">
@@ -184,7 +169,7 @@
                             <i class="fa fa-minus"></i></button>
                     </div>
                     <div class="put-right" style="border-right: 1px solid #525252; padding: 5px;">
-                        <input type="text" class="input-xs" name="" style="width: 100%;" placeholder="Search" ng-change="reloadKeys()" ng-model="searchPattern"
+                        <input type="text" class="input-xs"  style="width: 100%;" placeholder="Search" ng-change="reloadKeys()" ng-model="searchPattern"
                         />
                     </div>
                 </div>
@@ -248,10 +233,10 @@
                                 <div class="panel-head">New Value</div>
                                 <div class="panel-content">
                                     <label>Field
-                                        <input type="text" name="" style="width: 100%;" ng-model="field">
+                                        <input type="text"  style="width: 100%;" ng-model="field">
                                     </label>
                                     <label>Value
-                                        <input type="text" name="" style="width: 100%;" ng-model="value">
+                                        <input type="text"  style="width: 100%;" ng-model="value">
                                     </label>
                                 </div>
                                 <div class="panel-foot">
@@ -271,7 +256,7 @@
                             <div class="col-5">
                                 <div class="row">
                                     <div class="col-10 no-padding">
-                                        <input type="text" name="" style="width: 100%;" placeholder="Search" ng-model="searchValue">
+                                        <input type="text"  style="width: 100%;" placeholder="Search" ng-model="searchValue">
                                     </div>
                                     <div class="col-1 no-padding">
                                         <button class="btn btn-sq" style="width: 100%;" ng-click="clearSearch()">
@@ -320,13 +305,13 @@
                                     <tr ng-repeat="item in hashItems" ng-click="selecteItem(item)">
                                         <td ng-dblclick="showHashFieldInput = true" ng-class="{'no-padding':showHashFieldInput,'bg-primary':item.selected}">
                                             <div ng-hidden="showHashFieldInput" ng-show="!showHashFieldInput">{{item.field}}</div>
-                                            <input ng-keydown="showHashFieldInput = keydownSetField($event,item)" focus-me="showHashFieldInput" type="text" name="" style="width: 100%;"
+                                            <input ng-keydown="showHashFieldInput = keydownSetField($event,item)" focus-me="showHashFieldInput" type="text"  style="width: 100%;"
                                                 ng-show="showHashFieldInput" ng-blur="showHashFieldInput = setNewHashField(item)"
                                                 ng-model="item.field">
                                         </td>
                                         <td ng-dblclick="showHashValueInput = true" ng-class="{'no-padding':showHashValueInput,'bg-primary':item.selected}">
                                             <div ng-hidden="showHashValueInput" ng-show="!showHashValueInput">{{item.value}}</div>
-                                            <input ng-keydown="showHashValueInput = keydownSetValue($event,item)" focus-me="showHashValueInput" type="text" name="" style="width: 100%;"
+                                            <input ng-keydown="showHashValueInput = keydownSetValue($event,item)" focus-me="showHashValueInput" type="text"  style="width: 100%;"
                                                 ng-show="showHashValueInput" ng-blur="showHashValueInput = setNewHashValue(item)"
                                                 ng-model="item.value">
                                         </td>
@@ -342,10 +327,10 @@
                                 <div class="panel-head">New Member</div>
                                 <div class="panel-content">
                                     <label>Member
-                                        <input type="text" name="" style="width: 100%;" ng-model="field">
+                                        <input type="text"  style="width: 100%;" ng-model="field">
                                     </label>
                                     <label>Score
-                                        <input type="number" name="" style="width: 100%;" ng-model="value">
+                                        <input type="number"  style="width: 100%;" ng-model="value">
                                     </label>
                                 </div>
                                 <div class="panel-foot">
@@ -364,7 +349,7 @@
                             </div>
                             <div class="col-5">
                                 <div class="col-10 no-padding">
-                                    <input type="text" name="" style="width: 100%;" placeholder="Search" ng-model="searchValue">
+                                    <input type="text"  style="width: 100%;" placeholder="Search" ng-model="searchValue">
                                 </div>
                                 <div class="col-1 no-padding">
                                     <button class="btn btn-sq" style="width: 100%;" ng-click="clearSearch()">
@@ -411,12 +396,12 @@
                                     <tr ng-repeat="item in items" ng-click="selecteItem(item)">
                                         <td ng-dblclick="showFieldInput = true" ng-class="{'no-padding':showFieldInput,'bg-primary':item.selected}">
                                             <div ng-hidden="showFieldInput" ng-show="!showFieldInput">{{item.key}}</div>
-                                            <input ng-keydown="showFieldInput = setFieldFromKey($event,item)" focus-me="showFieldInput" type="text" name="" style="width: 100%;"
+                                            <input ng-keydown="showFieldInput = setFieldFromKey($event,item)" focus-me="showFieldInput" type="text"  style="width: 100%;"
                                                 ng-show="showFieldInput" ng-blur="showFieldInput = setNewField(item)" ng-model="item.key">
                                         </td>
                                         <td ng-dblclick="showValueInput = true" ng-class="{'no-padding':showValueInput,'bg-primary':item.selected}">
                                             <div ng-hidden="showValueInput" ng-show="!showValueInput">{{item.score}}</div>
-                                            <input ng-keydown="showValueInput = setValueFromKey($event,item)" focus-me="showValueInput" type="number" name="" style="width: 100%;"
+                                            <input ng-keydown="showValueInput = setValueFromKey($event,item)" focus-me="showValueInput" type="number"  style="width: 100%;"
                                                 ng-show="showValueInput" ng-blur="showValueInput = setNewValue(item)" ng-model="item.score">
                                         </td>
                                     </tr>
@@ -431,7 +416,7 @@
                                 <div class="panel-head">New Member</div>
                                 <div class="panel-content">
                                     <label>Member
-                                        <input type="text" name="" style="width: 100%;" ng-model="value">
+                                        <input type="text"  style="width: 100%;" ng-model="value">
                                     </label>
                                     <label>How to insert?
                                         <select style="width: 100%;" ng-model="insertType">
@@ -444,7 +429,7 @@
                                     <label ng-show="insertType >= 2">
                                         <span ng-show="insertType == 2">Before</span>
                                         <span ng-show="insertType == 3">After</span>
-                                        <input type="text" name="" style="width: 100%;" ng-model="otherValue">
+                                        <input type="text"  style="width: 100%;" ng-model="otherValue">
                                     </label>
                                 </div>
                                 <div class="panel-foot">
@@ -516,7 +501,7 @@
                                         </td>
                                         <td ng-dblclick="showValueInput = true" ng-class="{'no-padding':showValueInput,'bg-primary':item.selected}">
                                             <div ng-hidden="showValueInput" ng-show="!showValueInput">{{item.value}}</div>
-                                            <input ng-keydown="showValueInput = setNewValueFromKey($event,item)" focus-me="showValueInput" type="text" name="" style="width: 100%;"
+                                            <input ng-keydown="showValueInput = setNewValueFromKey($event,item)" focus-me="showValueInput" type="text"  style="width: 100%;"
                                                 ng-show="showValueInput" ng-blur="showValueInput = setNewValue(item)" ng-model="item.value">
                                         </td>
                                     </tr>
@@ -531,7 +516,7 @@
                                 <div class="panel-head">New Value</div>
                                 <div class="panel-content">
                                     <label>Value
-                                        <input type="text" name="" style="width: 100%;" ng-model="value">
+                                        <input type="text"  style="width: 100%;" ng-model="value">
                                     </label>
                                 </div>
                                 <div class="panel-foot">
@@ -551,7 +536,7 @@
                             <div class="col-5">
                                 <div class="row">
                                     <div class="col-10 no-padding">
-                                        <input type="text" name="" style="width: 100%;" placeholder="Search" ng-model="searchValue">
+                                        <input type="text"  style="width: 100%;" placeholder="Search" ng-model="searchValue">
                                     </div>
                                     <div class="col-1 no-padding">
                                         <button class="btn btn-sq" style="width: 100%;" ng-click="clearSearch()">
@@ -603,7 +588,7 @@
                                         </td>
                                         <td ng-dblclick="showValueInput = true" ng-class="{'no-padding':showValueInput,'bg-primary':item.selected}">
                                             <div ng-hidden="showValueInput" ng-show="!showValueInput">{{item.value}}</div>
-                                            <input ng-keydown="showValueInput = setValueFromKey($event,item)" focus-me="showValueInput" type="text" name="" style="width: 100%;"
+                                            <input ng-keydown="showValueInput = setValueFromKey($event,item)" focus-me="showValueInput" type="text"  style="width: 100%;"
                                                 ng-show="showValueInput" ng-blur="showValueInput = setValue(item)" ng-model="item.value">
                                         </td>
                                     </tr>
@@ -661,7 +646,7 @@
                             <label>KEY NAME
                                 <div class="row">
                                     <div class="col-10 no-padding">
-                                        <input type="text" name="" style="width: 100%;" ng-model="key.name">
+                                        <input type="text"  style="width: 100%;" ng-model="key.name">
                                     </div>
                                     <div class="col-2 no-padding">
                                         <button class="btn btn-primary btn-sq" style="width: 100%;" ng-click="rename()">
@@ -675,7 +660,7 @@
                             <label>EXPIRE(TTL)
                                 <div class="row">
                                     <div class="col-10 no-padding">
-                                        <input type="text" name="" style="width: 100%;" ng-model="key.ttl">
+                                        <input type="text"  style="width: 100%;" ng-model="key.ttl">
                                     </div>
                                     <div class="col-2 no-padding">
                                         <button class="btn btn-primary btn-sq" style="width: 100%;" ng-click="setExpire()">
@@ -691,5 +676,4 @@
         </div>
     </div>
 </body>
-
 </html>

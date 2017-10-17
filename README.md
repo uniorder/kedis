@@ -5,7 +5,7 @@ Kedis是一款基于Electron开发的Redis桌面管理工具，整个工程的�
     - [打包](#%E6%89%93%E5%8C%85)
     - [Windows x64 下载](#windows-x64-%E4%B8%8B%E8%BD%BD)
 ## 编译
-Clone项目之后，首先在本地安装Node.JS，安装成功后，分别在kedis和app目录下执行npm install，等待完成之后，在kedis目录下运行命令：  
+Clone项目之后，首先在本地安装Node.JS，安装成功后，分别在kedis和app目录下执行npm install，**重点注意一下，cnpm的install方式与npm并不一致，会导致可以运行，但是无法打包，请谨慎使用**，等待完成之后，在kedis目录下运行命令：  
 ```
 npm run-script start
 ```

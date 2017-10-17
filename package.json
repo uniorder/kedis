@@ -1,7 +1,7 @@
 {
   "name": "Kedis",
   "version": "1.0.0",
-  "description": "Redis desktop manager.",
+  "description": "Redis desktop manager test version.",
   "main": "main.js",
   "author": "Kehaw",
   "license": "CC0-1.0",

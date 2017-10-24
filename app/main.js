@@ -3,7 +3,7 @@ const electron = require('electron');
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
-
+const Menu = require('electron').Menu;
 const path = require('path');
 const url = require('url');
 
@@ -13,7 +13,7 @@ let mainWindow
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({ width: 800, height: 600 })
+    mainWindow = new BrowserWindow({ width: 1024, height: 700 })
 
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
@@ -31,6 +31,22 @@ function createWindow() {
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         mainWindow = null
+    })
+}
+
+let monitorWindow;
+
+function createMonitorWindow() {
+    monitorWindow = new BrowserWindow({ width: 1300, height: 700 });
+    monitorWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'monitor.html'),
+        protocol: 'file',
+        slashes: true
+    }))
+    monitorWindow.setMenu(null);
+    // monitorWindow.webContents.openDevTools();
+    monitorWindow.on('closed',function(){
+        monitorWindow = null;
     })
 }
 
@@ -59,7 +75,7 @@ app.on('activate', function() {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-const Menu = require('electron').Menu;
+
 var template = [{
     label: 'Edit',
     submenu: [{
@@ -92,6 +108,12 @@ var template = [{
 }, {
     label: 'View',
     submenu: [{
+        label: 'Monitor',
+        accelerator: 'CmdOrCtrl+M',
+        click: function(item, focusedWindow) {
+            createMonitorWindow();
+        }
+    }, {
         label: 'Reload',
         accelerator: 'CmdOrCtrl+R',
         click: function(item, focusedWindow) {
@@ -132,7 +154,7 @@ var template = [{
                 type: 'info',
                 title: 'About Kedis',
                 buttons: ['Ok'],
-                message: 'Version: Alpha\r\nPowered by: Kehaw'
+                message: 'Version: Alpha\r\nPowered by: Kehaw\r\nhttp://www.kehaw.com'
             }
             electron.dialog.showMessageBox(focusedWindow, options, function() {})
         }

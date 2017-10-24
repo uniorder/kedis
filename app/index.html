@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div class="panel-content no-padding">
-                    <div style="height: calc(100% - 492px); overflow: auto;">
+                    <div style="height: 100%; overflow: auto;">
                         <table class="table">
                             <tbody>
                                 <tr ng-drop="true" ng-drop-success="dropComplete($index,$data)" ng-repeat="item in serverList track by $index" ng-click="selectServer(item)">
@@ -69,35 +69,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                    <div ng-show="showServerInfo" style="height:85px; border-top:1px solid #525252;">
-                        <div class="row" style="height:100%;">
-                            <div class="col-4 no-padding" style="height:100%;">
-                                <div class="well" ng-class="{'well-red':info.Memory.mem_fragmentation_ratio < 1.0,'well-green':info.Memory.mem_fragmentation_ratio > 1.0}"
-                                    style="text-align:center;height:100%;">
-                                    <h2>{{info.Memory.mem_fragmentation_ratio}}&nbsp;&nbsp;
-                                        <i class="fa fa-warning" ng-show="info.Memory.mem_fragmentation_ratio < 1.0"></i>
-                                    </h2>
-                                    <small title="Memory fragmentation ratio">MFR</small>
-                                </div>
-                            </div>
-                            <div class="col-4 no-padding" style="height:100%;">
-                                <div class="well" style="text-align:center;height:100%;">
-                                    <h2>{{info.Clients.blocked_clients}}</h2>
-                                    <small>Blocked clients</small>
-                                </div>
-                            </div>
-                            <div class="col-4 no-padding" style="height:100%;">
-                                <div class="well" style="text-align:center;height:100%;">
-                                    <h2>{{info.Memory.used_memory_human}}</h2>
-                                    <small>Used memory</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div ng-show="showServerInfo" style="height: 399px; border-top: 1px solid #525252;">
-                        <div style="height:50%;" id="outputChart"></div>
-                        <div style="height:50%;" id="inputChart"></div>
                     </div>
                 </div>
             </div>

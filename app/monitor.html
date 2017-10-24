@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Katcher</title>
+    <link rel="stylesheet" type="text/css" href="./css/all.min.css">
+    <link href="./css/font-awesome.min.css" rel="stylesheet">
+    <script type="text/javascript" src="./javascript/libs/angular.min.js"></script>
+    <script type="text/javascript" src="./javascript/libs/ng-drag.js"></script>
+    <script type="text/javascript" src="./javascript/app.js"></script>
+    <script type="text/javascript" src="./javascript/directive/IOChart.js"></script>
+    <script type="text/javascript" src="./javascript/MonitorCtrl.js"></script>
+    <script type="text/javascript" src="./javascript/PanelCtrl.js"></script>
+</head>
+
+<body ng-controller="MonitorController">
+    <div ng-show="!started">
+        <div class="row">
+            <div class="col-2" ng-repeat="server in servers">
+                <div class="well" ng-class="{'bg-primary': server.selected}" style="cursor:pointer;" ng-click="select(server)">
+                    <h2 class="display:block;">{{server.name}}</h2>
+                    <small>{{server.host}}</small>
+                </div>
+            </div>
+        </div>
+        <hr />
+        
+        <div style="margin:0 auto; width:400px; text-align:center; margin-top:100px;">
+            <button class="btn btn-primary" ng-click="startWatching()"><i class="fa fa-play"></i>&nbsp;&nbsp;Start Watching</button>
+            <p>You can open more monitoring windows.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3" ng-repeat="server in selectedServers">
+            <div class="panel" ng-controller="PanelController">
+                <div class="panel-head" style="overflow:hidden;">
+                    <span class="put-left">{{server.name}}</span>
+                    <span class="put-right">{{server.host}}</span>
+                </div>
+                <div class="panel-content no-padding">
+                    <io-chart title="IO KBPS" id="inputChart" server="server"></io-chart>
+                    <div style="border-top:1px solid #525252; overflow:hidden; padding:3px;">
+                        <small class="put-left" style="color:#35BDA8;">Output:{{server.info.Stats.instantaneous_output_kbps}} kbps</small>
+                        <small class="put-right" style="color:#2D99DC;">Input:{{server.info.Stats.instantaneous_input_kbps}} kbps</small>
+                    </div>
+                    <div class="row">
+                        <div class="col-4  no-padding">
+                            <div class="well" style="text-align:center;height:100%;">
+                                <h3>{{server.info.Clients.connected_clients}}</h3>
+                                <small>Connected</small>
+                            </div>
+                        </div>
+                        <div class="col-4  no-padding">
+                            <div class="well" style="text-align:center;height:100%;">
+                                <h3>{{server.info.Clients.blocked_clients}}</h3>
+                                <small>Blocked</small>
+                            </div>
+                        </div>
+                        <div class="col-4 no-padding">
+                            <div class="well" style="text-align:center;height:100%;">
+                                <h3>{{server.info.Memory.used_memory_human}}</h3>
+                                <small>Used memory</small>
+                            </div>
+                        </div>
+                        <div class="col-4 no-padding">
+                            <div class="well" ng-class="{'well-red':server.info.Memory.mem_fragmentation_ratio < 1.0,'well-green':info.Memory.mem_fragmentation_ratio > 1.0}"
+                                style="text-align:center;height:100%;">
+                                <h3>{{server.info.Memory.mem_fragmentation_ratio}}&nbsp;&nbsp;
+                                    <i class="fa fa-warning" ng-show="server.info.Memory.mem_fragmentation_ratio < 1.0"></i>
+                                </h3>
+                                <small>MFR</small>
+                            </div>
+                        </div>
+                        <div class="col-4 no-padding">
+                            <div class="well" style="text-align:center;height:100%;">
+                                <h3>{{server.info.Memory.used_memory_peak_human}}</h3>
+                                <small>Memory peak</small>
+                            </div>
+                        </div>
+                        <div class="col-4 no-padding">
+                            <div class="well" style="text-align:center;height:100%;">
+                                <h3>{{server.info.Persistence.rdb_changes_since_last_save}}</h3>
+                                <small>CSLS</small>
+                            </div>
+                        </div>
+                        <div class="col-12 no-padding">
+                            <div class="well" style="text-align:center;height:100%;">
+                                <h3 class="display:block;">{{server.info.Persistence.rdb_last_save_time*1000 | date:"MM-dd HH:mm:ss"}}</h3>
+                                <small>Last save time</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height:300px; overflow:auto;">
+                        <table class="table">
+                            <thead>
+                                <tr style="text-align:left">
+                                    <th>IP</th>
+                                    <th>CMD</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="client in server.clients">
+                                    <td>{{client.addr}}</td>
+                                    <td>{{client.cmd}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-foot">
+                    <button class="btn btn-primary btn-xs" ng-click="refreshClientList()">
+                        <i class="fa fa-refresh"></i> Refresh client list</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

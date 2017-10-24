@@ -18,67 +18,12 @@ app.controller("ServerController", ["$scope", "$interval", "local", function ($s
 
     //最后一次选中的服务器，用于优化速度，避免遍历
     let lastSelected;
-
-    let dataSet = [];
-    for (let i = 0; i < 100; i++) {
-        dataSet.push(0);
-    }
-
-    let opt = {
-        title: {
-            text: "Output kbps"
-        },
-        xAxis: {
-            labels: {
-                enabled: false
-            },
-            type: 'datetime',
-            tickPixelInterval: 1000
-        },
-        yAxis: [{
-            title: {
-                text: 'KBPS',
-                enabled: false
-            },
-            min: 0
-        }],
-        legend: {
-            "enabled": false
-        },
-        series: [{
-            data: dataSet,
-            type: 'areaspline',
-            threshold: null,
-            tooltip: {
-                valueDecimals: 2
-            },
-            fillColor: {
-                linearGradient: {
-                    x1: 0,
-                    y1: 0,
-                    x2: 0,
-                    y2: 1
-                },
-                stops: [
-                    [0, Highcharts.getOptions().colors[0]],
-                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                ]
-            }
-        }]
-    };
-
-    let outputChart = new Highcharts.Chart('outputChart', opt);
-    let newOpt = angular.copy(opt);
-    newOpt.title.text = "Input kbps";
-    let inputChart = new Highcharts.Chart('inputChart', newOpt);
     
     let client;
-    let currentInterval;
     //选择服务器
     $scope.selectServer = function (server) {
         if (client) client.end(true);
         if (lastSelected) lastSelected.selected = false;
-        if (currentInterval) $interval.cancel(currentInterval);
         server.selected = true;
         lastSelected = server;
         $scope.$emit("changeServer", server);
@@ -89,42 +34,6 @@ app.controller("ServerController", ["$scope", "$interval", "local", function ($s
             connect_timeout: 1000,
             password: server.password
         });
-
-
-        currentInterval = $interval(function () {
-            client.info(function (err, result) {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-
-                let infors = result.split("# ");
-                out: for (let i = 0; i < infors.length; i++) {
-
-                    let str = infors[i];
-
-                    if (str == "") {
-                        continue out;
-                    }
-
-                    let info = str.split("\r\n");
-                    $scope.info[info[0]] = {};
-                    inner: for (let j = 1; j < info.length; j++) {
-                        if (info[j] == "") {
-                            continue inner;
-                        }
-                        let detail = info[j].split(":");
-                        $scope.info[info[0]][detail[0]] = detail[1];
-                    }
-                }
-                outputChart.series[0].addPoint($scope.info.Stats.instantaneous_output_kbps * 1, true, true);
-                inputChart.series[0].addPoint($scope.info.Stats.instantaneous_input_kbps * 1, true, true);
-                $scope.showServerInfo = true;
-                $scope.$apply();
-            });
-        }, 1000);
-    
-
     }
 
     //测试服务器连接

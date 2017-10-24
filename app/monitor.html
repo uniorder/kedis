@@ -84,10 +84,17 @@
                                 <small>CSLS</small>
                             </div>
                         </div>
-                        <div class="col-12 no-padding">
+                        <div class="col-6 no-padding">
                             <div class="well" style="text-align:center;height:100%;">
                                 <h3 class="display:block;">{{server.info.Persistence.rdb_last_save_time*1000 | date:"MM-dd HH:mm:ss"}}</h3>
-                                <small>Last save time</small>
+                                <small>RDB Last save time</small>
+                            </div>
+                        </div>
+                        <div class="col-6 no-padding">
+                            <div class="well" ng-class="{'well-red':server.info.Persistence.aof_enabled < 1,'well-green':server.info.Persistence.aof_enabled == 1}"
+                            style="text-align:center;height:100%;">
+                                <h3 class="display:block;">{{server.info.Persistence.aof_enabled ? "Enabled":"Disabled"}}</h3>
+                                <small>AOF</small>
                             </div>
                         </div>
                     </div>

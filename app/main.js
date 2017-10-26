@@ -44,7 +44,7 @@ function createMonitorWindow() {
         slashes: true
     }))
     monitorWindow.setMenu(null);
-    monitorWindow.webContents.openDevTools();
+    // monitorWindow.webContents.openDevTools();
     monitorWindow.on('closed',function(){
         monitorWindow = null;
     })

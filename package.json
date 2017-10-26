@@ -7,6 +7,7 @@
   "license": "CC0-1.0",
   "scripts": {
     "start": "electron ./app",
+    "setMirror":"set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/",
     "packageWin64": "electron-packager ./app Kedis --platform=win32 --arch=x64 --icon=./app/image/logo.ico --out=./dist --asar --app-version=1.0.2",
     "packageWin32": "electron-packager ./app Kedis --platform=win32 --arch=ia32 --icon=./app/image/logo.ico --out=./dist --asar --app-version=1.0.0",
     "packageDarwin": "electron-packager ./app Kedis --platform=darwin --arch=x64 --icon=./app/image/logo.icns --out=./dist --asar --app-version=1.0.0",

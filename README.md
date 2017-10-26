@@ -29,8 +29,13 @@ npm run-script packageDarwin
 npm run-script packageLinux64
 npm run-script packageLinux32
 ```
-来获取不同平台下的安装包，目前整个程序在Windows 64位操作系统上测试通过。  
+中国地区执行编译的时候可能无法顺利下载相应的的依赖包，通过淘宝的源可以解决问题，具体使用方法是在控制台中指定环境变量如下：
+```
+set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/
+```
+然后再执行以上打包命令即可完成打包。
+
 注意，基于Electron的程序不支持Windows XP（含）以前的Windows版本。
 
 ## Windows x64 下载
-我们提供了一个编译好的Windows x64版本，可以访问 http://www.kehaw.com 来获取。
+我们提供了一些编译好的版本，可以访问 http://www.kehaw.com 来获取，Mac目前还请自行在本地编译。

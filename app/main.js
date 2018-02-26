@@ -33,6 +33,14 @@ function createWindow() {
         mainWindow = null
     });
     var template = [{
+        label:'Kedis',
+        submenu:[{ 
+                label: "Quit", 
+                accelerator: "Command+Q", 
+                click: function() { app.quit(); }
+            }
+        ]
+    },{
         label: 'Edit',
         submenu: [{
             label: 'Undo',

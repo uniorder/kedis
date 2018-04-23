@@ -4,7 +4,8 @@ Kedis是一款基于Electron开发的Redis桌面管理工具，他是免费的�
     - [截图](#%E6%88%AA%E5%9B%BE)
     - [编译](#%E7%BC%96%E8%AF%91)
     - [打包](#%E6%89%93%E5%8C%85)
-    - [可执行程序下载](#%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%B8%8B%E8%BD%BD)
+    - [可执行程序下载](#%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%B8%8B%E8%BD%BD)
+非常抱歉，个人博客到期，暂时不提供可编译版本下载了，预计51后可以提供下载。
 ## 截图
 ![](http://www.kehaw.com/images/screenshot.png)
 操作界面

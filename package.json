@@ -34,5 +34,13 @@
 	},
 	"dependencies": {
 		"electron-packager": "^12.1.0"
-	}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@gitee.com:hbase_admin/Kedis.git"
+	},
+	"bugs": {
+		"url": "https://gitee.com/hbase_admin/Kedis/issues"
+	},
+	"homepage": "http://www.kehaw.com"
 }

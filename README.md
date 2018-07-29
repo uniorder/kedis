@@ -1,16 +1,6 @@
 # kedis
-Kedis是一款基于Electron开发的Redis桌面管理工具，他是免费的！  
-- [kedis](#kedis)
-    - [截图](#%E6%88%AA%E5%9B%BE)
-    - [编译](#%E7%BC%96%E8%AF%91)
-    - [打包](#%E6%89%93%E5%8C%85)
-    - [可执行程序下载](#%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E4%B8%8B%E8%BD%BD)
-非常抱歉，个人博客到期，暂时不提供可编译版本下载了，预计51后可以提供下载。
-## 截图
-![](http://www.kehaw.com/images/screenshot.png)
-操作界面
-![](http://www.kehaw.com/images/mo.png)
-独立监控
+由于GitHub实在太卡，整个项目迁移到Gitee上了，新项目地址为：https://gitee.com/hbase_admin/Kedis 这是全新的重构版本，修复了一些BUG，提升了性能。
+
 ## 编译
 Clone项目之后，首先在本地安装Node.JS，安装成功后，分别在kedis和app目录下执行npm install，**重点注意一下，cnpm的install方式与npm并不一致，会导致可以运行，但是无法打包，请谨慎使用**，等待完成之后，在kedis目录下运行命令：  
 ```

@@ -93,7 +93,6 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 			createStringWin = null
 		});
 		createStringWin.setMenuBarVisibility(false);
-		createStringWin.webContents.openDevTools();
 		createStringWin.loadFile(file);
 		createStringWin.once('ready-to-show', () => {
 			createStringWin.show();

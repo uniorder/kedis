@@ -35,6 +35,10 @@ electron ./app
 
 Spring 通过 Spring data redis 默认写入的 Key 名中会包含不可解析的乱码，导致无法删除Key，这个我在想办法解决。
 
+#### 下一个版本迭代
+
+将会优化一下字体的显示方式，对中文字体进行优化。
+
 #### 其他
 
 欢迎访问我的无聊小站 http://www.kehaw.com

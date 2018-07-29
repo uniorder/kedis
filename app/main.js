@@ -13,7 +13,7 @@ let win;
 function createWindow() {
 	// 创建浏览器窗口。
 	win = new BrowserWindow({
-		width: 1250,
+		width: 1260,
 		height: 800
 	});
 

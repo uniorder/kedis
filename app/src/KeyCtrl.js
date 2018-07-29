@@ -45,7 +45,13 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 				showKeys($scope.selectedDatabase);
 				break;
 		}
-	});
+    });
+    
+    $scope.$on("clearKeys",()=>{
+        $scope.databases = [];
+
+        $scope.keys = [];
+    });
 
 	function showCreateWin(type) {
 		if (!serverInfo) {

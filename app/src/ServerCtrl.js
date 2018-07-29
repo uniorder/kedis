@@ -92,7 +92,8 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 	$scope.serverClick = function (server) {
 		if (server.id === $scope.selectedServer) {
 			return;
-		}
+        }
+        $scope.$emit('clearAllKeys');
 		if (interval) {
 			$interval.cancel(interval);
 		}
@@ -235,7 +236,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		createServerWin.on('closed', () => {
 			createServerWin = null
 		});
-		createServerWin.webContents.openDevTools();
+		// createServerWin.webContents.openDevTools();
 		createServerWin.setMenuBarVisibility(false);
 		createServerWin.loadFile('create-server.html');
 		createServerWin.once('ready-to-show', () => {
@@ -286,7 +287,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 			updateServerWin = null
 		});
 		updateServerWin.setMenuBarVisibility(false);
-		updateServerWin.webContents.openDevTools();
+		// updateServerWin.webContents.openDevTools();
 		updateServerWin.loadFile('update-server.html');
 		updateServerWin.once('ready-to-show', () => {
 			updateServerWin.show();

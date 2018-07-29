@@ -47,12 +47,10 @@ app.controller("UpdateServerCtrl", function ($scope, local, redisConn, electron)
 		let client = redisConn.createConn($scope.server, true);
 
 		client.info(function (err, result) {
-			console.log(err);
 			if (err) {
 				$scope.testStyle = "btn-danger";
 				$scope.testText = "测试失败，点击重试";
 			} else {
-				console.log(result);
 				$scope.testStyle = "btn-success";
 				$scope.testText = "链接成功";
 			}

@@ -103,8 +103,6 @@ app.controller("SetValueCtrl", function ($scope, $stateParams, $state, redisConn
 	 * 更新过期时间
 	 */
 	$scope.updateTTL = function () {
-		redis.expire(oldKeyName, $scope.ttl, function (err, data) {
-			console.log(data);
-		});
+		redis.expire(oldKeyName, $scope.ttl);
 	}
 });

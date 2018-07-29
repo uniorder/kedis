@@ -1,5 +1,7 @@
 # Kedis
 
+![kedis](http://www.kehaw.com/wp-content/uploads/2018/07/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180730001102.png)
+
 #### 项目介绍
 跨平台的Redis桌面管理工具
 
@@ -29,6 +31,9 @@ electron ./app
 
 1. Kehaw ge.bugman@gmail.com
 
+#### 已知问题
+
+Spring 通过 Spring data redis 默认写入的 Key 名中会包含不可解析的乱码，导致无法删除Key，这个我在想办法解决。
 
 #### 其他
 

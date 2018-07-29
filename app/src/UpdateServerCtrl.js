@@ -32,6 +32,7 @@ app.controller("UpdateServerCtrl", function ($scope, local, redisConn, electron)
 			for (var i = 0; i < serverList.length; i++) {
 				if (serverList[i].id == $scope.server.id) {
 					serverList[i] = $scope.server;
+					delete serverList[i].selected;
 					local.setObject("SERVER_LIST", serverList);
 					ipc.send("serverUpdated", "SUCCESS");
 					let win = remote.getCurrentWindow();

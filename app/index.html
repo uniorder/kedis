@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html ng-app="app" ng-controller="MainCtrl">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Kedis - Redis desktop manager v2.0</title>
+	<link href="./css/bootstrap.min.css" rel="stylesheet">
+	<script type="text/javascript" src="./scripts/angular.min.js"></script>
+	<script type="text/javascript" src="./scripts/angular-ui-router.min.js"></script>
+	<script type="text/javascript" src="./scripts/ui-bootstrap-tpls-3.0.4.min.js"></script>
+	<script type="text/javascript" src="./scripts/electangular.js"></script>
+	<script type="text/javascript" src="./src/App.js"></script>
+	<script type="text/javascript" src="./src/MainCtrl.js"></script>
+	<script type="text/javascript" src="./src/ServerCtrl.js"></script>
+	<script type="text/javascript" src="./src/KeyCtrl.js"></script>
+	<script type="text/javascript" src="./src/StringValueCtrl.js"></script>
+	<script type="text/javascript" src="./src/HashValueCtrl.js"></script>
+	<script type="text/javascript" src="./src/ListValueCtrl.js"></script>
+	<script type="text/javascript" src="./src/SetValueCtrl.js"></script>
+	<script type="text/javascript" src="./src/ZsetValueCtrl.js"></script>
+</head>
+
+<body>
+	<div class="container-fluid no-padding" style="height: 100%;">
+		<div class="row no-gutters" style="height:100%;">
+			<div class="col-sm-3 main-l" ng-controller="ServerCtrl">
+				<!-- 服務器列表 -->
+				<div class="panel" style="height:80%;">
+					<div class="panel-header">
+						服务器
+					</div>
+					<div class="panel-content">
+						<div class="input-group mb-3" style="margin-bottom: 0 !important;">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="basic-addon3">筛选</span>
+							</div>
+							<input ng-change="filterServer()" ng-model="filterText" type="text" style="border-right: none;" class="form-control" id="serverFilter"
+							    aria-describedby="basic-addon3" placeholder="在此输入筛选条件">
+						</div>
+						<div class="list" style="height: calc(100% - 32px); overflow: auto;">
+							<div ng-right-click="showServerContextMenu(item)" ng-hide="item.hide" class="list-item" ng-class="{'selected': item.selected}"
+							    ng-repeat="item in serverList" ng-click="serverClick(item)">
+								{{item.name}}({{item.host}})
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 服務器狀態列表 -->
+				<div id="inputChart" class="panel top-line" style="height: 20%;"></div>
+			</div>
+			<div class="col-sm-4 main-m">
+				<div class="panel" ng-controller="KeyCtrl" style="height: 100%;">
+					<div class="panel-header">
+						键
+					</div>
+					<div class="panel-content">
+						<div class="input-group mb-3" style="margin-bottom: 0 !important;">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="basic-addon3">过滤器</span>
+							</div>
+							<input type="text" ng-change="filterKey()" ng-model="keyParttern" style="border-right: none;" placeholder="默认显示所有" class="form-control"
+							    id="basic-url" aria-describedby="basic-addon3">
+						</div>
+						<div class="list" style="height:calc(100% - 32px); overflow: auto;">
+							<div class="container-fluid no-padding">
+								<div class="row no-gutters redis-databse">
+									<div class="col-sm" ng-repeat="item in databases">
+										<button type="button" ng-click="showKeys(item)" ng-class="{'btn-danger': item.selected,'btn-secondary':!item.selected}" class="btn btn-sm">{{item.index}}</button>
+									</div>
+								</div>
+							</div>
+							<div ng-right-click="showKeyContextMenu(key)" class="list-item" ng-hide="key.hide" ng-class="{'selected': key.selected}"
+							    ng-click="selectKey(key)" ng-repeat="key in keys">
+								{{key.name}}
+								<span class="badge badge-{{key.type}}" style="float: right;">{{key.type.toUpperCase()}}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-5">
+				<div class="panel" style="height:100%;">
+					<div class="panel-header">
+						值
+					</div>
+					<div class="panel-content" ui-view style="padding:10px;">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

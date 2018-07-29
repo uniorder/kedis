@@ -1,0 +1,166 @@
+/*!
+ * Bootstrap v4.1.3 (https://getbootstrap.com/)
+ * Copyright 2011-2018 The Bootstrap Authors
+ * Copyright 2011-2018 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+@import "functions";
+@import "variables";
+@import "mixins";
+@import "root";
+@import "reboot";
+@import "type";
+@import "images";
+@import "code";
+@import "grid";
+@import "tables";
+@import "forms";
+@import "buttons";
+@import "transitions";
+@import "dropdown";
+@import "button-group";
+@import "input-group";
+@import "custom-forms";
+@import "nav";
+@import "navbar";
+@import "card";
+@import "breadcrumb";
+@import "pagination";
+@import "badge";
+@import "jumbotron";
+@import "alert";
+@import "progress";
+@import "media";
+@import "list-group";
+@import "close";
+@import "modal";
+@import "tooltip";
+@import "popover";
+@import "carousel";
+@import "utilities";
+@import "print";
+// 
+// Customs
+body,
+html {
+	height: 100%;
+	width: 100%;
+}
+
+.main-l {
+	border-right: 1px solid $gray-500;
+	height: 100%;
+}
+
+.main-m {
+	border-right: 1px solid $gray-500;
+	height: 100%;
+}
+
+.bottom-line {
+	border-bottom: 1px solid $gray-500;
+}
+
+.top-line {
+	border-top: 1px solid $gray-500;
+}
+
+.no-padding {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.panel {
+	.panel-header {
+		padding: 7px;
+		user-select: none;
+		background-color: $brand-facebook;
+		color: $gray-300;
+	}
+	.panel-content {
+		height: calc(100% - 32px);
+		word-wrap: break-word;
+		word-break: normal;
+	}
+}
+
+// List
+.list {
+	.list-item {
+		padding: 7px;
+		border-bottom: 1px solid $gray-400;
+		cursor: pointer;
+		&:hover {
+			background-color: $brand-facebook;
+			color: $gray-100;
+		}
+	}
+	.selected {
+		background-color: $brand-endaveour;
+		color: $white;
+	}
+}
+
+// redis-dabase
+.redis-databse {
+	.btn {
+		width: 100%;
+	}
+}
+
+.badge-string {
+	@include badge-variant($brand-lastfm);
+}
+
+.badge-hash {
+	@include badge-variant($brand-linkedin);
+}
+
+.badge-set {
+	@include badge-variant($brand-swamp);
+}
+
+.badge-zset {
+	@include badge-variant($brand-medium);
+}
+
+.badge-list {
+	@include badge-variant($brand-eminence);
+}
+
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+	border: none;
+}
+
+::-webkit-scrollbar-track-piece {
+	background-color: $gray-500;
+	margin: -2px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: $brand-amazon;
+	min-height: 150px;
+	min-width: 150px;
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:vertical:hover {
+	background: darken($brand-amazon, 20%);
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
+	background: #555555
+}
+
+table {
+	table-layout: fixed;
+}
+
+td {
+	white-space: nowrap !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis !important;
+}

@@ -51,16 +51,19 @@ function createWindow() {
 		label: "链接",
 		submenu: [{
 			label: "新建链接",
+			accelerator: 'CmdOrCtrl+N',
 			click() {
 				win.webContents.send('electron-msg', "createServer");
 			}
 		}, {
 			label: "编辑链接",
+			accelerator: 'CmdOrCtrl+E',
 			click() {
 				win.webContents.send('electron-msg', "editSelectedServer");
 			}
 		}, {
 			label: "删除链接",
+			accelerator: 'Delete',
 			click() {
 				win.webContents.send('electron-msg', "deleteSelectedServer");
 			}
@@ -69,31 +72,37 @@ function createWindow() {
 		label: '键',
 		submenu: [{
 			label: "新建STRING",
+			accelerator: 'CmdOrCtrl+Shift+S',
 			click() {
 				win.webContents.send('electron-msg', "showCreateStringWin");
 			}
 		}, {
 			label: "新建HASH",
+			accelerator: 'CmdOrCtrl+Shift+H',
 			click() {
 				win.webContents.send('electron-msg', "showCreateHashWin");
 			}
 		}, {
 			label: "新建SET",
+			accelerator: 'CmdOrCtrl+Shift+E',
 			click() {
 				win.webContents.send('electron-msg', "showCreateSetWin");
 			}
 		}, {
 			label: "新建ZSET",
+			accelerator: 'CmdOrCtrl+Shift+Z',
 			click() {
 				win.webContents.send('electron-msg', "showCreateZsetWin");
 			}
 		}, {
 			label: "新建LIST",
+			accelerator: 'CmdOrCtrl+Shift+L',
 			click() {
 				win.webContents.send('electron-msg', "showCreateListWin");
 			}
 		}, {
 			label: "删除",
+			accelerator: 'CmdOrCtrl+Shift+Delete',
 			click() {
 				win.webContents.send('electron-msg', "deleteKey");
 			}

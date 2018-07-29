@@ -1,6 +1,6 @@
 # Kedis
 
-![kedis](http://www.kehaw.com/wp-content/uploads/2018/07/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20180730001102.png)
+![kedis](http://www.kehaw.com/wp-content/uploads/2018/07/a.png)
 
 #### 项目介绍
 跨平台的Redis桌面管理工具

@@ -1,0 +1,49 @@
+<div class="container" style="user-select: none; height: 100%; overflow: auto;" ng-controller="DefaultCtrl">
+	<div class="row">
+		<div class="col-sm-3">
+		</div>
+		<div class="col-sm-3" style="text-align: center;">
+			<h3>Wechat</h3>
+			<img src="./images/wx.png" style="width: 100%;" />
+		</div>
+		<div class="col-sm-3" style="text-align: center;">
+			<h3>Alipay</h3>
+			<img src="./images/zfb.png" style="width: 100%;" />
+		</div>
+		<div class="col-sm-3">
+		</div>
+	</div>
+	<hr />
+	<div class="row">
+		<div class="col-2">
+		</div>
+		<div class="col-8">
+			<h2>Kedis is free for everyone, but if you could pay me a little money for a cup of coffe, I would be very happy.</h2>
+			<i class="fa fa-smile-o" style="font-size: 186px;"></i>
+			<p>Powered by
+				<span ng-dblclick="showPic = true">Kehaw</span> in China
+				<img src="./images/china.png" height="20" />.</p>
+			<p>Visit
+				<a href="javascript:;" ng-click="openBrowser($event,'http://www.kehaw.com/?page_id=2')">http://www.kehaw.com/?page_id=2</a> or git get more informations about this app, if you have any question or find any
+				bug, please let me know, contact me via
+				<a href="mailto:ge.bugman@gmail.com">ge.bugman@gmail.com</a>, I will give you feedback as soon as I can.</p>
+			<p>Git here:
+				<a href="javascript:;" ng-click="openBrowser($event,'https://gitee.com/hbase_admin/Kedis')">https://gitee.com/hbase_admin/Kedis</a>.</p>
+			<p>We will support the English(or other languages) version in the future.</p>
+			<p>Current version: 2.0.0</p>
+		</div>
+		<div class="col-2">
+		</div>
+	</div>
+	<hr />
+	<div class="row" ng-show="showPic">
+		<div class="col-sm-2">
+		</div>
+		<div class="col-sm-8" style="text-align: center;">
+			<img src="http://www.kehaw.com/wp-content/uploads/2018/07/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180730012439.jpg" style="max-width: 100%; width: 200px;">
+			<p>愿你们一生幸福安康</p>
+		</div>
+	</div>
+	<div class="col-sm-2">
+	</div>
+</div>

@@ -10,7 +10,7 @@
 
 #### 可执行程序下载
 - [Windows版本（64位）](https://pan.baidu.com/s/167L82TaRKsOtHAzjaSA6iQ)更新于2018-07-29
-- Mac 版本请在发行版中直接下载附件即可
+- [Mac版本](https://gitee.com/hbase_admin/Kedis/releases) 发行版
 
 **打包在近期会比较频繁，因为会不断的尝试修改一些细节**
 

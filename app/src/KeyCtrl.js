@@ -2,6 +2,10 @@
 
 
 app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, electron) {
+
+
+
+
 	let win = remote.getCurrentWindow();
 
 	// redis 对象
@@ -45,13 +49,13 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 				showKeys($scope.selectedDatabase);
 				break;
 		}
-    });
-    
-    $scope.$on("clearKeys",()=>{
-        $scope.databases = [];
+	});
 
-        $scope.keys = [];
-    });
+	$scope.$on("clearKeys", () => {
+		$scope.databases = [];
+
+		$scope.keys = [];
+	});
 
 	function showCreateWin(type) {
 		if (!serverInfo) {
@@ -111,7 +115,6 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 
 		redis.config("get", "databases", function (err, result) {
 			if (err) {
-
 				return;
 			}
 			let size = result[1];
@@ -125,6 +128,9 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 			$scope.databases[0].selected = true;
 			showKeys($scope.databases[0], true)
 			$scope.$apply();
+
+
+			
 		});
 	});
 

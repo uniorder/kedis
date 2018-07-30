@@ -253,6 +253,7 @@ $grid-gutter-width:           30px !default;
 
 $line-height-lg:              1.5 !default;
 $line-height-sm:              1.5 !default;
+$line-height-xs:              1.2 !default;
 
 $border-width:                1px !default;
 $border-color:                $gray-300 !default;
@@ -288,6 +289,7 @@ $font-family-base:            $font-family-sans-serif !default;
 $font-size-base:              0.75rem !default; // Assumes the browser default, typically `16px`
 $font-size-lg:                ($font-size-base * 1.25) !default;
 $font-size-sm:                ($font-size-base * .875) !default;
+$font-size-xs:                ($font-size-base * .8) !default;
 
 $font-weight-light:           300 !default;
 $font-weight-normal:          400 !default;
@@ -391,6 +393,10 @@ $input-btn-padding-y-sm:      .25rem !default;
 $input-btn-padding-x-sm:      .5rem !default;
 $input-btn-line-height-sm:    $line-height-sm !default;
 
+$input-btn-padding-y-xs:      .20rem !default;
+$input-btn-padding-x-xs:      .25rem !default;
+$input-btn-line-height-xs:    $line-height-xs !default;
+
 $input-btn-padding-y-lg:      .5rem !default;
 $input-btn-padding-x-lg:      1rem !default;
 $input-btn-line-height-lg:    $line-height-lg !default;
@@ -409,6 +415,10 @@ $btn-line-height:             $input-btn-line-height !default;
 $btn-padding-y-sm:            $input-btn-padding-y-sm !default;
 $btn-padding-x-sm:            $input-btn-padding-x-sm !default;
 $btn-line-height-sm:          $input-btn-line-height-sm !default;
+
+$btn-padding-y-xs:            $input-btn-padding-y-xs !default;
+$btn-padding-x-xs:            $input-btn-padding-x-xs !default;
+$btn-line-height-xs:          $input-btn-line-height-xs !default;
 
 $btn-padding-y-lg:            $input-btn-padding-y-lg !default;
 $btn-padding-x-lg:            $input-btn-padding-x-lg !default;

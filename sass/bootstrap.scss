@@ -198,3 +198,12 @@ input:placeholder {
 	user-select: none;
 	text-align: center;
 }
+
+.keyLable {
+	max-width: 200px;
+	display: block;
+	float: left;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}

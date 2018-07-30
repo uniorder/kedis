@@ -1,6 +1,6 @@
 # Kedis
 
-![kedis]()
+![Kedis](https://images.gitee.com/uploads/images/2018/0730/100427_85eb18fc_115307.png "截图.png")
 
 #### 项目介绍
 跨平台的Redis桌面管理工具

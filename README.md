@@ -8,11 +8,12 @@
 #### 软件架构
 基于 AngularJS + Electron 开发
 
-#### Windows版本直接下载
+#### 可执行程序下载
 
-[百度网盘](https://pan.baidu.com/s/167L82TaRKsOtHAzjaSA6iQ)
+[Windows版本（64位）](https://pan.baidu.com/s/167L82TaRKsOtHAzjaSA6iQ)
+[Mac 版本][https://pan.baidu.com/s/1lbEdIFcdDRUjDm2KIwfwNA]
 
-其他版本后面会陆续提供
+**打包在近期会比较频繁，因为会不断的尝试修改一些细节**
 
 #### 安装教程
 

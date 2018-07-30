@@ -12,10 +12,7 @@
 		"Redis"
 	],
 	"dependencies": {
-		"co": "^4.6.0",
-		"co-redis": "^2.1.1",
 		"highcharts": "^6.1.1",
-		"moment": "^2.22.2",
 		"redis": "^2.8.0"
 	}
 }

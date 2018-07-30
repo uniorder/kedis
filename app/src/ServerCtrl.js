@@ -14,7 +14,9 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 	//从LocalStorage中初始化服务器列表
 	$scope.serverList = local.getObject("SERVER_LIST");
 
+    // 清理并向下兼容
 	if ($scope.serverList) {
+        let tmp = [];
 		let needFix = false;
 		for (let i = 0; i < $scope.serverList.length; i++) {
 			let obj = $scope.serverList[i];
@@ -23,10 +25,11 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
                 obj.auth = obj.password;
                 delete obj.password;
                 $scope.serverList[i] = obj;
-			}
+            }
+            tmp.push($scope.serverList[i]);
         }
         if (needFix) {
-            local.setObject("SERVER_LIST", $scope.serverList);
+            local.setObject("SERVER_LIST", tmp);
         }
 	}
 

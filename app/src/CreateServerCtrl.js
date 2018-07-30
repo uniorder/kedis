@@ -50,5 +50,9 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron)
 			$scope.isTesting = false;
 			$scope.$apply();
 		});
+    }
+    
+    $scope.close = function () {
+		remote.getCurrentWindow().close();
 	}
 });

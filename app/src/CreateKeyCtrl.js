@@ -162,6 +162,7 @@ app.controller("CreateKeyCtrl", function ($scope, local, redisConn, electron) {
 		});
 	}
 
+
 	function clear() {
 		if ($scope.key.expire) {
 			redis.expire($scope.key.name, $scope.key.expire, function () {
@@ -172,5 +173,9 @@ app.controller("CreateKeyCtrl", function ($scope, local, redisConn, electron) {
 			ipc.send("keyCreated", "SUCCESS");
 			remote.getCurrentWindow().close();
 		}
+	}
+
+	$scope.close = function () {
+		remote.getCurrentWindow().close();
 	}
 });

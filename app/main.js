@@ -63,7 +63,7 @@ function createWindow() {
 			}
 		}, {
 			label: "删除链接",
-			accelerator: 'Delete',
+			accelerator: 'Ctrl+Delete',
 			click() {
 				win.webContents.send('electron-msg', "deleteSelectedServer");
 			}
@@ -90,7 +90,7 @@ function createWindow() {
 			}
 		}, {
 			label: "新建ZSET",
-			accelerator: 'CmdOrCtrl+Shift+Z',
+			accelerator: 'CmdOrCtrl+Shift+T',
 			click() {
 				win.webContents.send('electron-msg', "showCreateZsetWin");
 			}
@@ -166,7 +166,7 @@ function createWindow() {
 		submenu: [{
 			label: '了解更多',
 			click() {
-				require('electron').shell.openExternal('https://github.com/uniorder/kedis')
+				require('electron').shell.openExternal('https://gitee.com/hbase_admin/Kedis')
 			}
 		}]
 	}]
@@ -198,27 +198,33 @@ function createWindow() {
 		});
 
 		// Edit menu
-		template[1].submenu.push({
+		template[3].submenu.push({
 			type: 'separator'
 		}, {
 			label: 'Speech',
 			submenu: [{
+				label: '开始听写',
 				role: 'startspeaking'
 			}, {
+				label: '结束听写',
 				role: 'stopspeaking'
 			}]
 		});
 
 		// Window menu
-		template[3].submenu = [{
+		template[5].submenu = [{
+			label: '关闭',
 			role: 'close'
 		}, {
+			label: '最小化',
 			role: 'minimize'
 		}, {
+			label: '放大',
 			role: 'zoom'
 		}, {
 			type: 'separator'
 		}, {
+			label: '放置到前端',
 			role: 'front'
 		}]
 	}

@@ -31,8 +31,14 @@ app.controller("UpdateServerCtrl", function ($scope, local, redisConn, electron)
 		if (serverList) {
 			for (var i = 0; i < serverList.length; i++) {
 				if (serverList[i].id == $scope.server.id) {
-					serverList[i] = $scope.server;
-					delete serverList[i].selected;
+
+					serverList[i] = {
+						name: $scope.server.name,
+						host: $scope.server.host,
+						port: $scope.server.port,
+						auth: $scope.server.auth,
+						pattern: $scope.server.pattern
+					};
 					local.setObject("SERVER_LIST", serverList);
 					ipc.send("serverUpdated", "SUCCESS");
 					let win = remote.getCurrentWindow();
@@ -59,5 +65,9 @@ app.controller("UpdateServerCtrl", function ($scope, local, redisConn, electron)
 			$scope.isTesting = false;
 			$scope.$apply();
 		});
+    }
+    
+    $scope.close = function () {
+		remote.getCurrentWindow().close();
 	}
 });

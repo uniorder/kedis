@@ -11,7 +11,7 @@
 #### 可执行程序下载
 
 [Windows版本（64位）](https://pan.baidu.com/s/167L82TaRKsOtHAzjaSA6iQ)
-[Mac 版本][https://pan.baidu.com/s/1lbEdIFcdDRUjDm2KIwfwNA]
+[Mac 版本](https://pan.baidu.com/s/1lbEdIFcdDRUjDm2KIwfwNA)
 
 **打包在近期会比较频繁，因为会不断的尝试修改一些细节**
 

@@ -68,6 +68,7 @@
 .input-group-prepend,
 .input-group-append {
   display: flex;
+  user-select: none;
 
   // Ensure buttons are always above inputs for more visually pleasing borders.
   // This isn't needed for `.input-group-text` since it shares the same border-color

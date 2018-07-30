@@ -110,22 +110,27 @@ html {
 }
 
 .badge-string {
+	user-select: none;
 	@include badge-variant($brand-lastfm);
 }
 
 .badge-hash {
+	user-select: none;
 	@include badge-variant($brand-linkedin);
 }
 
 .badge-set {
+	user-select: none;
 	@include badge-variant($brand-swamp);
 }
 
 .badge-zset {
+	user-select: none;
 	@include badge-variant($brand-medium);
 }
 
 .badge-list {
+	user-select: none;
 	@include badge-variant($brand-eminence);
 }
 
@@ -165,7 +170,31 @@ td {
 	text-overflow: ellipsis !important;
 }
 
-
 .text-blue {
-    color:$brand-facebook;
+	color: $brand-facebook;
+}
+
+input::-webkit-input-placeholder {
+	user-select: none;
+	text-align: center;
+}
+
+input:-moz-placeholder {
+	user-select: none;
+	text-align: center;
+}
+
+input:-ms-placeholder {
+	user-select: none;
+	text-align: center;
+}
+
+input:-o-placeholder {
+	user-select: none;
+	text-align: center;
+}
+
+input:placeholder {
+	user-select: none;
+	text-align: center;
 }

@@ -17,8 +17,15 @@
 	<script type="text/javascript" src="./src/HashValueCtrl.js"></script>
 	<script type="text/javascript" src="./src/ListValueCtrl.js"></script>
 	<script type="text/javascript" src="./src/SetValueCtrl.js"></script>
-    <script type="text/javascript" src="./src/ZsetValueCtrl.js"></script>
-    <script type="text/javascript" src="./src/DefaultCtrl.js"></script>
+	<script type="text/javascript" src="./src/ZsetValueCtrl.js"></script>
+	<script type="text/javascript" src="./src/DefaultCtrl.js"></script>
+	<style>
+		::selection {
+			background: rgba(255, 255, 125, 0.99);
+			color: #032764;
+		}
+
+	</style>
 </head>
 
 <body>
@@ -47,7 +54,7 @@
 					</div>
 				</div>
 				<!-- 服務器狀態列表 -->
-				<div id="inputChart" class="panel top-line" style="height: calc(20% - 1px);"></div>
+				<div id="inputChart" class="panel top-line" style="height: calc(20% - 1px); user-select: none;"></div>
 			</div>
 			<div class="col-sm-4 main-m">
 				<div class="panel" ng-controller="KeyCtrl" style="height: 100%;">
@@ -66,7 +73,7 @@
 							<div class="container-fluid no-padding">
 								<div class="row no-gutters redis-databse">
 									<div class="col-sm" ng-repeat="item in databases">
-										<button type="button" ng-click="showKeys(item)" ng-class="{'btn-danger': item.selected,'btn-secondary':!item.selected}" class="btn btn-sm">{{item.index}}</button>
+										<button type="button" ng-click="showKeys(item)" ng-class="{'btn-danger': item.selected,'btn-secondary':!item.selected}" class="btn">{{item.index}}</button>
 									</div>
 								</div>
 							</div>

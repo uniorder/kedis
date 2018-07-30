@@ -9,9 +9,8 @@
 基于 AngularJS + Electron 开发
 
 #### 可执行程序下载
-
-[Windows版本（64位）](https://pan.baidu.com/s/167L82TaRKsOtHAzjaSA6iQ)
-[Mac 版本](https://pan.baidu.com/s/1lbEdIFcdDRUjDm2KIwfwNA)
+- [Windows版本（64位）](https://pan.baidu.com/s/167L82TaRKsOtHAzjaSA6iQ)更新于2018-07-29
+- [Mac 版本](https://pan.baidu.com/s/1gYh25n9CML2-EBICUOReyw) 更新于2018-07-30
 
 **打包在近期会比较频繁，因为会不断的尝试修改一些细节**
 

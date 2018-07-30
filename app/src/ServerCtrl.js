@@ -6,13 +6,29 @@
  * @author Kehaw
  * @version 2.0.0
  */
-app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, local, redisConn) {
+app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, local, redisConn, electron) {
 
 	let win = remote.getCurrentWindow();
 
 	let redis, interval;
 	//从LocalStorage中初始化服务器列表
 	$scope.serverList = local.getObject("SERVER_LIST");
+
+	if ($scope.serverList) {
+		let needFix = false;
+		for (let i = 0; i < $scope.serverList.length; i++) {
+			let obj = $scope.serverList[i];
+			if (obj['password']) {
+                needFix = true;
+                obj.auth = obj.password;
+                delete obj.password;
+                $scope.serverList[i] = obj;
+			}
+        }
+        if (needFix) {
+            local.setObject("SERVER_LIST", $scope.serverList);
+        }
+	}
 
 	if (!$scope.serverList) {
 		$scope.serverList = [];
@@ -92,8 +108,8 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 	$scope.serverClick = function (server) {
 		if (server.id === $scope.selectedServer) {
 			return;
-        }
-        $scope.$emit('clearAllKeys');
+		}
+		$scope.$emit('clearAllKeys');
 		if (interval) {
 			$interval.cancel(interval);
 		}

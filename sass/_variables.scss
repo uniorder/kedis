@@ -3,6 +3,23 @@
 // Variables should follow the `$component-state-property-size` formula for
 // consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
 
+//** Text muted brand
+$text-muted: #525252;
+//** Horizontal line brand.
+$hr-border: #383838;
+//## Gray and brand brands for use across Bootstrap.
+$gray-darken: #212121;
+$gray-base: #000;
+$gray-darker: #262626;
+$gray-dark: #2d2d2d;
+$gray: #383838;
+$gray-light: #444444;
+$gray-lighter: #5c5c5c;
+
+$gray-rangoon: #1A1A1A;
+
+$brand-white: white;
+
 $brand-primary: #2c97de;
 $brand-success: #84b547;
 $brand-info: #2dbda8;
@@ -115,12 +132,12 @@ $theme-colors: () !default;
 // stylelint-disable-next-line scss/dollar-variable-default
 $theme-colors: map-merge(
   (
-    "primary":    $primary,
+    "primary":    $brand-primary,
     "secondary":  $secondary,
-    "success":    $success,
-    "info":       $info,
-    "warning":    $warning,
-    "danger":     $danger,
+    "success":    $brand-success,
+    "info":       $brand-info,
+    "warning":    $brand-warning,
+    "danger":     $brand-danger,
     "light":      $light,
     "dark":       $dark
   ),
@@ -190,8 +207,8 @@ $sizes: map-merge(
 //
 // Settings for the `<body>` element.
 
-$body-bg:                   $white !default;
-$body-color:                $gray-900 !default;
+$body-bg:                   #333333;//$white !default;
+$body-color:                #cdcdcd !default;
 
 // Links
 //
@@ -267,7 +284,7 @@ $box-shadow:                  0 .5rem 1rem rgba($black, .15) !default;
 $box-shadow-lg:               0 1rem 3rem rgba($black, .175) !default;
 
 $component-active-color:      $white !default;
-$component-active-bg:         theme-color("primary") !default;
+$component-active-bg:         theme-color("dark") !default;
 
 $caret-width:                 .3em !default;
 
@@ -362,7 +379,7 @@ $table-hover-bg:              rgba($black, .075) !default;
 $table-active-bg:             $table-hover-bg !default;
 
 $table-border-width:          $border-width !default;
-$table-border-color:          $gray-300 !default;
+$table-border-color:          $gray-lighter !default;
 
 $table-head-bg:               $gray-200 !default;
 $table-head-color:            $gray-700 !default;
@@ -461,11 +478,11 @@ $input-padding-y-lg:                    $input-btn-padding-y-lg !default;
 $input-padding-x-lg:                    $input-btn-padding-x-lg !default;
 $input-line-height-lg:                  $input-btn-line-height-lg !default;
 
-$input-bg:                              $white !default;
-$input-disabled-bg:                     $gray-200 !default;
+$input-bg:                              $gray-light !default;
+$input-disabled-bg:                     $gray !default;
 
-$input-color:                           $gray-700 !default;
-$input-border-color:                    $gray-400 !default;
+$input-color:                           #cdcdcd !default;
+$input-border-color:                    $gray-darker !default;
 $input-border-width:                    $input-btn-border-width !default;
 $input-box-shadow:                      inset 0 1px 1px rgba($black, .075) !default;
 
@@ -507,7 +524,7 @@ $form-check-inline-input-margin-x:      .3125rem !default;
 $form-group-margin-bottom:              1rem !default;
 
 $input-group-addon-color:               $input-color !default;
-$input-group-addon-bg:                  $gray-200 !default;
+$input-group-addon-bg:                  $gray-darker !default;
 $input-group-addon-border-color:        $input-border-color !default;
 
 $custom-forms-transition:               background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !default;

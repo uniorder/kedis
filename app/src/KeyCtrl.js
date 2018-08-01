@@ -158,7 +158,9 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 			redis.keys($scope.keyParttern + "*", function (err, keys) {
 				if (err) {
 					return;
-				}
+                }
+                
+                $scope.$emit("keyCount",keys.length);
 
 				for (let i = 0; i < keys.length; i++) {
 

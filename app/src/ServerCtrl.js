@@ -189,6 +189,8 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 					}
 				}
 
+				$scope.$emit("serverInfo", $scope.server.info);
+
 				chart.series[0].addPoint($scope.server.info.Stats.instantaneous_input_kbps * 1, true, true);
 				chart.series[1].addPoint($scope.server.info.Stats.instantaneous_output_kbps * 1, true, true);
 			});
@@ -302,7 +304,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 			createServerWin = null
 		});
 		createServerWin.setMenuBarVisibility(false);
-		createServerWin.webContents.openDevTools();
+		// createServerWin.webContents.openDevTools();
 		createServerWin.loadFile('create-server.html');
 		createServerWin.once('ready-to-show', () => {
 			createServerWin.show()

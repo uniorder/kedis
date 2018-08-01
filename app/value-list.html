@@ -1,39 +1,40 @@
-<form ng-controller="ListValueCtrl" style="height:100%;">
-	<div class="form-group">
-		<div class="input-group">
-			<input type="text" class="form-control" ng-model="keyName">
-			<div class="input-group-append">
-				<button class="btn btn-outline-primary" type="button" ng-click="updateName()">修改名称</button>
-			</div>
-			<input type="text" ng-model="ttl" class="form-control">
-			<div class="input-group-append">
-				<button class="btn btn-outline-primary" type="button" ng-click="updateTTL()">更新过期时间</button>
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
-		<div class="input-group">
-			<input type="text" class="form-control" ng-model="selectedItem.data" ng-disabled="updateDisabled">
-			<div class="input-group-append">
-				<button class="btn btn-outline-primary" type="button" ng-disabled="updateDisabled" ng-click="updateItem()">修改值</button>
+<div ng-controller="ListValueCtrl" style="height:100%;">
+	<form style="padding: 10px;">
+		<div class="form-group">
+			<div class="input-group">
+				<input type="text" class="form-control" ng-model="keyName">
+				<div class="input-group-append">
+					<button class="btn btn-primary" type="button" ng-click="updateName()">修改名称</button>
+				</div>
+				<input type="text" ng-model="ttl" class="form-control">
+				<div class="input-group-append">
+					<button class="btn btn-primary" type="button" ng-click="updateTTL()">更新过期时间</button>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="form-group">
-		<div class="input-group">
-			<input type="text" class="form-control" ng-model="newItemData">
-			<div class="input-group-append">
-				<button class="btn btn-outline-primary" type="button" ng-click="newItemL()">从左新增值</button>
-			</div>
-			<div class="input-group-append">
-				<button class="btn btn-outline-primary" type="button" ng-click="newItemR()">从右新增值</button>
+		<div class="form-group">
+			<div class="input-group">
+				<input type="text" class="form-control" ng-model="selectedItem.data" ng-disabled="updateDisabled">
+				<div class="input-group-append">
+					<button class="btn btn-primary" type="button" ng-disabled="updateDisabled" ng-click="updateItem()">修改值</button>
+				</div>
 			</div>
 		</div>
-	</div>
-	<ul uib-pagination total-items="totalCount" ng-change="loadPage()" ng-model="currentPage" max-size="10" items-per-page="100"
-	    next-text="下一页" previous-text="上一页" class="pagination" boundary-link-numbers="true"></ul>
-	<div style="height: calc(100% - 205px);  overflow: auto;">
-		<table class="table table-hover table-bordered table-sm">
+		<div class="form-group">
+			<div class="input-group">
+				<input type="text" class="form-control" ng-model="newItemData">
+				<div class="input-group-append">
+					<button class="btn btn-primary" type="button" ng-click="newItemL()">从左新增值</button>
+				</div>
+				<div class="input-group-append">
+					<button class="btn btn-info" type="button" ng-click="newItemR()">从右新增值</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<div style="height: calc(100% - 195px);  overflow: auto;" class="top-line bottom-line">
+		<table class="table table-hover table-bordered table-sm table-noborder">
 			<thead>
 				<tr>
 					<th>下标</th>
@@ -52,4 +53,8 @@
 			</tbody>
 		</table>
 	</div>
-</form>
+	<div style="padding: 10px;">
+		<ul uib-pagination total-items="totalCount" ng-change="loadPage()" ng-model="currentPage" max-size="10" items-per-page="100"
+		    next-text="下一页" previous-text="上一页" class="pagination-sm" boundary-link-numbers="true"></ul>
+	</div>
+</div>

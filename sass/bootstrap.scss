@@ -49,21 +49,21 @@ html {
 }
 
 .main-l {
-	border-right: 1px solid $gray-500;
+	border-right: 1px solid $gray-light;
 	height: 100%;
 }
 
 .main-m {
-	border-right: 1px solid $gray-500;
+	border-right: 1px solid $gray-light;
 	height: 100%;
 }
 
 .bottom-line {
-	border-bottom: 1px solid $gray-500;
+	border-bottom: 1px solid $gray-light;
 }
 
 .top-line {
-	border-top: 1px solid $gray-500;
+	border-top: 1px solid $gray-light;
 }
 
 .no-padding {
@@ -89,7 +89,7 @@ html {
 .list {
 	.list-item {
 		padding: 7px;
-		border-bottom: 1px solid $gray-400;
+		border-bottom: 1px solid $gray-light;
 		cursor: pointer;
 		&:hover {
 			background-color: $brand-facebook;
@@ -164,6 +164,24 @@ table {
 	table-layout: fixed;
 }
 
+.table-noborder {
+	td:first-child {
+		border-left: none !important;
+	}
+	td:last-child {
+		border-right: none !important;
+	}
+	th:first-child {
+		border-left: none !important;
+	}
+	th:last-child {
+		border-right: none !important;
+	}
+	th {
+		border-top: none;
+	}
+}
+
 td {
 	white-space: nowrap !important;
 	overflow: hidden !important;
@@ -209,6 +227,13 @@ input:placeholder {
 }
 
 ::selection {
-    background: rgba(255, 255, 125, 0.99);
-    color: #032764;
+	background: rgba(255, 255, 125, 0.99);
+	color: #032764;
+}
+
+.bottom-bar {
+    height: 21px;
+    background-color: $brand-curious-blue;
+    font-size: 12px;
+    color: #ffffff;
 }

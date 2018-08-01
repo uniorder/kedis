@@ -400,32 +400,71 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		menu.popup({
 			window: remote.getCurrentWindow()
 		});
-    }
-    
+	}
 
-    // var clusterTestData = {
-	// 	"name": "我的服务器",
-    //     "isCluster":true,
-    //     "ssh": {
-    //         "host": "118.25.39.115",
-    //         "username": "root",
-    //         "password": "gehao!@#456",
-    //         "port": 22
-    //     },
-	// 	"clusters":[{
-    //         "host": "172.17.16.3",
-    //         "port": 7000
-    //     },{
-    //         "host": "172.17.16.3",
-    //         "port": 7001
-    //     },{
-    //         "host": "172.17.16.3",
-    //         "port": 7002
-    //     }],
-	// 	"pattern": "",
-	// 	"connectTimeout": 2000,
-	// 	"selected": false
-    // };
-    
-    // $scope.serverClick(clusterTestData);
+
+
+
+	function test() {
+		var server = {
+			"ssh": {
+				"host": "118.25.39.115",
+				"username": "root",
+				"password": "gehao!@#456",
+				"port": 22
+			},
+			"name": "集群测试",
+			"host": "172.17.16.3",
+			"port": "7000",
+			"connectTimeout": 2000,
+			"id": 1533138786434
+		}
+		sshConn = new Client();
+		sshConn.on('ready', () => {
+			const sshServer = net.createServer(function (sock) {
+				sshConn.forwardOut(sock.remoteAddress, sock.remotePort, server.host, server.port, (err, stream) => {
+					if (err) {
+						sock.end();
+					} else {
+						sock.pipe(stream).pipe(sock)
+					}
+				});
+			}).listen(0, function () {
+				redis = redisConn.createConn(server, {
+					host: '127.0.0.1',
+					port: sshServer.address().port
+				});
+				redis.on("error", function (err) {
+					console.log(err);
+					// redis.end(true);
+                });
+                redis.cluster("nodes",(e,d)=>{
+                    //TODO 获取所有节点，并且遍历后将所有的key合并在一起
+                })
+			});
+		}).on('error', err => {
+			alert(`SSH错误: ${err.message}`);
+		})
+
+		try {
+			const connectionConfig = {
+				host: server.ssh.host,
+				port: server.ssh.port || 22,
+				username: server.ssh.username,
+				readyTimeout: 2000
+			}
+			if (server.ssh.key) {
+				sshConn.connect(Object.assign(connectionConfig, {
+					privateKey: server.ssh.key,
+					passphrase: server.ssh.passphrase
+				}))
+			} else {
+				sshConn.connect(Object.assign(connectionConfig, {
+					password: server.ssh.password
+				}))
+			}
+		} catch (err) {
+			alert(`SSH错误: ${err.message}`);
+		}
+	};
 });

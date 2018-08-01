@@ -1,6 +1,6 @@
 # Kedis
 
-![Kedis](https://images.gitee.com/uploads/images/2018/0730/162630_d407f030_115307.png "屏幕快照 2018-07-30 下午4.22.32.png")
+![Kedis](https://images.gitee.com/uploads/images/2018/0801/162246_f70f2189_115307.png "Kedis")
 
 #### 项目介绍
 跨平台的Redis桌面管理工具，最新版已经支持SSH！
@@ -20,7 +20,7 @@ Package默认提供了Mac、Linux和Windows的编译指令，大家可以根据�
 ```
 npm run packageWin64
 npm run packageWin32
-npm run packageDarwin -- Mac OS
+npm run packageDarwin
 npm run packageLinux64
 npm run packageLinux32
 ```

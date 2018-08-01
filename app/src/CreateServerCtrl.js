@@ -8,8 +8,8 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 	$scope.isTesting = false;
 	$scope.testText = "测试";
 
-    $scope.showSSH = false;
-    $scope.sshKey = false;
+	$scope.showSSH = false;
+	$scope.sshKey = false;
 
 	let sshConn;
 	let redis;
@@ -53,6 +53,8 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 		$scope.server.id = new Date().getTime();
 		if (!$scope.showSSH) {
 			delete $scope.server.ssh;
+		} else {
+			delete $scope.server.ssh.$$hashKey;
 		}
 		if (!$scope.sshKey && $scope.showSSH) {
 			delete $scope.server.ssh.privateKey;
@@ -61,6 +63,8 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 		if (sshConn) {
 			sshConn.end();
 		}
+
+		delete $scope.server.$$hashKey;
 
 		serverList.push($scope.server);
 		local.setObject("SERVER_LIST", serverList);

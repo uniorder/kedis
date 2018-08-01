@@ -224,6 +224,8 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		}
 	});
 
+
+
 	/**
 	 * 列表点击事件
 	 * @param {*} server 选中的服务器对象
@@ -237,22 +239,35 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 			sshConn = new Client();
 			sshConn.on('ready', () => {
 				const sshServer = net.createServer(function (sock) {
-					sshConn.forwardOut(sock.remoteAddress, sock.remotePort, server.host, server.port, (err, stream) => {
-						if (err) {
-							//TODO 这里的Timeout不知道在哪里设置
-							sock.end();
-						} else {
-							sock.pipe(stream).pipe(sock)
+					if (server.isCluster) {
+						for (let i = 0; i < server.clusters.length; i++) {
+							let cluster = server.clusters[i];
+							sshConn.forwardOut(sock.remoteAddress, sock.remotePort, cluster.host, cluster.port, (err, stream) => {
+								if (err) {
+									sock.end();
+								} else {
+									sock.pipe(stream).pipe(sock)
+								}
+							});
 						}
-					});
+					} else {
+						sshConn.forwardOut(sock.remoteAddress, sock.remotePort, server.host, server.port, (err, stream) => {
+							if (err) {
+								sock.end();
+							} else {
+								sock.pipe(stream).pipe(sock)
+							}
+						});
+					}
+
 				}).listen(0, function () {
 					redis = redisConn.createConn(server, {
 						host: '127.0.0.1',
 						port: sshServer.address().port
 					});
 					redis.on("error", function (err) {
-						electron.dialog.showErrorBox("错误", err.message);
-						redis.end(true);
+						console.log(err);
+						// redis.end(true);
 					});
 					serverClick(server);
 				})
@@ -385,5 +400,32 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		menu.popup({
 			window: remote.getCurrentWindow()
 		});
-	}
+    }
+    
+
+    // var clusterTestData = {
+	// 	"name": "我的服务器",
+    //     "isCluster":true,
+    //     "ssh": {
+    //         "host": "118.25.39.115",
+    //         "username": "root",
+    //         "password": "gehao!@#456",
+    //         "port": 22
+    //     },
+	// 	"clusters":[{
+    //         "host": "172.17.16.3",
+    //         "port": 7000
+    //     },{
+    //         "host": "172.17.16.3",
+    //         "port": 7001
+    //     },{
+    //         "host": "172.17.16.3",
+    //         "port": 7002
+    //     }],
+	// 	"pattern": "",
+	// 	"connectTimeout": 2000,
+	// 	"selected": false
+    // };
+    
+    // $scope.serverClick(clusterTestData);
 });

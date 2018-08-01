@@ -1,5 +1,5 @@
 # kedis
-由于GitHub实在太卡，整个项目迁移到Gitee上了，新项目地址为：https://gitee.com/hbase_admin/Kedis 这是全新的重构版本，修复了一些BUG，提升了性能。
+由于GitHub实在太卡，整个项目迁移到Gitee上了，新项目地址为：https://gitee.com/kehaw9818/Kedis 这是全新的重构版本，修复了一些BUG，提升了性能。
 GitHub仓库我将会在网络条件好的情况下重新发布。
 ## 编译
 Clone项目之后，首先在本地安装Node.JS，安装成功后，分别在kedis和app目录下执行npm install，**重点注意一下，cnpm的install方式与npm并不一致，会导致可以运行，但是无法打包，请谨慎使用**，等待完成之后，在kedis目录下运行命令：  

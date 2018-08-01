@@ -207,3 +207,8 @@ input:placeholder {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+
+::selection {
+    background: rgba(255, 255, 125, 0.99);
+    color: #032764;
+}

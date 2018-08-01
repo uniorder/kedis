@@ -3,7 +3,7 @@
 ![Kedis](https://images.gitee.com/uploads/images/2018/0730/162630_d407f030_115307.png "屏幕快照 2018-07-30 下午4.22.32.png")
 
 #### 项目介绍
-跨平台的Redis桌面管理工具
+跨平台的Redis桌面管理工具，最新版已经支持SSH！
 
 #### 软件架构
 基于 AngularJS + Electron 开发

@@ -14,20 +14,20 @@
 
 **打包在近期会比较频繁，因为会不断的尝试修改一些细节**
 
-#### 安装教程
+#### 打包教程
 
 Package默认提供了Mac、Linux和Windows的编译指令，大家可以根据自己的需要来编译，分别在kedis目录下执行：  
 ```
-npm run-script packageWin64
-npm run-script packageWin32
-npm run-script packageDarwin
-npm run-script packageLinux64
-npm run-script packageLinux32
+npm run packageWin64
+npm run packageWin32
+npm run packageDarwin -- Mac OS
+npm run packageLinux64
+npm run packageLinux32
 ```
 
 #### 使用说明
 
-Clone项目之后，首先在本地安装Node.JS，安装成功后，分别在kedis和app目录下执行npm install，**重点注意一下，cnpm的install方式与npm并不一致，会导致可以运行，但是无法打包，请谨慎使用**，等待完成之后，在kedis目录下运行命令：  
+Clone项目之后，首先在本地安装Node.JS，安装成功后，分别在kedis根目录和kedis/app目录下执行npm install，**重点注意一下，cnpm的install方式与npm并不一致，会导致可以运行，但是无法打包，请谨慎使用**，等待完成之后，在kedis目录下运行命令：  
 ```
 electron ./app
 ```

@@ -125,12 +125,12 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 					index: i
 				});
 			}
-			$scope.databases[0].selected = true;
-			showKeys($scope.databases[0], true)
+			// $scope.databases[0].selected = true;
+			// showKeys($scope.databases[0], true);
 			$scope.$apply();
 
 
-			
+
 		});
 	});
 
@@ -155,7 +155,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 			if (err) {
 				return;
 			}
-			redis.keys("*", function (err, keys) {
+			redis.keys($scope.keyParttern + "*", function (err, keys) {
 				if (err) {
 					return;
 				}
@@ -246,12 +246,13 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 	 * Key筛选事件
 	 */
 	$scope.filterKey = function () {
-		for (let i = 0; i < $scope.keys.length; i++) {
-			if ($scope.keys[i].name.toLowerCase().indexOf($scope.keyParttern.toLowerCase()) !== -1) {
-				$scope.keys[i].hide = false;
-			} else {
-				$scope.keys[i].hide = true;
-			}
-		}
+		// for (let i = 0; i < $scope.keys.length; i++) {
+		// 	if ($scope.keys[i].name.toLowerCase().indexOf($scope.keyParttern.toLowerCase()) !== -1) {
+		// 		$scope.keys[i].hide = false;
+		// 	} else {
+		// 		$scope.keys[i].hide = true;
+		// 	}
+		// }
+		showKeys($scope.selectedDatabase);
 	}
 });

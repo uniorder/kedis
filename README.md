@@ -20,7 +20,7 @@ Package默认提供了Mac、Linux和Windows的编译指令，大家可以根据�
 ```
 npm run packageWin64
 npm run packageWin32
-npm run packageDarwin -- Mac OS
+npm run packageDarwin
 npm run packageLinux64
 npm run packageLinux32
 ```

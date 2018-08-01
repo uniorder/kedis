@@ -37,10 +37,10 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git@gitee.com:hbase_admin/Kedis.git"
+		"url": "git@gitee.com:kehaw9818/Kedis.git"
 	},
 	"bugs": {
-		"url": "https://gitee.com/hbase_admin/Kedis/issues"
+		"url": "https://gitee.com/kehaw9818/Kedis/issues"
 	},
 	"homepage": "http://www.kehaw.com"
 }

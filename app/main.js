@@ -67,6 +67,50 @@ function createWindow() {
 			click() {
 				win.webContents.send('electron-msg', "deleteSelectedServer");
 			}
+		}, {
+			label: "导出",
+			click() {
+				let exportWin = new BrowserWindow({
+					parent: win,
+					width: 400,
+					resizable: false,
+					minimizable: false,
+					maximizable: false,
+					fullscreenable: false,
+					modal: true,
+					show: false
+				});
+				exportWin.on('closed', () => {
+					createServerWin = null;
+				});
+				exportWin.setMenuBarVisibility(false);
+				exportWin.loadFile('export.html');
+				exportWin.once('ready-to-show', () => {
+					exportWin.show();
+				});
+			}
+		}, {
+			label: "导入",
+			click() {
+				let importWin = new BrowserWindow({
+					parent: win,
+					width: 400,
+					resizable: false,
+					minimizable: false,
+					maximizable: false,
+					fullscreenable: false,
+					modal: true,
+					show: false
+				});
+				importWin.on('closed', () => {
+					createServerWin = null;
+				});
+				importWin.setMenuBarVisibility(false);
+				importWin.loadFile('import.html');
+				importWin.once('ready-to-show', () => {
+					importWin.show();
+				});
+			}
 		}]
 	}, {
 		label: '键',

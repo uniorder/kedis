@@ -61,5 +61,13 @@ app.controller("StringValueCtrl", function ($scope, $stateParams, $state, redisC
      */
 	$scope.updateTTL = function () {
 		redis.expire(oldKeyName, $scope.ttl);
-	}
+    }
+    
+    $scope.format = function() {
+        try {
+            $scope.data = JSON.stringify(JSON.parse($scope.data), null, 4);
+        } catch (e) {
+            alert(e);
+        }
+    }
 });

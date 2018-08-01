@@ -14,7 +14,7 @@ app.controller("CreateKeyCtrl", function ($scope, local, redisConn, electron) {
 	 * 保存Key
 	 */
 	$scope.save = function () {
-		redis = redisConn.createConn($scope.server, true);
+		redis = redisConn.createConn($scope.server);
 
 		redis.select($scope.server.selectedDatabase.index, function (err) {
 			if (err) {

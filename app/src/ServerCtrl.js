@@ -10,27 +10,27 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 
 	let win = remote.getCurrentWindow();
 
-	let redis, interval;
+	let redis, interval, sshConn;
 	//从LocalStorage中初始化服务器列表
 	$scope.serverList = local.getObject("SERVER_LIST");
 
-    // 清理并向下兼容
+	// 清理并向下兼容
 	if ($scope.serverList) {
-        let tmp = [];
+		let tmp = [];
 		let needFix = false;
 		for (let i = 0; i < $scope.serverList.length; i++) {
 			let obj = $scope.serverList[i];
 			if (obj['password']) {
-                needFix = true;
-                obj.auth = obj.password;
-                delete obj.password;
-                $scope.serverList[i] = obj;
-            }
-            tmp.push($scope.serverList[i]);
-        }
-        if (needFix) {
-            local.setObject("SERVER_LIST", tmp);
-        }
+				needFix = true;
+				obj.auth = obj.password;
+				delete obj.password;
+				$scope.serverList[i] = obj;
+			}
+			tmp.push($scope.serverList[i]);
+		}
+		if (needFix) {
+			local.setObject("SERVER_LIST", tmp);
+		}
 	}
 
 	if (!$scope.serverList) {
@@ -78,40 +78,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		$scope.$apply();
 	}
 
-	/**
-	 * 当收到新建链接成功的时候，刷新列表。
-	 * @param msg 事件类型（electron桥接将事件类型包含在了msg中）
-	 */
-	$rootScope.$on('electron-msg', (event, msg) => {
-		if (msg === "serverCreated" || msg === "serverUpdated") {
-			refreshServerList();
-		}
-
-		if (msg === "createServer") {
-			createSeerver();
-		}
-
-		if (msg === "deleteSelectedServer") {
-			if ($scope.selectedServer) {
-				deleteServer($scope.selectedServer);
-			}
-		}
-
-		if (msg === "editSelectedServer") {
-			if ($scope.selectedServer) {
-				editServer($scope.selectedServer);
-			}
-		}
-	});
-
-	/**
-	 * 列表点击事件
-	 * @param {*} server 选中的服务器对象
-	 */
-	$scope.serverClick = function (server) {
-		if (server.id === $scope.selectedServer) {
-			return;
-		}
+	let serverClick = function (server) {
 		$scope.$emit('clearAllKeys');
 		if (interval) {
 			$interval.cancel(interval);
@@ -121,15 +88,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 			$scope.serverList[i].selected = false;
 		}
 		$scope.selectedServer = server;
-		let oldConn = redisConn.getConn();
-		if (oldConn) {
-			oldConn.end(true);
-		}
-		redis = redisConn.createConn(server);
-		redis.on("error", function (err) {
-			electron.dialog.showErrorBox("错误", err.message);
-			redis.end(true);
-		});
+
 		server.selected = true;
 		$scope.$emit('serverChanged', server);
 
@@ -238,13 +197,100 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 	}
 
 	/**
+	 * 当收到新建链接成功的时候，刷新列表。
+	 * @param msg 事件类型（electron桥接将事件类型包含在了msg中）
+	 */
+	$rootScope.$on('electron-msg', (event, msg) => {
+		if (msg === "serverCreated" || msg === "serverUpdated") {
+			refreshServerList();
+		}
+
+		if (msg === "createServer") {
+			createSeerver();
+		}
+
+		if (msg === "deleteSelectedServer") {
+			if ($scope.selectedServer) {
+				deleteServer($scope.selectedServer);
+			}
+		}
+
+		if (msg === "editSelectedServer") {
+			if ($scope.selectedServer) {
+				editServer($scope.selectedServer);
+			}
+		}
+	});
+
+	/**
+	 * 列表点击事件
+	 * @param {*} server 选中的服务器对象
+	 */
+	$scope.serverClick = function (server) {
+		if (server.id === $scope.selectedServer) {
+			return;
+		}
+
+		if (server.ssh) {
+			sshConn = new Client();
+			sshConn.on('ready', () => {
+				const sshServer = net.createServer(function (sock) {
+					sshConn.forwardOut(sock.remoteAddress, sock.remotePort, server.host, server.port, (err, stream) => {
+						if (err) {
+							//TODO 这里的Timeout不知道在哪里设置
+							sock.end();
+						} else {
+							sock.pipe(stream).pipe(sock)
+						}
+					});
+				}).listen(0, function () {
+					redis = redisConn.createConn(server, {
+						host: '127.0.0.1',
+						port: sshServer.address().port
+					});
+					redis.on("error", function (err) {
+						electron.dialog.showErrorBox("错误", err.message);
+						redis.end(true);
+					});
+					serverClick(server);
+				})
+			}).on('error', err => {
+				alert(`SSH错误: ${err.message}`);
+			})
+
+			try {
+				const connectionConfig = {
+					host: server.ssh.host,
+					port: server.ssh.port || 22,
+					username: server.ssh.username,
+					readyTimeout: 2000
+				}
+				if (server.ssh.key) {
+					sshConn.connect(Object.assign(connectionConfig, {
+						privateKey: server.ssh.key,
+						passphrase: server.ssh.passphrase
+					}))
+				} else {
+					sshConn.connect(Object.assign(connectionConfig, {
+						password: server.ssh.password
+					}))
+				}
+			} catch (err) {
+				alert(`SSH错误: ${err.message}`);
+			}
+		} else {
+			redis = redisConn.createConn(server);
+			serverClick(server);
+		}
+	}
+
+	/**
 	 * 创建一个链接
 	 */
 	function createSeerver() {
 		let createServerWin = new BrowserWindow({
 			parent: win,
 			width: 400,
-			height: 530,
 			resizable: false,
 			minimizable: false,
 			maximizable: false,
@@ -256,6 +302,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 			createServerWin = null
 		});
 		createServerWin.setMenuBarVisibility(false);
+		createServerWin.webContents.openDevTools();
 		createServerWin.loadFile('create-server.html');
 		createServerWin.once('ready-to-show', () => {
 			createServerWin.show()

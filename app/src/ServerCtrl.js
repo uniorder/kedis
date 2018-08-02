@@ -96,7 +96,6 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		} else {
 			showChart(server);
 		}
-
 	}
 
 	/**
@@ -148,7 +147,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 			if (server.isCluster) {
 				redisConn.createClusterSSHConn(server, function (initRedisList, initSSHConnList) {
 					redisCluster = initRedisList;
-                    sshCluster = initSSHConnList;
+					sshCluster = initSSHConnList;
 					serverClick(server);
 				})
 			} else {
@@ -268,6 +267,48 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		}));
 		menu.popup({
 			window: remote.getCurrentWindow()
+		});
+	}
+
+	$scope.showClusterContextMenu = function (node) {
+		const menu = new Menu();
+
+		menu.append(new MenuItem({
+			label: '编辑SSH',
+			click() {
+				editNode($scope.selectedServer, node);
+			}
+		}));
+		menu.popup({
+			window: remote.getCurrentWindow()
+		});
+	}
+
+	function editNode(server, node) {
+		let updateNodeWin = new BrowserWindow({
+			parent: win,
+			width: 400,
+			height: 530,
+			resizable: false,
+			minimizable: false,
+			maximizable: false,
+			fullscreenable: false,
+			modal: true,
+			show: false
+		});
+		updateNodeWin.on('closed', () => {
+			updateNodeWin = null
+		});
+		updateNodeWin.setMenuBarVisibility(false);
+		updateNodeWin.loadFile('update-node.html');
+		updateNodeWin.once('ready-to-show', () => {
+			updateNodeWin.show();
+		});
+		updateNodeWin.webContents.on('did-finish-load', function () {
+			updateNodeWin.webContents.send('info', {
+				server: server,
+				node: node
+			});
 		});
 	}
 

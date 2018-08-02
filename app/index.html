@@ -45,10 +45,10 @@
 					</div>
 				</div>
 				<!-- 服務器狀態列表 -->
-				<div id="inputChart" ng-show="showChart" class="panel top-line" style="height: calc(30% - 1px); user-select: none;"></div>
-				<div id="clusterList" ng-show="!showChart" class="panel top-line" style="height: calc(30% - 1px); user-select: none;">
+				<!-- <div id="inputChart" ng-show="showChart" class="panel top-line" style="height: calc(30% - 1px); user-select: none;"></div> -->
+				<div id="clusterList" class="panel top-line" style="height: calc(30% - 1px); user-select: none;">
 					<div class="list" style="height: 100%; overflow: auto;">
-						<div class="list-item" ng-repeat="item in selectedServer.nodes">
+						<div class="list-item" ng-repeat="item in selectedServer.nodes" ng-right-click="showClusterContextMenu(item)">
 							<span>{{item.host}}:{{item.port}}</span>
 							<span ng-repeat="type in item.types" class="badge badge-{{type}}" style="float: right; margin-left: 3px;">{{type.toUpperCase()}}</span>
 						</div>

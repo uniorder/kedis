@@ -7,15 +7,29 @@ app.controller("CreateKeyCtrl", function ($scope, local, redisConn, electron) {
 
 	ipc.on('createKey', (event, message) => {
 		$scope.server = message;
+		console.log($scope.server);
 		$scope.$apply();
 	});
+
+	let sshConn;
 
 	/**
 	 * 保存Key
 	 */
 	$scope.save = function () {
-		redis = redisConn.createConn($scope.server);
+		if ($scope.server.ssh) {
+			redisConn.createSSHConn($scope.server, (initRedis, initSSHConn) => {
+				redis = initRedis;
+				sshConn = initSSHConn;
+				create();
+			});
+		} else {
+			redis = redisConn.createConn($scope.server);
+			create();
+		}
+	}
 
+	function create() {
 		redis.select($scope.server.selectedDatabase.index, function (err) {
 			if (err) {
 				electron.dialog.showErrorBox("错误", err.message);
@@ -23,7 +37,32 @@ app.controller("CreateKeyCtrl", function ($scope, local, redisConn, electron) {
 			}
 			redis.exists($scope.key.name, function (err, data) {
 				if (err) {
-					electron.dialog.showErrorBox("错误", err.message);
+					if (err.message.indexOf("MOVED") > -1) {
+                        //TODO 此处有待优化
+						let hostPort = err.message.split(" ")[2].split(":");
+						let host = hostPort[0];
+						let port = hostPort[1];
+						for (let i = 0; i < $scope.server.nodes.length; i++) {
+							let node = $scope.server.nodes[i];
+							if (node.host === host && node.port === port) {
+								redis.disconnect();
+								sshConn.end();
+								if (node.ssh) {
+									redisConn.createSSHConn(node, (initRedis, initSSHConn) => {
+										redis = initRedis;
+										sshConn = initSSHConn;
+										create();
+									});
+								} else {
+									redis = redisConn.createConn(node);
+									create();
+								}
+								return;
+							}
+						}
+					} else {
+						electron.dialog.showErrorBox("错误", err.message);
+					}
 					return;
 				}
 

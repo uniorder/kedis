@@ -4,6 +4,19 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 	$scope.server = {
 		ssh: {}
 	};
+
+	ipc.on('server', (event, message) => {
+		$scope.server = message;
+
+		if ($scope.server.ssh) {
+			$scope.showSSH = true;
+			if ($scope.server.ssh.privateKey) {
+				$scope.sshKey = true;
+			}
+		}
+
+		$scope.$apply();
+	});
 	$scope.testStyle = "btn-secondary";
 	$scope.isTesting = false;
 	$scope.testText = "测试";
@@ -14,7 +27,12 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 	let sshConn;
 	let redis;
 	let timeout;
-	$scope.save = function () {
+	let pass;
+	$scope.save = function (update) {
+		check(update);
+	}
+
+	function check(update) {
 		if (!$scope.server.name && $scope.server.name.trim() === "") {
 			electron.dialog.showErrorBox("错误", "名称不能为空。");
 			return;
@@ -45,12 +63,57 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 			}
 		}
 
+
+		if ($scope.server.isCluster) {
+			if (!pass) {
+				alert("集群需要测试通过才能添加，请先点击测试按钮.");
+				return;
+			}
+			redis.cluster("nodes", (e, data) => {
+				if (e) {
+					console.log(e);
+					return;
+				}
+				let nodes = [];
+				let tmpStrList = data.split("\n");
+				for (let i = 0; i < tmpStrList.length; i++) {
+					let strs = tmpStrList[i].split(" ");
+
+					let hostPort = strs[1];
+					if (hostPort) {
+						let host = hostPort.split("@")[0].split(":")[0];
+						let port = hostPort.split("@")[0].split(":")[1];
+						let types = strs[2].split(",");
+						let node = {
+							id: strs[0],
+							host: host,
+							port: port,
+							types: types
+						};
+						if (host === $scope.server.host) {
+                            node.auth = $scope.server.auth;
+                            if($scope.server.ssh) {
+                                node.ssh = $scope.server.ssh;
+                            }
+						}
+						nodes.push(node);
+					}
+				}
+				$scope.server.nodes = nodes;
+				endAll(update);
+			});
+		} else {
+			endAll(update);
+		}
+	}
+
+	function endAll(update) {
 		let serverList = local.getObject("SERVER_LIST");
 
 		if (!serverList) {
 			serverList = [];
 		}
-		$scope.server.id = new Date().getTime();
+		
 		if (!$scope.showSSH) {
 			delete $scope.server.ssh;
 		} else {
@@ -63,40 +126,61 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 		if (sshConn) {
 			sshConn.end();
 		}
-
+		if (redis) {
+			redis.disconnect();
+		}
 		delete $scope.server.$$hashKey;
 
-		serverList.push($scope.server);
-		local.setObject("SERVER_LIST", serverList);
-		ipc.send("serverCreated", "SUCCESS");
-		let win = remote.getCurrentWindow();
-		win.close();
+
+		if (update) {
+            console.log("进来了");
+            console.log(serverList);
+            console.log($scope.server.id);
+			for (var i = 0; i < serverList.length; i++) {
+				if (serverList[i].id == $scope.server.id) {
+					serverList[i] = $scope.server;
+					local.setObject("SERVER_LIST", serverList);
+					ipc.send("serverUpdated", "SUCCESS");
+					let win = remote.getCurrentWindow();
+					win.close();
+					return;
+				}
+			}
+		} else {
+            $scope.server.id = new Date().getTime();
+			serverList.push($scope.server);
+			local.setObject("SERVER_LIST", serverList);
+			ipc.send("serverCreated", "SUCCESS");
+			let win = remote.getCurrentWindow();
+			win.close();
+		}
 	}
 
 	$scope.test = function () {
+		if (redis) {
+			redis.disconnect();
+		}
 		if (!$scope.showSSH) {
 			test();
 		} else {
 			testSSH();
 		}
-
 	}
 
 	function test() {
-
 		$scope.isTesting = true;
-		let client = redisConn.createConn($scope.server);
-
-		client.info(function (err, result) {
+		redis = redisConn.createConn($scope.server);
+		redis.info(function (err, result) {
 			if (err) {
 				electron.dialog.showErrorBox("错误", err.message);
 				$scope.testStyle = "btn-danger";
 				$scope.testText = "测试失败，点击重试";
+				pass = false;
 			} else {
 				$scope.testStyle = "btn-success";
 				$scope.testText = "链接成功";
+				pass = true;
 			}
-			client.end(true);
 			$scope.isTesting = false;
 			$scope.$apply();
 		});
@@ -137,11 +221,13 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 					if (err) {
 						$scope.testStyle = "btn-danger";
 						$scope.testText = "测试失败，点击重试";
+						pass = false;
 					} else {
 						$scope.testStyle = "btn-success";
 						$scope.testText = "链接成功";
+						pass = true;
 					}
-					redis.quit();
+
 					$scope.isTesting = false;
 					$scope.$apply();
 				});
@@ -152,6 +238,7 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 			$scope.testStyle = "btn-danger";
 			$scope.testText = "测试失败，点击重试";
 			$scope.isTesting = false;
+			pass = false;
 			$scope.$apply();
 		})
 

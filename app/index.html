@@ -27,7 +27,7 @@
 		<div class="row no-gutters" style="height:100%;">
 			<div class="col-sm-3 main-l" ng-controller="ServerCtrl">
 				<!-- 服務器列表 -->
-				<div class="panel" style="height:80%;">
+				<div class="panel" style="height:70%;">
 					<div class="panel-content">
 						<div class="input-group mb-3" style="margin-bottom: 0 !important;">
 							<div class="input-group-prepend">
@@ -45,7 +45,15 @@
 					</div>
 				</div>
 				<!-- 服務器狀態列表 -->
-				<div id="inputChart" class="panel top-line" style="height: calc(20% - 1px); user-select: none;"></div>
+				<div id="inputChart" ng-show="showChart" class="panel top-line" style="height: calc(30% - 1px); user-select: none;"></div>
+				<div id="clusterList" ng-show="!showChart" class="panel top-line" style="height: calc(30% - 1px); user-select: none;">
+					<div class="list" style="height: 100%; overflow: auto;">
+						<div class="list-item" ng-repeat="item in selectedServer.nodes">
+							<span>{{item.host}}:{{item.port}}</span>
+							<span ng-repeat="type in item.types" class="badge badge-{{type}}" style="float: right; margin-left: 3px;">{{type.toUpperCase()}}</span>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="col-sm-4 main-m">
 				<div class="panel" ng-controller="KeyCtrl" style="height: 100%;">
@@ -88,8 +96,8 @@
 		<span ng-show="serverInfos">{{keyCount|| 0}} 个键</span>
 		<span ng-show="serverInfos" style="margin-left: 10px;">{{serverInfos.Clients.connected_clients || 0}} 个客户端</span>
 		<span ng-show="serverInfos" style="margin-left: 10px;">Redis版本号: {{serverInfos.Server.redis_version}}</span>
-        <span style="float: right;">Kedis版本号: 2.0.3</span>
-        
+		<span style="float: right;">Kedis版本号: 2.0.3</span>
+
 	</div>
 </body>
 

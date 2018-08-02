@@ -14,7 +14,13 @@ app.controller("ZsetValueCtrl", function ($scope, $stateParams, $state, redisCon
 		$state.go("default");
 		return;
 	}
-	let redis = redisConn.getConn();
+	let redis;
+	if ($stateParams.key.redisHost) {
+		redis = redisConn.getClusterRedisConnByHostPort($stateParams.key.redisHost, $stateParams.key.redisPort);
+	} else {
+		redis = redisConn.getConn();
+	}
+
 	$scope.keyName = $stateParams.key.name;
 	let oldKeyName = $stateParams.key.name;
 	let oldItem = {};
@@ -80,6 +86,10 @@ app.controller("ZsetValueCtrl", function ($scope, $stateParams, $state, redisCon
 
 
 	$scope.updateName = function () {
+        if($scope.key.redisHost) {
+            alert("暂不支持集群模式下的RENAME操作。");
+            return;
+        }
 		if (oldKeyName === $scope.keyName) {
 			return;
 		}

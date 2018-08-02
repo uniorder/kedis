@@ -14,7 +14,13 @@ app.controller("ListValueCtrl", function ($scope, $stateParams, $state, redisCon
 		$state.go("default");
 		return;
 	}
-	let redis = redisConn.getConn();
+	let redis;
+	if ($stateParams.key.redisHost) {
+		redis = redisConn.getClusterRedisConnByHostPort($stateParams.key.redisHost, $stateParams.key.redisPort);
+	} else {
+		redis = redisConn.getConn();
+	}
+
 	$scope.keyName = $stateParams.key.name;
 	let oldKeyName = $stateParams.key.name;
 	$scope.newItemData = "";
@@ -97,6 +103,10 @@ app.controller("ListValueCtrl", function ($scope, $stateParams, $state, redisCon
 	 * 更新Key name
 	 */
 	$scope.updateName = function () {
+        if($scope.key.redisHost) {
+            alert("暂不支持集群模式下的RENAME操作。");
+            return;
+        }
 		if (oldKeyName === $scope.keyName) {
 			return;
 		}

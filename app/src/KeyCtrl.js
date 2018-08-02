@@ -46,7 +46,12 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 			case "deleteKey":
 				deleteKey($scope.selectedKey);
 			case "keyCreated":
-				showKeys($scope.selectedDatabase);
+				if (serverInfo.isCluster) {
+					showClusterKeys($scope.selectedDatabase);
+				} else {
+					showKeys($scope.selectedDatabase);
+				}
+
 				break;
 		}
 	});
@@ -55,6 +60,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 		$scope.databases = [];
 
 		$scope.keys = [];
+
 	});
 
 	function showCreateWin(type) {
@@ -128,9 +134,6 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 			// $scope.databases[0].selected = true;
 			// showKeys($scope.databases[0], true);
 			$scope.$apply();
-
-
-
 		});
 	});
 
@@ -140,17 +143,59 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 	 */
 	$scope.showKeys = function (database) {
 		$state.go("default");
-		showKeys(database, true);
-	}
-
-	function showKeys(database, clearKeys) {
 		for (let i = 0; i < $scope.databases.length; i++) {
 			$scope.databases[i].selected = false;
 		}
 		$scope.selectedDatabase = database;
 		database.selected = true;
 
+
+		if (serverInfo.isCluster) {
+			showClusterKeys(database, true);
+		} else {
+			showKeys(database, true);
+		}
+	}
+
+	function showClusterKeys(database, clearKeys) {
 		$scope.keys = []; //清空以前的
+
+		let conns = redisConn.getClusterConn();
+		let rs = conns.redisConns;
+
+		let i = 0;
+		for (; i < rs.length; i++) {
+			let r = rs[i];
+			r.select(database.index, () => {
+				r.keys($scope.keyParttern + "*", (e, keys) => {
+					let selected = false;
+					if (!clearKeys && $scope.selectedKey && $scope.selectedKey.name === keys[i]) {
+						selected = true;
+					}
+					for (let j = 0; j < keys.length; j++) {
+						r.type(keys[j], (err, data) => {
+							$scope.keys.push({
+								name: keys[j],
+								type: data,
+								selected: selected,
+								redisHost: r.options.rawHost,
+								redisPort: r.options.rawPort
+							});
+							if (j === keys.length - 1) {
+								$scope.$apply();
+							}
+						})
+					}
+				});
+			});
+		}
+	}
+
+
+
+	function showKeys(database, clearKeys) {
+		$scope.keys = []; //清空以前的
+
 		redis.select(database.index, function (err, result) {
 			if (err) {
 				return;
@@ -158,9 +203,9 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 			redis.keys($scope.keyParttern + "*", function (err, keys) {
 				if (err) {
 					return;
-                }
-                
-                $scope.$emit("keyCount",keys.length);
+				}
+
+				$scope.$emit("keyCount", keys.length);
 
 				for (let i = 0; i < keys.length; i++) {
 
@@ -230,17 +275,35 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 		}
 		let confirmed = confirm("您是否确定要删除" + key.name + "?");
 		if (confirmed) {
-			redis.del(key.name, function (err) {
-				if (err) {
-					return;
-				}
-				//当选中的键被删除的时候
-				if ($scope.selectedKey && $scope.selectedKey.name === key.name) {
-					$scope.selectedKey = null;
-					$state.go("default");
-				}
-				showKeys($scope.selectedDatabase);
-			});
+			if (serverInfo.isCluster) {
+				let r = redisConn.getClusterRedisConnByHostPort(key.redisHost, key.redisPort);
+				r.del(key.name, function (err) {
+					if (err) {
+						console.log(err)
+						return;
+					}
+					//当选中的键被删除的时候
+					if ($scope.selectedKey && $scope.selectedKey.name === key.name) {
+						$scope.selectedKey = null;
+						$state.go("default");
+					}
+					showClusterKeys($scope.selectedDatabase);
+				});
+			} else {
+				redis.del(key.name, function (err) {
+					if (err) {
+						console.log(err)
+						return;
+					}
+					//当选中的键被删除的时候
+					if ($scope.selectedKey && $scope.selectedKey.name === key.name) {
+						$scope.selectedKey = null;
+						$state.go("default");
+					}
+					showKeys($scope.selectedDatabase);
+				});
+			}
+
 		}
 	}
 
@@ -255,6 +318,10 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 		// 		$scope.keys[i].hide = true;
 		// 	}
 		// }
-		showKeys($scope.selectedDatabase);
+		if (serverInfo.isCluster) {
+			showClusterKeys($scope.selectedDatabase);
+		} else {
+			showKeys($scope.selectedDatabase);
+		}
 	}
 });

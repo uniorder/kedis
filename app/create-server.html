@@ -32,10 +32,13 @@
 				<input type="text" class="form-control" ng-model="server.auth" placeholder="AUTH">
 				<small class="form-text ">对应Redis中的Auth参数，没有可以不填</small>
 			</div>
-			<!-- <div class="form-group">
-				<input type="text" class="form-control" ng-model="server.pattern" placeholder="初始过滤器，默认为所有（*）">
-				<small class="form-text ">如果服务器中的KEY较多，建议使用过滤器选择想要展示的key，默认显示所有</small>
-			</div> -->
+			<div class="form-group form-check">
+				<input type="checkbox" class="form-check-input" id="cluster" ng-model="server.isCluster">
+				<label class="form-check-label" for="cluster">这是一个集群节点</label>
+			</div>
+			<div class="form-group" ng-show="server.isCluster">
+				注意：如果配置了SSH，那么集群中的所有的MASTER节点都需要配置SSH才能正常使用，设置方法为：创建完毕之后，点击服务器，右下角会刷新出所有的节点，右键点击MASTER节点，选择配置SSH。
+			</div>
 			<div class="form-group form-check">
 				<input type="checkbox" class="form-check-input" id="ssh" ng-model="showSSH">
 				<label class="form-check-label" for="ssh">配置SSH</label>

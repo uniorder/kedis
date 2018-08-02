@@ -10,7 +10,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 
 	let win = remote.getCurrentWindow();
 
-	let redis, interval, sshConn;
+	let redis, interval, sshConn, redisCluster, sshCluster;
 	//从LocalStorage中初始化服务器列表
 	$scope.serverList = local.getObject("SERVER_LIST");
 
@@ -91,110 +91,11 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 
 		server.selected = true;
 		$scope.$emit('serverChanged', server);
-
-
-		$scope.server.info = {};
-		let dataSet = [];
-		for (let i = 0; i < 100; i++) {
-			dataSet.push(0);
+		if (server.isCluster) {
+			showCluster(server);
+		} else {
+			showChart(server);
 		}
-
-		let chart = new Highcharts.Chart(document.getElementById('inputChart'), {
-			title: {
-				text: "IO 监控"
-			},
-			xAxis: {
-				labels: {
-					enabled: false
-				},
-				type: 'datetime',
-				tickPixelInterval: 1000
-			},
-			yAxis: [{
-				title: {
-					text: 'KBPS',
-					enabled: false
-				},
-				min: 0
-			}],
-			legend: {
-				"enabled": false
-			},
-			series: [{
-				name: "Input kbps",
-				data: dataSet,
-				type: 'areaspline',
-				threshold: null,
-				tooltip: {
-					valueDecimals: 2
-				},
-				fillColor: {
-					linearGradient: {
-						x1: 0,
-						y1: 0,
-						x2: 0,
-						y2: 1
-					},
-					stops: [
-						[0, Highcharts.getOptions().colors[0]],
-						[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-					]
-				}
-			}, {
-				name: "Output kbps",
-				data: dataSet,
-				type: 'areaspline',
-				threshold: null,
-				tooltip: {
-					valueDecimals: 2
-				},
-				fillColor: {
-					linearGradient: {
-						x1: 0,
-						y1: 0,
-						x2: 0,
-						y2: 1
-					},
-					stops: [
-						[0, Highcharts.getOptions().colors[1]],
-						[1, Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0).get('rgba')]
-					]
-				}
-			}]
-		});
-
-		interval = $interval(function () {
-			redis.info(function (err, result) {
-				if (err) {
-					return;
-				}
-
-				let infors = result.split("# ");
-				out: for (let i = 0; i < infors.length; i++) {
-
-					let str = infors[i];
-
-					if (str == "") {
-						continue out;
-					}
-
-					let info = str.split("\r\n");
-					$scope.server.info[info[0]] = {};
-					inner: for (let j = 1; j < info.length; j++) {
-						if (info[j] == "") {
-							continue inner;
-						}
-						let detail = info[j].split(":");
-						$scope.server.info[info[0]][detail[0]] = detail[1];
-					}
-				}
-
-				$scope.$emit("serverInfo", $scope.server.info);
-
-				chart.series[0].addPoint($scope.server.info.Stats.instantaneous_input_kbps * 1, true, true);
-				chart.series[1].addPoint($scope.server.info.Stats.instantaneous_output_kbps * 1, true, true);
-			});
-		}, 1000);
 
 	}
 
@@ -235,69 +136,35 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 			return;
 		}
 
-		if (server.ssh) {
-			sshConn = new Client();
-			sshConn.on('ready', () => {
-				const sshServer = net.createServer(function (sock) {
-					if (server.isCluster) {
-						for (let i = 0; i < server.clusters.length; i++) {
-							let cluster = server.clusters[i];
-							sshConn.forwardOut(sock.remoteAddress, sock.remotePort, cluster.host, cluster.port, (err, stream) => {
-								if (err) {
-									sock.end();
-								} else {
-									sock.pipe(stream).pipe(sock)
-								}
-							});
-						}
-					} else {
-						sshConn.forwardOut(sock.remoteAddress, sock.remotePort, server.host, server.port, (err, stream) => {
-							if (err) {
-								sock.end();
-							} else {
-								sock.pipe(stream).pipe(sock)
-							}
-						});
-					}
+		if (redis) {
+			redis.disconnect();
+		}
 
-				}).listen(0, function () {
-					redis = redisConn.createConn(server, {
-						host: '127.0.0.1',
-						port: sshServer.address().port
-					});
-					redis.on("error", function (err) {
-						console.log(err);
-						// redis.end(true);
-					});
+		if (sshConn) {
+			sshConn.end();
+		}
+
+		if (server.ssh) {
+			if (server.isCluster) {
+				redisConn.createClusterSSHConn(server, function (initRedisList, initSSHConnList) {
+					redisCluster = initRedisList;
+                    sshCluster = initSSHConnList;
 					serverClick(server);
 				})
-			}).on('error', err => {
-				alert(`SSH错误: ${err.message}`);
-			})
-
-			try {
-				const connectionConfig = {
-					host: server.ssh.host,
-					port: server.ssh.port || 22,
-					username: server.ssh.username,
-					readyTimeout: 2000
-				}
-				if (server.ssh.key) {
-					sshConn.connect(Object.assign(connectionConfig, {
-						privateKey: server.ssh.key,
-						passphrase: server.ssh.passphrase
-					}))
-				} else {
-					sshConn.connect(Object.assign(connectionConfig, {
-						password: server.ssh.password
-					}))
-				}
-			} catch (err) {
-				alert(`SSH错误: ${err.message}`);
+			} else {
+				redisConn.createSSHConn(server, function (initRedis, initSSHConn) {
+					sshConn = initSSHConn;
+					redis = initRedis;
+					serverClick(server);
+				});
 			}
 		} else {
-			redis = redisConn.createConn(server);
-			serverClick(server);
+			if (server.isCluster) {
+				redisCluster = redisConn.createClusterConn(server);
+			} else {
+				redis = redisConn.createConn(server);
+				serverClick(server);
+			}
 		}
 	}
 
@@ -345,6 +212,8 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 			if ($scope.selectedServer && $scope.selectedServer.id === server.id) {
 				$scope.selectedServer = null;
 			}
+			$state.go("default");
+			$scope.$emit("clearAllKeys");
 			$scope.$apply();
 		}
 	}
@@ -402,69 +271,112 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		});
 	}
 
+	function showChart(server) {
+		// $scope.showChart = true;
+		// server.info = {};
+		// let dataSet = [];
+		// for (let i = 0; i < 100; i++) {
+		// 	dataSet.push(0);
+		// }
+		// let chart = new Highcharts.Chart(document.getElementById('inputChart'), {
+		// 	title: {
+		// 		text: "IO 监控"
+		// 	},
+		// 	xAxis: {
+		// 		labels: {
+		// 			enabled: false
+		// 		},
+		// 		type: 'datetime',
+		// 		tickPixelInterval: 1000
+		// 	},
+		// 	yAxis: [{
+		// 		title: {
+		// 			text: 'KBPS',
+		// 			enabled: false
+		// 		},
+		// 		min: 0
+		// 	}],
+		// 	legend: {
+		// 		"enabled": false
+		// 	},
+		// 	series: [{
+		// 		name: "Input kbps",
+		// 		data: dataSet,
+		// 		type: 'areaspline',
+		// 		threshold: null,
+		// 		tooltip: {
+		// 			valueDecimals: 2
+		// 		},
+		// 		fillColor: {
+		// 			linearGradient: {
+		// 				x1: 0,
+		// 				y1: 0,
+		// 				x2: 0,
+		// 				y2: 1
+		// 			},
+		// 			stops: [
+		// 				[0, Highcharts.getOptions().colors[0]],
+		// 				[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+		// 			]
+		// 		}
+		// 	}, {
+		// 		name: "Output kbps",
+		// 		data: dataSet,
+		// 		type: 'areaspline',
+		// 		threshold: null,
+		// 		tooltip: {
+		// 			valueDecimals: 2
+		// 		},
+		// 		fillColor: {
+		// 			linearGradient: {
+		// 				x1: 0,
+		// 				y1: 0,
+		// 				x2: 0,
+		// 				y2: 1
+		// 			},
+		// 			stops: [
+		// 				[0, Highcharts.getOptions().colors[1]],
+		// 				[1, Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0).get('rgba')]
+		// 			]
+		// 		}
+		// 	}]
+		// });
 
+		interval = $interval(function () {
+			redis.info(function (err, result) {
+				if (err) {
+					return;
+				}
 
+				let infors = result.split("# ");
+				out: for (let i = 0; i < infors.length; i++) {
 
-	function test() {
-		var server = {
-			"ssh": {
-				"host": "118.25.39.115",
-				"username": "root",
-				"password": "gehao!@#456",
-				"port": 22
-			},
-			"name": "集群测试",
-			"host": "172.17.16.3",
-			"port": "7000",
-			"connectTimeout": 2000,
-			"id": 1533138786434
-		}
-		sshConn = new Client();
-		sshConn.on('ready', () => {
-			const sshServer = net.createServer(function (sock) {
-				sshConn.forwardOut(sock.remoteAddress, sock.remotePort, server.host, server.port, (err, stream) => {
-					if (err) {
-						sock.end();
-					} else {
-						sock.pipe(stream).pipe(sock)
+					let str = infors[i];
+
+					if (str == "") {
+						continue out;
 					}
-				});
-			}).listen(0, function () {
-				redis = redisConn.createConn(server, {
-					host: '127.0.0.1',
-					port: sshServer.address().port
-				});
-				redis.on("error", function (err) {
-					console.log(err);
-					// redis.end(true);
-                });
-                redis.cluster("nodes",(e,d)=>{
-                    //TODO 获取所有节点，并且遍历后将所有的key合并在一起
-                })
-			});
-		}).on('error', err => {
-			alert(`SSH错误: ${err.message}`);
-		})
 
-		try {
-			const connectionConfig = {
-				host: server.ssh.host,
-				port: server.ssh.port || 22,
-				username: server.ssh.username,
-				readyTimeout: 2000
-			}
-			if (server.ssh.key) {
-				sshConn.connect(Object.assign(connectionConfig, {
-					privateKey: server.ssh.key,
-					passphrase: server.ssh.passphrase
-				}))
-			} else {
-				sshConn.connect(Object.assign(connectionConfig, {
-					password: server.ssh.password
-				}))
-			}
-		} catch (err) {
-			alert(`SSH错误: ${err.message}`);
-		}
-	};
+					let info = str.split("\r\n");
+					server.info[info[0]] = {};
+					inner: for (let j = 1; j < info.length; j++) {
+						if (info[j] == "") {
+							continue inner;
+						}
+						let detail = info[j].split(":");
+						server.info[info[0]][detail[0]] = detail[1];
+					}
+				}
+
+				$scope.$emit("serverInfo", server.info);
+
+				// chart.series[0].addPoint(server.info.Stats.instantaneous_input_kbps * 1, true, true);
+				// chart.series[1].addPoint(server.info.Stats.instantaneous_output_kbps * 1, true, true);
+			});
+		}, 1000);
+	}
+
+	function showCluster(server) {
+
+	}
 });

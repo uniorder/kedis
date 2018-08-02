@@ -14,7 +14,13 @@ app.controller("StringValueCtrl", function ($scope, $stateParams, $state, redisC
 		$state.go("default");
 		return;
 	}
-	let redis = redisConn.getConn();
+	let redis;
+	if ($stateParams.key.redisHost) {
+		redis = redisConn.getClusterRedisConnByHostPort($stateParams.key.redisHost, $stateParams.key.redisPort);
+	} else {
+		redis = redisConn.getConn();
+	}
+
 	$scope.keyName = $stateParams.key.name;
 	let oldKeyName = $stateParams.key.name;
 
@@ -25,11 +31,18 @@ app.controller("StringValueCtrl", function ($scope, $stateParams, $state, redisC
 	});
 
 	$scope.updateName = function () {
+        if($scope.key.redisHost) {
+            alert("暂不支持集群模式下的RENAME操作。");
+            return;
+        }
+		console.log("进来了");
 		if (oldKeyName === $scope.keyName) {
+			console.log("跳出");
 			return;
 		}
 		redis.exists($scope.keyName, function (err, data) {
 			if (err) {
+				console.log(err);
 				return;
 			}
 			if (data) {
@@ -39,6 +52,9 @@ app.controller("StringValueCtrl", function ($scope, $stateParams, $state, redisC
 				}
 			}
 			redis.rename(oldKeyName, $scope.keyName, function (err, data) {
+				if (err) {
+					console.log(err);
+				}
 				oldKeyName = $scope.keyName;
 				$scope.key.name = oldKeyName;
 				$scope.$apply();
@@ -48,26 +64,26 @@ app.controller("StringValueCtrl", function ($scope, $stateParams, $state, redisC
 
 	$scope.updateData = function () {
 		redis.set($scope.keyName, $scope.data);
-    }
-    
-    
+	}
+
+
 	redis.ttl(oldKeyName, function (err, data) {
-        $scope.ttl = data;
-        $scope.$apply();
+		$scope.ttl = data;
+		$scope.$apply();
 	})
 
-    /**
-     * 更新过期时间
-     */
+	/**
+	 * 更新过期时间
+	 */
 	$scope.updateTTL = function () {
 		redis.expire(oldKeyName, $scope.ttl);
-    }
-    
-    $scope.format = function() {
-        try {
-            $scope.data = JSON.stringify(JSON.parse($scope.data), null, 4);
-        } catch (e) {
-            alert(e);
-        }
-    }
+	}
+
+	$scope.format = function () {
+		try {
+			$scope.data = JSON.stringify(JSON.parse($scope.data), null, 4);
+		} catch (e) {
+			alert(e);
+		}
+	}
 });

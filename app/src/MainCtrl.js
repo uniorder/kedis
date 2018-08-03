@@ -21,5 +21,10 @@ app.controller("MainCtrl", function ($rootScope, $scope, redisConn, electron) {
 	$scope.$on("clusterInfo", (event, data) => {
 		$scope.serverInfos = null;
 		$scope.clusterInfos = data;
-	})
+    });
+    
+    $scope.openBrowser = function (e, url) {
+		e.preventDefault();
+		shell.openExternal(url);
+	}
 });

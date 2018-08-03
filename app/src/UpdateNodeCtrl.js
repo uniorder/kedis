@@ -60,7 +60,8 @@ app.controller("UpdateNodeCtrl", function ($scope, local, redisConn, electron, $
 			const sshServer = net.createServer(function (sock) {
 				sshConn.forwardOut(sock.remoteAddress, sock.remotePort, $scope.node.host, $scope.node.port, (err, stream) => {
 					if (err) {
-						$timeout.cancel(timeout);
+                        $timeout.cancel(timeout);
+                        $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
 						sock.end();
 					} else {
 						sock.pipe(stream).pipe(sock)

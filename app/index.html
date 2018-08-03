@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<title>Kedis - Redis desktop manager v2.0</title>
 	<link href="./css/bootstrap.min.css" rel="stylesheet">
+	<link href="./css/all.min.css" rel="stylesheet">
 	<script type="text/javascript" src="./scripts/angular.min.js"></script>
 	<script type="text/javascript" src="./scripts/angular-ui-router.min.js"></script>
 	<script type="text/javascript" src="./scripts/ui-bootstrap-tpls-3.0.4.min.js"></script>
@@ -23,7 +24,7 @@
 </head>
 
 <body>
-	<div class="container-fluid no-padding" style="height: calc(100% - 22px)">
+	<div class="container-fluid no-padding" style="height: calc(100% - 24px)">
 		<div class="row no-gutters" style="height:100%;">
 			<div class="col-sm-3 main-l" ng-controller="ServerCtrl">
 				<!-- 服務器列表 -->
@@ -103,7 +104,12 @@
 		<span ng-show="clusterInfos" style="margin-left: 10px;">集群大小 {{clusterInfos.cluster_size}}</span>
 		<span ng-show="clusterInfos" style="margin-left: 10px;">已知节点 {{clusterInfos.cluster_known_nodes}} 个</span>
 
-		<span style="float: right;">Kedis版本号: 2.0.4</span>
+
+		<span style="float: right; margin-left: 10px;">Kedis版本号: 2.0.4</span>
+		<span style="float: right; margin-left: 10px;" style="cursor: help; user-select: none;" ng-click="openBrowser($event,'https://gitee.com/kehaw9818/Kedis')">
+			<i class="fab fa-git-square"></i>
+		</span>
+		<div id="lastError" class="error"></div>
 
 	</div>
 </body>

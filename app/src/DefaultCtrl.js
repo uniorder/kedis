@@ -9,8 +9,8 @@
 app.controller("DefaultCtrl", function ($scope) {
 	$scope.showPic = false;
 
-	$scope.openBrowser = function (e, url) {
-		e.preventDefault();
-		shell.openExternal(url);
-	}
+	// $scope.openBrowser = function (e, url) {
+	// 	e.preventDefault();
+	// 	shell.openExternal(url);
+	// }
 });

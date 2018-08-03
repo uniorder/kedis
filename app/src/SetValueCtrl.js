@@ -88,6 +88,7 @@ app.controller("SetValueCtrl", function ($scope, $stateParams, $state, redisConn
 		}
 		redis.exists($scope.keyName, function (err, data) {
 			if (err) {
+                $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
 				return;
 			}
 			if (data) {

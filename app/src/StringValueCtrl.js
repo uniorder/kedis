@@ -42,7 +42,7 @@ app.controller("StringValueCtrl", function ($scope, $stateParams, $state, redisC
 		}
 		redis.exists($scope.keyName, function (err, data) {
 			if (err) {
-				console.log(err);
+                $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
 				return;
 			}
 			if (data) {
@@ -53,7 +53,8 @@ app.controller("StringValueCtrl", function ($scope, $stateParams, $state, redisC
 			}
 			redis.rename(oldKeyName, $scope.keyName, function (err, data) {
 				if (err) {
-					console.log(err);
+                    $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+                    return;
 				}
 				oldKeyName = $scope.keyName;
 				$scope.key.name = oldKeyName;

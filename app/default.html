@@ -1,4 +1,4 @@
-<div class="container" style="user-select: none; height: 100%; overflow: auto;" ng-controller="DefaultCtrl">
+<div class="container-fluid" style="user-select: none; height: 100%; overflow: auto;" ng-controller="DefaultCtrl">
 	<div class="row">
 		<div class="col-sm-3">
 		</div>
@@ -15,14 +15,19 @@
 	</div>
 	<hr />
 	<div class="row">
-		<div class="col-2">
+		<div class="col-1">
 		</div>
-		<div class="col-8">
+		<div class="col-10">
 			<h2>Kedis is free for everyone, but if you could pay me a little money for a cup of coffe, I would be very happy.</h2>
-			<i class="fa fa-smile-o" style="font-size: 186px;"></i>
-			<p>Powered by
-				<span ng-dblclick="showPic = true">Kehaw</span> in China
-				<img src="./images/china.png" height="20" />.</p>
+			<div style="text-align: center">
+                <i class="far fa-smile-wink" style="font-size: 150px;"></i>
+                <br />
+                <br />
+				<p>Powered by
+					<span ng-dblclick="showPic = true">Kehaw</span> in China
+					<img src="./images/china.png" height="20" />.</p>
+			</div>
+
 			<p>Visit
 				<a href="javascript:;" ng-click="openBrowser($event,'http://www.kehaw.com/?page_id=2')">http://www.kehaw.com/?page_id=2</a> or git get more informations about this app, if you have any question or find any
 				bug, please let me know, contact me via
@@ -30,9 +35,8 @@
 			<p>Git here:
 				<a href="javascript:;" ng-click="openBrowser($event,'https://gitee.com/kehaw9818/Kedis')">https://gitee.com/kehaw9818/Kedis</a>.</p>
 			<p>We will support the English(or other languages) version in the future.</p>
-			<p>Current version: 2.0.4</p>
 		</div>
-		<div class="col-2">
+		<div class="col-1">
 		</div>
 	</div>
 	<hr />

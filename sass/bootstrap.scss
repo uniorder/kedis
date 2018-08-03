@@ -135,18 +135,18 @@ html {
 }
 
 .badge-slave {
-    user-select: none;
-    @include badge-variant($brand-aquamarine);
+	user-select: none;
+	@include badge-variant($brand-aquamarine);
 }
 
 .badge-master {
-    user-select: none;
-    @include badge-variant($brand-mint-green);
+	user-select: none;
+	@include badge-variant($brand-mint-green);
 }
 
 .badge-myself {
-    user-select: none;
-    @include badge-variant($brand-perfume);
+	user-select: none;
+	@include badge-variant($brand-perfume);
 }
 
 ::-webkit-scrollbar {
@@ -247,8 +247,9 @@ input:placeholder {
 }
 
 .bottom-bar {
-	height: 22px;
-	background-color: $brand-curious-blue;
+    padding:3px;
+    overflow: hidden;
+	background-color: #0076C5;
 	font-size: 12px;
 	color: #ffffff;
 }
@@ -259,4 +260,13 @@ input:placeholder {
 
 .text-danger {
 	color: $brand-foursquare;
+}
+
+.error {
+	margin: 0 auto;
+	width: 50%;
+	float: right;
+	padding-right: 10px;
+	overflow: hidden;
+	color:  #f1c4cd;
 }

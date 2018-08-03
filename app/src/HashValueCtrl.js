@@ -109,6 +109,7 @@ app.controller("HashValueCtrl", function ($scope, $stateParams, $state, redisCon
 		}
 		redis.exists($scope.keyName, function (err, data) {
 			if (err) {
+                $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
 				return;
 			}
 			if (data) {

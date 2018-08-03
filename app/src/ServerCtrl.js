@@ -403,6 +403,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		interval = $interval(function () {
 			redis.info(function (err, result) {
 				if (err) {
+                    $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
 					return;
 				}
 
@@ -448,6 +449,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		interval = $interval(function () {
 			clusterR.cluster("info", function (err, result) {
 				if (err) {
+                    $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
 					return;
 				}
 

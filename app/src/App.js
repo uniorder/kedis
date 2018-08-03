@@ -76,6 +76,11 @@ app.factory('local', ['$window', function ($window) {
 			return $window.localStorage[key] || defaultValue;
 		}, //存储对象，以JSON格式存储
 		setObject: function (key, value) {
+			for (let i = 0; i < value.length; i++) {
+				if (value.selected) {
+					delete value.selected;
+				}
+			}
 			$window.localStorage[key] = JSON.stringify(value); //将对象以字符串保存
 		}, //读取对象
 		getObject: function (key) {
@@ -105,6 +110,7 @@ app.factory('redisConn', function () {
 	}
 
 	this.createSSHConn = function (config, callBack) {
+        
 		if (!config.ssh) {
 			return "没有找到SSH配置";
 		}
@@ -113,6 +119,7 @@ app.factory('redisConn', function () {
 			const sshServer = net.createServer(function (sock) {
 				sshConn.forwardOut(sock.remoteAddress, sock.remotePort, config.host, config.port, (err, stream) => {
 					if (err) {
+						$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
 						sock.end();
 					} else {
 						sock.pipe(stream).pipe(sock)
@@ -124,14 +131,14 @@ app.factory('redisConn', function () {
 					port: sshServer.address().port
 				});
 				redis.on("error", function (err) {
-					console.log(err);
+					$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
 					// redis.end(true);
 				});
 				callBack(redis, sshConn);
 			})
 		}).on('error', err => {
-			console.error(err);
-		})
+			$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+		});
 
 		try {
 			const connectionConfig = {
@@ -151,7 +158,7 @@ app.factory('redisConn', function () {
 				}))
 			}
 		} catch (err) {
-			console.error(err);
+			$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
 		}
 	}
 	let me = this;

@@ -26,7 +26,7 @@ Kedis是一个基于AngularJS、Electron和Node.JS搭建的Redis桌面管理工�
 集群中的所有的MASTER节点都需要配置SSH才能正常使用（Slave不需要配置），设置方法为：创建完毕之后，点击服务器，右下角会刷新出所有的节点，右键点击MASTER节点，选择配置SSH。
 当前版本只支持SSH方式的集群链接，后续可能会放开。
 
-#### 代码编辑方法
+#### 编译方法
 
 首先确保您的计算机上已经安装了Node.JS的最新版本，然后安装electron到全局，即`npm install -g electron`，接着在Kedis目录下运行`npm install`，等待完成之后，再进入app目录下运行`npm install`，等安装完毕之后在app目录下执行`electron .`即可执行程序。
 

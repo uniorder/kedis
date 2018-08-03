@@ -55,7 +55,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in items" ng-click="editItem(item)">
+				<tr ng-repeat="item in items track by $index" ng-click="editItem(item)">
 					<td>{{item}}</td>
 					<td>
 						<button type="button" class="btn btn-danger btn-xs" ng-click="deleteItem(item)">删除</button>

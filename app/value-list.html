@@ -43,7 +43,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in items" ng-click="editItem(item)">
+				<tr ng-repeat="item in items track by $index" ng-click="editItem(item)">
 					<td>{{item.index}}</td>
 					<td>{{item.data}}</td>
 					<td>

@@ -38,10 +38,10 @@
 						</div>
 						<div class="list" style="height: 100%; overflow: auto;">
 							<div ng-right-click="showServerContextMenu(item)" ng-hide="item.hide" class="list-item" ng-class="{'selected': item.selected}"
-							    ng-repeat="item in serverList" ng-click="serverClick(item)">
-                                <span>{{item.name}}</span>
-                                <span class="badge badge-myself" style="float: right;" ng-show="item.isCluster">CLUSTER</span>
-                                <span class="badge badge-string" style="float: right;" ng-show="item.ssh">SSH</span>
+							    ng-repeat="item in serverList track by $index" ng-click="serverClick(item)">
+								<span>{{item.name}}</span>
+								<span class="badge badge-myself" style="float: right;" ng-show="item.isCluster">CLUSTER</span>
+								<span class="badge badge-string" style="float: right;" ng-show="item.ssh">SSH</span>
 							</div>
 						</div>
 					</div>
@@ -50,9 +50,9 @@
 				<div id="inputChart" ng-show="showChart" class="panel top-line" style="height: calc(30% - 1px); user-select: none;"></div>
 				<div id="clusterList" ng-show="!showChart" class="panel top-line" style="height: calc(30% - 1px); user-select: none;">
 					<div class="list" style="height: 100%; overflow: auto;">
-						<div class="list-item" ng-repeat="item in selectedServer.nodes" ng-right-click="showClusterContextMenu(item)">
+						<div class="list-item" ng-repeat="item in selectedServer.nodes track by $index" ng-right-click="showClusterContextMenu(item)">
 							<span>{{item.host}}:{{item.port}}</span>
-							<span ng-repeat="type in item.types" class="badge badge-{{type}}" style="float: right; margin-left: 3px;">{{type.toUpperCase()}}</span>
+							<span ng-repeat="type in item.types track by $index" class="badge badge-{{type}}" style="float: right; margin-left: 3px;">{{type.toUpperCase()}}</span>
 						</div>
 					</div>
 				</div>
@@ -70,14 +70,14 @@
 						</div>
 						<div id="databaseList" em-height-source class="container-fluid no-padding">
 							<div class="row no-gutters redis-databse">
-								<div class="col-sm" ng-repeat="item in databases">
+								<div class="col-sm" ng-repeat="item in databases track by $index">
 									<button type="button" ng-click="showKeys(item)" ng-class="{'btn-danger': item.selected,'btn-secondary':!item.selected}" class="btn">{{item.index}}</button>
 								</div>
 							</div>
 						</div>
 						<div id="keyList" em-height-target class="list" style="height:calc(100% - 64px); overflow: auto;">
 							<div ng-right-click="showKeyContextMenu(key)" class="list-item" ng-hide="key.hide" ng-class="{'selected': key.selected}"
-							    ng-click="selectKey(key)" style="overflow: hidden;" ng-repeat="key in keys">
+							    ng-click="selectKey(key)" style="overflow: hidden;" ng-repeat="key in keys track by $index">
 								<span class="keyLabel">{{key.name}}</span>
 								<span class="badge badge-{{key.type}}" style="float: right;">{{key.type.toUpperCase()}}</span>
 							</div>

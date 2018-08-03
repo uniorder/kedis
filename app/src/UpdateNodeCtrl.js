@@ -20,15 +20,12 @@ app.controller("UpdateNodeCtrl", function ($scope, local, redisConn, electron, $
 		let serverList = local.getObject("SERVER_LIST");
 
 		outer: for (let i = 0; i < serverList.length; i++) {
-            delete serverList[i].$$hashKey;
-            delete serverList[i].selected;
+           
 			if ($scope.server.id === serverList[i].id) {
 				let nodes = $scope.server.nodes;
 				for (let j = 0; j < nodes.length; j++) {
 					if ($scope.server.nodes[j].id === $scope.node.id) {
 						$scope.server.nodes[j] = $scope.node;
-                        delete $scope.server.nodes[j].$$hashKey;
-                        delete $scope.server.$$hashKey;
 						serverList[i] = $scope.server;
 						break outer;
 					}

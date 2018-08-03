@@ -78,7 +78,9 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 					if (confirmed) {
 						goAndDo(update);
 					}
-				}
+				} else {
+                    endAll(update);
+                }
 			} else {
 				goAndDo(update);
 			}
@@ -132,8 +134,6 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 
 		if (!$scope.showSSH) {
 			delete $scope.server.ssh;
-		} else {
-			delete $scope.server.ssh.$$hashKey;
 		}
 		if (!$scope.sshKey && $scope.showSSH) {
 			delete $scope.server.ssh.privateKey;
@@ -145,18 +145,12 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 		if (redis) {
 			redis.disconnect();
 		}
-		delete $scope.server.$$hashKey;
-
 
 		if (update) {
 			for (var i = 0; i < serverList.length; i++) {
-				delete serverList[i].$$hashKey;
-				delete serverList[i].selected;
+                
 				if (serverList[i].id == $scope.server.id) {
-					delete $scope.server.$$hashKey;
-					delete $scope.server.selected;
 					serverList[i] = $scope.server;
-
 					local.setObject("SERVER_LIST", serverList);
 					ipc.send("serverUpdated", "SUCCESS");
 					let win = remote.getCurrentWindow();
@@ -165,8 +159,6 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 				}
 			}
 		} else {
-			delete $scope.server.$$hashKey;
-			delete $scope.server.selected;
 			$scope.server.id = new Date().getTime();
 			serverList.push($scope.server);
 			local.setObject("SERVER_LIST", serverList);

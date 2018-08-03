@@ -6,11 +6,11 @@
 	"scripts": {
 		"start": "electron ./app",
 		"setMirror": "set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/",
-		"packageWin64": "electron-packager ./app Kedis --platform=win32 --arch=x64 --icon=./app/images/logo.ico --out=./dist --asar --app-version=2.0.3",
-		"packageWin32": "electron-packager ./app Kedis --platform=win32 --arch=ia32 --icon=./app/images/logo.ico --out=./dist --asar --app-version=2.0.3",
-		"packageDarwin": "electron-packager ./app Kedis --platform=darwin --arch=x64 --icon=./app/images/logo.icns --out=./dist --asar --app-version=2.0.3",
-		"packageLinux64": "electron-packager ./app Kedis --platform=linux --arch=x64 --out=./dist --asar --app-version=2.0.3",
-		"packageLinux32": "electron-packager ./app Kedis --platform=linux --arch=ia32 --out=./dist --asar --app-version=2.0.3"
+		"packageWin64": "electron-packager ./app Kedis --platform=win32 --arch=x64 --icon=./app/images/logo.ico --out=./dist --asar --app-version=2.0.4",
+		"packageWin32": "electron-packager ./app Kedis --platform=win32 --arch=ia32 --icon=./app/images/logo.ico --out=./dist --asar --app-version=2.0.4",
+		"packageDarwin": "electron-packager ./app Kedis --platform=darwin --arch=x64 --icon=./app/images/logo.icns --out=./dist --asar --app-version=2.0.4",
+		"packageLinux64": "electron-packager ./app Kedis --platform=linux --arch=x64 --out=./dist --asar --app-version=2.0.4",
+		"packageLinux32": "electron-packager ./app Kedis --platform=linux --arch=ia32 --out=./dist --asar --app-version=2.0.4"
 	},
 	"keywords": [
 		"redis",

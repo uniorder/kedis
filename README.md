@@ -1,7 +1,7 @@
 # Kedis
 Kedis是一个基于AngularJS、Electron和Node.JS搭建的Redis桌面管理工具，前端样式表采用了Bootstrap作为原始代码，并在此基础上做了一些个性化的改造。
 
-初次之外，Kedis还依赖了ioredis和ssh2两个开源项目，其他的依赖详细请查看package.json。
+除此之外，Kedis还依赖了ioredis和ssh2两个开源项目，其他的依赖详细请查看package.json。
 
 #### 截图
 

@@ -1,22 +1,33 @@
 # Kedis
+Kedis是一个基于AngularJS、Electron和Node.JS搭建的Redis桌面管理工具，前端样式表采用了Bootstrap作为原始代码，并在此基础上做了一些个性化的改造。
+
+初次之外，Kedis还依赖了ioredis和ssh2两个开源项目，其他的依赖详细请查看package.json。
+
+#### 截图
 
 ![Kedis](https://images.gitee.com/uploads/images/2018/0801/162246_f70f2189_115307.png "Kedis")
 
-#### 项目介绍
-跨平台的Redis桌面管理工具，最新版已经支持SSH！
+![Kedis Cluster](https://images.gitee.com/uploads/images/2018/0803/120220_2e80bea2_115307.png "Kedis Cluster")
 
-#### 软件架构
-基于 AngularJS + Electron 开发
+#### 亮点
+
+- 支持SSH通道
+- 支持集群管理
+- 跨平台
 
 #### 可执行程序下载
-- [Windows版本（64位）](https://pan.baidu.com/s/167L82TaRKsOtHAzjaSA6iQ)更新于2018-07-29
-- [Mac版本](https://gitee.com/kehaw9818/Kedis/releases) 发行版
 
-**打包在近期会比较频繁，因为会不断的尝试修改一些细节**
+- [Mac OS](https://gitee.com/kehaw9818/Kedis/releases)
+- Windows（稍晚发布）
+- Linux（稍晚发布）
 
-#### 打包教程
+#### 代码编辑方法
 
-Package默认提供了Mac、Linux和Windows的编译指令，大家可以根据自己的需要来编译，分别在kedis目录下执行：  
+首先确保您的计算机上已经安装了Node.JS的最新版本，然后安装electron到全局，即`npm install -g electron`，接着在Kedis目录下运行`npm install`，等待完成之后，再进入app目录下运行`npm install`，等安装完毕之后在app目录下执行`electron .`即可执行程序。
+
+#### 打包方法
+
+同样，确保已经安装了最新版本的Node.JS，然后全局安装electron的打包工具，即`npm install -g electron-packager`，安装完毕后，你可以直接在Kedis根目录下执行脚本来完成对应版本的打包：
 ```
 npm run packageWin64
 npm run packageWin32
@@ -24,26 +35,27 @@ npm run packageDarwin
 npm run packageLinux64
 npm run packageLinux32
 ```
+其中packageDarwin对应的是Mac OS版本的Kedis。
 
-#### 使用说明
+#### 开发历程
 
-Clone项目之后，首先在本地安装Node.JS，安装成功后，分别在kedis根目录和kedis/app目录下执行npm install，**重点注意一下，cnpm的install方式与npm并不一致，会导致可以运行，但是无法打包，请谨慎使用**，等待完成之后，在kedis目录下运行命令：  
-```
-electron ./app
-```
+Kedis最早一版发布于2018年4月，当初是发布在GitHub上的，当时的主要目的就是开发一个自己喜欢风格的Redis桌面管理工具，开发之初并没有打算公布出来，在2018年7月，有网友表示希望能够继续维护下去，于是就将代码库迁入到Gitee，花了一个礼拜重构了代码，所以在Gitee上的初始版本是2.0。
 
-#### 参与贡献
+在重构之初我并没有打算支持集群，但是之前一个老友说不支持集群没什么亮点，就强塞了一个集群的功能进去。
 
-1. Kehaw ge.bugman@gmail.com
+在没有支持集群之前，代码的可读性还是蛮高的，但是为了支持集群，导致部分代码的可阅读性比较差，看来规划还是非常重要。
 
-#### 已知问题
+#### 后续支持
 
-Spring 通过 Spring data redis 默认写入的 Key 名中会包含不可解析的乱码，导致无法删除Key，这个我在想办法解决。
+目前首要做的事情是发布一版英文版，有朋友说想支持订阅和发布功能，这个也在考虑之中。
 
-#### 下一个版本迭代
+#### 捐赠
 
-提供国际化支持
+如果您觉得这份工具用着还比较顺手，希望能够多多支持我的开发。
 
-#### 其他
+![Kedis 捐赠](https://images.gitee.com/uploads/images/2018/0803/121032_9d458f9e_115307.png "捐赠")
 
-欢迎访问我的无聊小站 http://www.kehaw.com
+有了你的捐赠，Kedis会变得更好，如有捐赠，还请在下方留下大名，感谢您对开源事业的支持。
+
+- F*s 2018年7月30日捐赠
+- 

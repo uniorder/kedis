@@ -142,12 +142,23 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 			sshConn.end();
 		}
 
+		if (redisCluster) {
+			for (let i = 0; i < redisCluster.length; i++) {
+				redisCluster[i].disconnect();
+			}
+		}
+
+		if (sshCluster) {
+			for (let i = 0; i < sshCluster.length; i++) {
+				sshCluster[i].end();
+			}
+		}
+
 		if (server.ssh) {
 
 			if (server.isCluster) {
 
 				redisConn.createClusterSSHConn(server, function (initRedisList, initSSHConnList) {
-					console.log(111);
 					if (initRedisList === null) {
 						serverClick(server);
 					} else {
@@ -423,8 +434,33 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		}, 1000);
 	}
 
+	let clusterR;
+
 	function showCluster(server) {
 		$scope.showChart = false;
 		$interval.cancel(interval);
+		if (clusterR) {
+			clusterR.disconnect();
+		}
+
+		clusterR = redisCluster[0];
+
+		interval = $interval(function () {
+			clusterR.cluster("info", function (err, result) {
+				if (err) {
+					return;
+				}
+
+				let clusterInfo = {};
+
+				let infors = result.split("\n");
+				for (let i = 0; i < infors.length; i++) {
+					clusterInfo[infors[i].split(":")[0]] = infors[i].split(":")[1];
+				}
+
+
+				$scope.$emit("clusterInfo", clusterInfo);
+			});
+		}, 1000);
 	}
 });

@@ -14,6 +14,12 @@ app.controller("MainCtrl", function ($rootScope, $scope, redisConn, electron) {
 	});
 
 	$scope.$on("serverInfo", (event, data) => {
-        $scope.serverInfos = data;
+		$scope.clusterInfos = null;
+		$scope.serverInfos = data;
+	})
+
+	$scope.$on("clusterInfo", (event, data) => {
+		$scope.serverInfos = null;
+		$scope.clusterInfos = data;
 	})
 });

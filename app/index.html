@@ -98,6 +98,11 @@
 		<span ng-show="serverInfos">{{keyCount|| 0}} 个键</span>
 		<span ng-show="serverInfos" style="margin-left: 10px;">{{serverInfos.Clients.connected_clients || 0}} 个客户端</span>
 		<span ng-show="serverInfos" style="margin-left: 10px;">Redis版本号: {{serverInfos.Server.redis_version}}</span>
+
+		<span ng-show="clusterInfos">集群状态 {{clusterInfos.cluster_state}}</span>
+		<span ng-show="clusterInfos" style="margin-left: 10px;">集群大小 {{clusterInfos.cluster_size}}</span>
+		<span ng-show="clusterInfos" style="margin-left: 10px;">已知节点 {{clusterInfos.cluster_known_nodes}} 个</span>
+
 		<span style="float: right;">Kedis版本号: 2.0.4</span>
 
 	</div>

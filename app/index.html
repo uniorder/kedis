@@ -39,14 +39,16 @@
 						<div class="list" style="height: 100%; overflow: auto;">
 							<div ng-right-click="showServerContextMenu(item)" ng-hide="item.hide" class="list-item" ng-class="{'selected': item.selected}"
 							    ng-repeat="item in serverList" ng-click="serverClick(item)">
-								{{item.name}}({{item.host}})
+                                <span>{{item.name}}</span>
+                                <span class="badge badge-myself" style="float: right;" ng-show="item.isCluster">CLUSTER</span>
+                                <span class="badge badge-string" style="float: right;" ng-show="item.ssh">SSH</span>
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- 服務器狀態列表 -->
-				<!-- <div id="inputChart" ng-show="showChart" class="panel top-line" style="height: calc(30% - 1px); user-select: none;"></div> -->
-				<div id="clusterList" class="panel top-line" style="height: calc(30% - 1px); user-select: none;">
+				<div id="inputChart" ng-show="showChart" class="panel top-line" style="height: calc(30% - 1px); user-select: none;"></div>
+				<div id="clusterList" ng-show="!showChart" class="panel top-line" style="height: calc(30% - 1px); user-select: none;">
 					<div class="list" style="height: 100%; overflow: auto;">
 						<div class="list-item" ng-repeat="item in selectedServer.nodes" ng-right-click="showClusterContextMenu(item)">
 							<span>{{item.host}}:{{item.port}}</span>

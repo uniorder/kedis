@@ -68,12 +68,8 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		$scope.serverList = local.getObject("SERVER_LIST");
 		//重新加载服务器列表的时候回导致之前选中的样式都丢掉，这里重新补一下。
 		if ($scope.selectedServer) {
-			for (let i = 0; i < $scope.serverList.length; i++) {
-				if ($scope.serverList[i].id === $scope.selectedServer.id) {
-					$scope.serverList[i].selected = true;
-					break;
-				}
-			}
+			$scope.selectedServer = null;
+			$scope.$emit('clearAllKeys');
 		}
 		$scope.$apply();
 	}
@@ -122,6 +118,9 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 				editServer($scope.selectedServer);
 			}
 		}
+		if (msg === "nodeUpdated") {
+			refreshServerList();
+		}
 	});
 
 
@@ -144,10 +143,17 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		}
 
 		if (server.ssh) {
+
 			if (server.isCluster) {
+
 				redisConn.createClusterSSHConn(server, function (initRedisList, initSSHConnList) {
-					redisCluster = initRedisList;
-					sshCluster = initSSHConnList;
+					console.log(111);
+					if (initRedisList === null) {
+						serverClick(server);
+					} else {
+						redisCluster = initRedisList;
+						sshCluster = initSSHConnList;
+					}
 					serverClick(server);
 				})
 			} else {
@@ -313,76 +319,76 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 	}
 
 	function showChart(server) {
-		// $scope.showChart = true;
-		// server.info = {};
-		// let dataSet = [];
-		// for (let i = 0; i < 100; i++) {
-		// 	dataSet.push(0);
-		// }
-		// let chart = new Highcharts.Chart(document.getElementById('inputChart'), {
-		// 	title: {
-		// 		text: "IO 监控"
-		// 	},
-		// 	xAxis: {
-		// 		labels: {
-		// 			enabled: false
-		// 		},
-		// 		type: 'datetime',
-		// 		tickPixelInterval: 1000
-		// 	},
-		// 	yAxis: [{
-		// 		title: {
-		// 			text: 'KBPS',
-		// 			enabled: false
-		// 		},
-		// 		min: 0
-		// 	}],
-		// 	legend: {
-		// 		"enabled": false
-		// 	},
-		// 	series: [{
-		// 		name: "Input kbps",
-		// 		data: dataSet,
-		// 		type: 'areaspline',
-		// 		threshold: null,
-		// 		tooltip: {
-		// 			valueDecimals: 2
-		// 		},
-		// 		fillColor: {
-		// 			linearGradient: {
-		// 				x1: 0,
-		// 				y1: 0,
-		// 				x2: 0,
-		// 				y2: 1
-		// 			},
-		// 			stops: [
-		// 				[0, Highcharts.getOptions().colors[0]],
-		// 				[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-		// 			]
-		// 		}
-		// 	}, {
-		// 		name: "Output kbps",
-		// 		data: dataSet,
-		// 		type: 'areaspline',
-		// 		threshold: null,
-		// 		tooltip: {
-		// 			valueDecimals: 2
-		// 		},
-		// 		fillColor: {
-		// 			linearGradient: {
-		// 				x1: 0,
-		// 				y1: 0,
-		// 				x2: 0,
-		// 				y2: 1
-		// 			},
-		// 			stops: [
-		// 				[0, Highcharts.getOptions().colors[1]],
-		// 				[1, Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0).get('rgba')]
-		// 			]
-		// 		}
-		// 	}]
-		// });
+		$scope.showChart = true;
 
+		server.info = {};
+		let dataSet = [];
+		for (let i = 0; i < 100; i++) {
+			dataSet.push(0);
+		}
+		let chart = new Highcharts.Chart(document.getElementById('inputChart'), {
+			title: {
+				text: "IO 监控"
+			},
+			xAxis: {
+				labels: {
+					enabled: false
+				},
+				type: 'datetime',
+				tickPixelInterval: 1000
+			},
+			yAxis: [{
+				title: {
+					text: 'KBPS',
+					enabled: false
+				},
+				min: 0
+			}],
+			legend: {
+				"enabled": false
+			},
+			series: [{
+				name: "Input kbps",
+				data: dataSet,
+				type: 'areaspline',
+				threshold: null,
+				tooltip: {
+					valueDecimals: 2
+				},
+				fillColor: {
+					linearGradient: {
+						x1: 0,
+						y1: 0,
+						x2: 0,
+						y2: 1
+					},
+					stops: [
+						[0, Highcharts.getOptions().colors[0]],
+						[1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+					]
+				}
+			}, {
+				name: "Output kbps",
+				data: dataSet,
+				type: 'areaspline',
+				threshold: null,
+				tooltip: {
+					valueDecimals: 2
+				},
+				fillColor: {
+					linearGradient: {
+						x1: 0,
+						y1: 0,
+						x2: 0,
+						y2: 1
+					},
+					stops: [
+						[0, Highcharts.getOptions().colors[1]],
+						[1, Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0).get('rgba')]
+					]
+				}
+			}]
+		});
 		interval = $interval(function () {
 			redis.info(function (err, result) {
 				if (err) {
@@ -411,13 +417,14 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 
 				$scope.$emit("serverInfo", server.info);
 
-				// chart.series[0].addPoint(server.info.Stats.instantaneous_input_kbps * 1, true, true);
-				// chart.series[1].addPoint(server.info.Stats.instantaneous_output_kbps * 1, true, true);
+				chart.series[0].addPoint(server.info.Stats.instantaneous_input_kbps * 1, true, true);
+				chart.series[1].addPoint(server.info.Stats.instantaneous_output_kbps * 1, true, true);
 			});
 		}, 1000);
 	}
 
 	function showCluster(server) {
-
+		$scope.showChart = false;
+		$interval.cancel(interval);
 	}
 });

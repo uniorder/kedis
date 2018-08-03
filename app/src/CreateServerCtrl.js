@@ -7,7 +7,8 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 
 	ipc.on('server', (event, message) => {
 		$scope.server = message;
-
+		oldHost = message.host;
+		oldPort = message.port;
 		if ($scope.server.ssh) {
 			$scope.showSSH = true;
 			if ($scope.server.ssh.privateKey) {
@@ -28,6 +29,8 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 	let redis;
 	let timeout;
 	let pass;
+	let oldHost;
+	let oldPort;
 	$scope.save = function (update) {
 		check(update);
 	}
@@ -69,42 +72,55 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 				alert("集群需要测试通过才能添加，请先点击测试按钮.");
 				return;
 			}
-			redis.cluster("nodes", (e, data) => {
-				if (e) {
-					console.log(e);
-					return;
-				}
-				let nodes = [];
-				let tmpStrList = data.split("\n");
-				for (let i = 0; i < tmpStrList.length; i++) {
-					let strs = tmpStrList[i].split(" ");
-
-					let hostPort = strs[1];
-					if (hostPort) {
-						let host = hostPort.split("@")[0].split(":")[0];
-						let port = hostPort.split("@")[0].split(":")[1];
-						let types = strs[2].split(",");
-						let node = {
-							id: strs[0],
-							host: host,
-							port: port,
-							types: types
-						};
-						if (host === $scope.server.host) {
-                            node.auth = $scope.server.auth;
-                            if($scope.server.ssh) {
-                                node.ssh = $scope.server.ssh;
-                            }
-						}
-						nodes.push(node);
+			if (update) {
+				if (oldHost !== $scope.server.host || oldPort !== $scope.server.port) {
+					let confirmed = confirm("由于您修改了HOST和PORT，将会重新刷新所有节点，这将会导致之前配置的节点信息（例如SSH）全部失效，是否继续？");
+					if (confirmed) {
+						goAndDo(update);
 					}
 				}
-				$scope.server.nodes = nodes;
-				endAll(update);
-			});
+			} else {
+				goAndDo(update);
+			}
 		} else {
 			endAll(update);
 		}
+	}
+
+	function goAndDo(update) {
+		redis.cluster("nodes", (e, data) => {
+			if (e) {
+				console.log(e);
+				return;
+			}
+			let nodes = [];
+			let tmpStrList = data.split("\n");
+			for (let i = 0; i < tmpStrList.length; i++) {
+				let strs = tmpStrList[i].split(" ");
+
+				let hostPort = strs[1];
+				if (hostPort) {
+					let host = hostPort.split("@")[0].split(":")[0];
+					let port = hostPort.split("@")[0].split(":")[1];
+					let types = strs[2].split(",");
+					let node = {
+						id: strs[0],
+						host: host,
+						port: port,
+						types: types
+					};
+					if (host === $scope.server.host) {
+						node.auth = $scope.server.auth;
+						if ($scope.server.ssh) {
+							node.ssh = $scope.server.ssh;
+						}
+					}
+					nodes.push(node);
+				}
+			}
+			$scope.server.nodes = nodes;
+			endAll(update);
+		});
 	}
 
 	function endAll(update) {
@@ -113,7 +129,7 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 		if (!serverList) {
 			serverList = [];
 		}
-		
+
 		if (!$scope.showSSH) {
 			delete $scope.server.ssh;
 		} else {
@@ -133,12 +149,14 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 
 
 		if (update) {
-            console.log("进来了");
-            console.log(serverList);
-            console.log($scope.server.id);
 			for (var i = 0; i < serverList.length; i++) {
+				delete serverList[i].$$hashKey;
+				delete serverList[i].selected;
 				if (serverList[i].id == $scope.server.id) {
+					delete $scope.server.$$hashKey;
+					delete $scope.server.selected;
 					serverList[i] = $scope.server;
+
 					local.setObject("SERVER_LIST", serverList);
 					ipc.send("serverUpdated", "SUCCESS");
 					let win = remote.getCurrentWindow();
@@ -147,7 +165,9 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 				}
 			}
 		} else {
-            $scope.server.id = new Date().getTime();
+			delete $scope.server.$$hashKey;
+			delete $scope.server.selected;
+			$scope.server.id = new Date().getTime();
 			serverList.push($scope.server);
 			local.setObject("SERVER_LIST", serverList);
 			ipc.send("serverCreated", "SUCCESS");

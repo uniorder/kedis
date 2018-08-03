@@ -42,6 +42,10 @@ function createWindow() {
 		win.webContents.send('electron-msg', "serverUpdated");
 	});
 
+	ipc.on("nodeUpdated", (event, message) => {
+		win.webContents.send('electron-msg', "nodeUpdated");
+	})
+
 	ipc.on("keyCreated", (event, message) => {
 		win.webContents.send("electron-msg", "keyCreated");
 	})

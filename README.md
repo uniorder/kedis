@@ -1,4 +1,4 @@
-![Kedis](https://images.gitee.com/uploads/images/2018/0804/212223_69347740_115307.png "LOGO.png")
+![kedis](https://images.gitee.com/uploads/images/2018/0805/014413_924d3efa_115307.png "LOGO2.png")
 
 # Kedis
 Kedis是一个基于AngularJS、Electron和Node.JS搭建的Redis桌面管理工具，前端样式表采用了Bootstrap作为原始代码，并在此基础上做了一些个性化的改造。

@@ -1,32 +1,80 @@
 # kedis
-由于GitHub实在太卡，整个项目迁移到Gitee上了，新项目地址为：https://gitee.com/kehaw9818/Kedis 这是全新的重构版本，修复了一些BUG，提升了性能。
-GitHub仓库我将会在网络条件好的情况下重新发布。
-## 编译
-Clone项目之后，首先在本地安装Node.JS，安装成功后，分别在kedis和app目录下执行npm install，**重点注意一下，cnpm的install方式与npm并不一致，会导致可以运行，但是无法打包，请谨慎使用**，等待完成之后，在kedis目录下运行命令：  
-```
-npm run-script start
-```
-或者是：
-```
-electron ./app
-```
-即可执行程序。  
-## 打包
-Package默认提供了Mac、Linux和Windows的编译指令，大家可以根据自己的需要来编译，分别在kedis目录下执行：  
-```
-npm run-script packageWin64
-npm run-script packageWin32
-npm run-script packageDarwin
-npm run-script packageLinux64
-npm run-script packageLinux32
-```
-中国地区执行编译的时候可能无法顺利下载相应的的依赖包，通过淘宝的源可以解决问题，具体使用方法是在控制台中指定环境变量如下：
-```
-set ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/
-```
-然后再执行以上打包命令即可完成打包。
+#### 由于GitHub实在太卡，整个项目迁移到Gitee上了，新项目地址为：https://gitee.com/kehaw9818/Kedis 这是全新的重构版本，修复了一些BUG，提升了性能。
+#### GitHub仓库我将会在网络条件好的情况下重新发布。
 
-注意，基于Electron的程序不支持Windows XP（含）以前的Windows版本。
 
-## 可执行程序下载
-我们提供了一些编译好的版本，可以访问 http://www.kehaw.com 来获取。
+![kedis](https://images.gitee.com/uploads/images/2018/0805/014413_924d3efa_115307.png "LOGO2.png")
+
+# Kedis
+Kedis是一个基于AngularJS、Electron和Node.JS搭建的Redis桌面管理工具，前端样式表采用了Bootstrap作为原始代码，并在此基础上做了一些个性化的改造。
+
+除此之外，Kedis还依赖了ioredis和ssh2两个开源项目，其他的依赖详细请查看package.json。
+
+#### 截图
+
+![Kedis](https://images.gitee.com/uploads/images/2018/0801/162246_f70f2189_115307.png "Kedis")
+
+![Kedis Cluster](https://images.gitee.com/uploads/images/2018/0803/120220_2e80bea2_115307.png "Kedis Cluster")
+
+#### 亮点
+
+- 支持SSH通道
+- 支持集群管理
+- 跨平台
+
+#### 可执行程序下载
+
+- [Mac OS](https://gitee.com/kehaw9818/Kedis/releases)
+- Windows（稍晚发布）
+- Linux（稍晚发布）
+
+#### 特别备注集群配置方法
+
+集群中的所有的MASTER节点都需要配置SSH才能正常使用（Slave不需要配置），设置方法为：创建完毕之后，点击服务器，右下角会刷新出所有的节点，右键点击MASTER节点，选择配置SSH。
+当前版本只支持SSH方式的集群链接，后续可能会放开。
+
+#### 编译方法
+
+首先确保您的计算机上已经安装了Node.JS的最新版本，然后安装electron到全局，即`npm install -g electron`，接着在Kedis目录下运行`npm install`，等待完成之后，再进入app目录下运行`npm install`，等安装完毕之后在app目录下执行`electron .`即可执行程序。
+
+#### 打包方法
+
+同样，确保已经安装了最新版本的Node.JS，然后全局安装electron的打包工具，即`npm install -g electron-packager`，安装完毕后，你可以直接在Kedis根目录下执行脚本来完成对应版本的打包：
+```
+npm run packageWin64
+npm run packageWin32
+npm run packageDarwin
+npm run packageLinux64
+npm run packageLinux32
+```
+其中packageDarwin对应的是Mac OS版本的Kedis。
+
+#### 当前版本测试情况
+
+当前只支持通过SSH的方式链接集群环境。
+
+#### 开发历程
+
+Kedis最早一版发布于2018年4月，当初是发布在GitHub上的，当时的主要目的就是开发一个自己喜欢风格的Redis桌面管理工具，开发之初并没有打算公布出来，在2018年7月，有网友表示希望能够继续维护下去，于是就将代码库迁入到Gitee，花了一个礼拜重构了代码，所以在Gitee上的初始版本是2.0。
+
+在重构之初我并没有打算支持集群，但是之前一个老友说不支持集群没什么亮点，就强塞了一个集群的功能进去。
+
+在没有支持集群之前，代码的可读性还是蛮高的，但是为了支持集群，导致部分代码的可阅读性比较差，看来规划还是非常重要。
+
+#### 后续支持
+
+目前首要做的事情是发布一版英文版，有朋友说想支持订阅和发布功能，这个也在考虑之中。
+
+#### 捐赠
+
+如果您觉得这份工具用着还比较顺手，希望能够多多支持我的开发。
+
+![Kedis 捐赠](https://images.gitee.com/uploads/images/2018/0803/121032_9d458f9e_115307.png "捐赠")
+
+有了你的捐赠，Kedis会变得更好，如有捐赠，还请在下方留下大名，感谢您对开源事业的支持。
+
+微信捐赠：
+- F*s 2018年7月30日捐赠
+- *羽 2018年4月23日捐赠
+- *🐟 2018年4月22日捐赠
+- *语 2018-08-04

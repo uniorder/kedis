@@ -130,6 +130,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 	 * @param {*} server 选中的服务器对象
 	 */
 	$scope.serverClick = function (server) {
+		$("#lastError").html("");
 		if (server.id === $scope.selectedServer) {
 			return;
 		}

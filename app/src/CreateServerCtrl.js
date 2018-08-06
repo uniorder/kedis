@@ -140,10 +140,10 @@ app.controller("CreateServerCtrl", function ($scope, local, redisConn, electron,
 			delete $scope.server.ssh.passphrase;
         }
         
-        if($scope.server.isCluster && !$scope.server.ssh) {
-            alert("当前版本仅支持通过SSH方式的集群链接，请勾选SSH并配置相关信息。");
-            return;
-        }
+        // if($scope.server.isCluster && !$scope.server.ssh) {
+        //     alert("当前版本仅支持通过SSH方式的集群链接，请勾选SSH并配置相关信息。");
+        //     return;
+        // }
 
 		if (sshConn) {
 			sshConn.end();

@@ -179,8 +179,8 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 				redisCluster = redisConn.createClusterConn(server);
 			} else {
 				redis = redisConn.createConn(server);
-				serverClick(server);
 			}
+			serverClick(server);
 		}
 	}
 
@@ -288,17 +288,19 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 	}
 
 	$scope.showClusterContextMenu = function (node) {
-		const menu = new Menu();
-
-		menu.append(new MenuItem({
-			label: '编辑SSH',
-			click() {
-				editNode($scope.selectedServer, node);
-			}
-		}));
-		menu.popup({
-			window: remote.getCurrentWindow()
-		});
+		//非SSH模式不应该显示菜单
+		if ($scope.selectedServer.ssh) {
+			menu.append(new MenuItem({
+				label: '编辑SSH',
+				click() {
+					editNode($scope.selectedServer, node);
+				}
+			}));
+			menu.popup({
+				window: remote.getCurrentWindow()
+			});
+			const menu = new Menu();
+		}
 	}
 
 	function editNode(server, node) {
@@ -403,7 +405,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		interval = $interval(function () {
 			redis.info(function (err, result) {
 				if (err) {
-                    $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+					$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
 					return;
 				}
 
@@ -449,7 +451,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		interval = $interval(function () {
 			clusterR.cluster("info", function (err, result) {
 				if (err) {
-                    $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+					$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
 					return;
 				}
 

@@ -21,7 +21,7 @@ Kedis是一个基于AngularJS、Electron和Node.JS搭建的Redis桌面管理工�
 
 - [Mac OS](https://gitee.com/kehaw9818/Kedis/releases)
 - [Windows](https://gitee.com/kehaw9818/Kedis/releases)
-- Linux（稍晚发布）
+- [Linux](https://gitee.com/kehaw9818/Kedis/releases)
 
 #### 特别备注集群配置方法
 

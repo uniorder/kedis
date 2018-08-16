@@ -26,5 +26,34 @@ app.controller("MainCtrl", function ($rootScope, $scope, redisConn, electron) {
     $scope.openBrowser = function (e, url) {
 		e.preventDefault();
 		shell.openExternal(url);
-	}
+    }
+    
+
+    $('#server').resizable({
+		handles: 'e',
+		minWidth: 150,
+		maxWidth: $('body').width() - 900,
+		resize: function (event, ui) {
+			$('#value').width($('body').width() - ui.size.width - $("#key").width() - 2);
+		}
+	});
+
+	;
+
+	$('#key').resizable({
+		handles: 'e',
+		minWidth: 150,
+		maxWidth: $('body').width() - 900,
+		resize: function (event, ui) {
+			$('#value').width($('body').width() - ui.size.width - $("#server").width() - 2);
+		}
+	});
+
+	$('body').bind('resize', function () {
+		return false;
+	});
+
+	$(window).resize(function () {
+		$("#value").width($('body').width() - $("#server").width() - $("#key").width() - 2);
+	});
 });

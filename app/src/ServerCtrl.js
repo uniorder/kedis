@@ -262,15 +262,16 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		updateServerWin.webContents.on('did-finish-load', function () {
 			updateServerWin.webContents.send('server', server);
 		});
-	}
+    }
+    
+    
 
 	/**
 	 * 列表右击事件
 	 * @param {*} server 
 	 */
 	$scope.showServerContextMenu = function (server) {
-		const menu = new Menu();
-
+        let menu = new Menu();
 		menu.append(new MenuItem({
 			label: '编辑',
 			click() {
@@ -291,16 +292,16 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 	$scope.showClusterContextMenu = function (node) {
 		//非SSH模式不应该显示菜单
 		if ($scope.selectedServer.ssh) {
-			menu.append(new MenuItem({
+            let clusterMenut = new Menu();
+			clusterMenut.append(new MenuItem({
 				label: '编辑SSH',
 				click() {
 					editNode($scope.selectedServer, node);
 				}
 			}));
-			menu.popup({
+			clusterMenut.popup({
 				window: remote.getCurrentWindow()
 			});
-			const menu = new Menu();
 		}
 	}
 
@@ -330,7 +331,15 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 				node: node
 			});
 		});
-	}
+    }
+
+    let chart;
+    
+    $("#server").resize(function(){
+        if($scope.showChart) {
+            chart.reflow()
+        }
+    })
 
 	function showChart(server) {
 		$scope.showChart = true;
@@ -340,7 +349,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		for (let i = 0; i < 100; i++) {
 			dataSet.push(0);
 		}
-		let chart = new Highcharts.Chart(document.getElementById('inputChart'), {
+		chart = new Highcharts.Chart(document.getElementById('inputChart'), {
 			title: {
 				text: "IO 监控"
 			},

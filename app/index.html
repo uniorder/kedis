@@ -5,7 +5,12 @@
 	<meta charset="UTF-8">
 	<title>Kedis - Redis desktop manager v2.0</title>
 	<link href="./css/bootstrap.min.css" rel="stylesheet">
-	<link href="./css/all.min.css" rel="stylesheet">
+    <link href="./css/all.min.css" rel="stylesheet">
+    <link href="./node_modules/jquery-ui-dist/jquery-ui.min.css" rel="stylesheet">
+	<script>
+		window.$ = window.jQuery = require('jquery');
+	</script>
+	<script src="./node_modules/jquery-ui-dist/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="./scripts/angular.min.js"></script>
 	<script type="text/javascript" src="./scripts/angular-ui-router.min.js"></script>
 	<script type="text/javascript" src="./scripts/ui-bootstrap-tpls-3.0.4.min.js"></script>
@@ -24,9 +29,9 @@
 </head>
 
 <body>
-	<div class="container-fluid no-padding" style="height: calc(100% - 24px)">
+	<div id="content">
 		<div class="row no-gutters" style="height:100%;">
-			<div class="col-sm-3 main-l" ng-controller="ServerCtrl">
+			<div id="server" ng-controller="ServerCtrl">
 				<!-- 服務器列表 -->
 				<div class="panel" style="height:70%;">
 					<div class="panel-content">
@@ -58,9 +63,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-4 main-m">
-				<div class="panel" ng-controller="KeyCtrl" style="height: 100%;">
-
+			<div id="key" ng-controller="KeyCtrl">
+				<div class="panel" style="height: 100%;">
 					<div class="panel-content">
 						<div class="input-group mb-3" style="margin-bottom: 0 !important;">
 							<div class="input-group-prepend">
@@ -86,9 +90,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-5">
+			<div id="value">
 				<div class="panel" style="height:100%;">
-
 					<div class="panel-content" ui-view>
 					</div>
 				</div>

@@ -14,7 +14,9 @@ function createWindow() {
 	// 创建浏览器窗口。
 	win = new BrowserWindow({
 		width: 1260,
-		height: 800
+        height: 800,
+        minHeight: 300,
+        minWidth: 1000
 	});
 
 

@@ -48,15 +48,10 @@ html {
 	width: 100%;
 }
 
-.main-l {
-	border-right: 1px solid $gray-light;
-	height: 100%;
+body {
+    overflow: hidden;
 }
 
-.main-m {
-	border-right: 1px solid $gray-light;
-	height: 100%;
-}
 
 .bottom-line {
 	border-bottom: 1px solid $gray-light;
@@ -269,4 +264,29 @@ input:placeholder {
 	padding-right: 10px;
 	overflow: hidden;
 	color:  #f1c4cd;
+}
+
+#content {
+	height: calc(100% - 24px);
+	width: 100%;
+}
+
+#server {
+    border-right: 1px solid $gray-light;
+	height: 100%;
+	width: 250px;
+	float: left;
+}
+
+#key {
+    border-right: 1px solid $gray-light;
+	height: 100%;
+	width: 250px;
+	float: left;
+}
+
+#value {
+	height: 100%;
+	width: calc(100% - 502px);
+	float: left;
 }

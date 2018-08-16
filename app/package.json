@@ -15,6 +15,7 @@
 		"highcharts": "^6.1.1",
 		"ioredis": "^3.2.2",
 		"jquery": "^3.3.1",
+		"jquery-ui-dist": "^1.12.1",
 		"net": "^1.0.2",
 		"redis": "^2.8.0",
 		"ssh2": "^0.6.1"

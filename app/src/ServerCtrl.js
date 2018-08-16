@@ -243,7 +243,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		let updateServerWin = new BrowserWindow({
 			parent: win,
 			width: 400,
-			height: 530,
+			height: 560,
 			resizable: false,
 			minimizable: false,
 			maximizable: false,
@@ -309,7 +309,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		let updateNodeWin = new BrowserWindow({
 			parent: win,
 			width: 400,
-			height: 530,
+			height: 560,
 			resizable: false,
 			minimizable: false,
 			maximizable: false,

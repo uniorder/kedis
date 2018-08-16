@@ -38,6 +38,10 @@
 			</div>
 			<div class="form-group" ng-show="server.isCluster">
 				注意：如果配置了SSH，那么集群中的所有的MASTER节点都需要配置SSH才能正常使用，设置方法为：创建完毕之后，点击服务器，右下角会刷新出所有的节点，右键点击MASTER节点，选择配置SSH。
+            </div>
+            <div class="form-group form-check">
+				<input type="checkbox" class="form-check-input" id="tls" ng-model="server.tls">
+				<label class="form-check-label" for="tls">这是一个SSL链接</label>
 			</div>
 			<div class="form-group form-check">
 				<input type="checkbox" class="form-check-input" id="ssh" ng-model="showSSH">

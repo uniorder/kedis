@@ -110,7 +110,7 @@ app.factory('redisConn', function () {
 	}
 
 	this.createSSHConn = function (config, callBack) {
-        
+
 		if (!config.ssh) {
 			return "没有找到SSH配置";
 		}
@@ -145,7 +145,8 @@ app.factory('redisConn', function () {
 				host: config.ssh.host,
 				port: config.ssh.port || 22,
 				username: config.ssh.username,
-				readyTimeout: 2000
+				readyTimeout: 2000,
+				tls: config.tls || false
 			}
 			if (config.ssh.key) {
 				sshConn.connect(Object.assign(connectionConfig, {

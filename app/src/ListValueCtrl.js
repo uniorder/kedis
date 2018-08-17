@@ -6,7 +6,7 @@
  * @author Kehaw
  * @version 2.0.0
  */
-app.controller("ListValueCtrl", function ($scope, $stateParams, $state, redisConn) {
+app.controller("ListValueCtrl", function ($scope, $stateParams, $state, redisConn,klog) {
 	$scope.items = [];
 
 	$scope.key = $stateParams.key;
@@ -112,7 +112,7 @@ app.controller("ListValueCtrl", function ($scope, $stateParams, $state, redisCon
 		}
 		redis.exists($scope.keyName, function (err, data) {
 			if (err) {
-                $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+                klog.error(err.message);
 				return;
 			}
 			if (data) {

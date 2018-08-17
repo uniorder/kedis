@@ -1,7 +1,7 @@
 'use strict';
 
 
-app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, electron) {
+app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, klog) {
 
 
 
@@ -65,6 +65,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 
 	function showCreateWin(type) {
 		if (!serverInfo) {
+            alert("请先选择一个Redis连接再进行操作。")
 			return;
 		}
 
@@ -121,7 +122,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 
 		redis.config("get", "databases", function (err, result) {
 			if (err) {
-                $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+                klog.error(err.message);
 				return;
 			}
 			let size = result[1];
@@ -199,12 +200,12 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 
 		redis.select(database.index, function (err, result) {
 			if (err) {
-                $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+                klog.error(err.message);
 				return;
 			}
 			redis.keys($scope.keyParttern + "*", function (err, keys) {
 				if (err) {
-                    $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+                    klog.error(err.message);
 					return;
 				}
 
@@ -282,7 +283,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 				let r = redisConn.getClusterRedisConnByHostPort(key.redisHost, key.redisPort);
 				r.del(key.name, function (err) {
 					if (err) {
-						$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+						klog.error(err.message);
 						return;
 					}
 					//当选中的键被删除的时候
@@ -295,7 +296,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, elect
 			} else {
 				redis.del(key.name, function (err) {
 					if (err) {
-						$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+						klog.error(err.message);
 						return;
 					}
 					//当选中的键被删除的时候

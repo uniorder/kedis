@@ -67,6 +67,25 @@ app.config(function ($stateProvider) {
 		}
 	});
 });
+
+app.factory('klog', function () {
+	let me = this;
+	this.lastMsg = "";
+	return {
+		error: function (msg) {
+			if (msg === me.lastMsg) {
+				return;
+			}
+			me.lastMsg = msg;
+			// $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>&nbsp;" + msg);
+			new Notification("错误", {
+				body: msg,
+				icon: "./images/error.png"
+			});
+		}
+	}
+});
+
 app.factory('local', ['$window', function ($window) {
 	return { //存储单个属性
 		set: function (key, value) {
@@ -92,7 +111,7 @@ app.factory('local', ['$window', function ($window) {
 /**
  * 获取Redis链接
  */
-app.factory('redisConn', function () {
+app.factory('redisConn', function (klog) {
 	this.createConn = function (config, sshOverwrite) {
 		if (config.auth) {
 			config.password = config.auth;
@@ -112,14 +131,14 @@ app.factory('redisConn', function () {
 	this.createSSHConn = function (config, callBack) {
 
 		if (!config.ssh) {
-			return "没有找到SSH配置";
+			return null;
 		}
 		let sshConn = new Client();
 		sshConn.on('ready', () => {
 			const sshServer = net.createServer(function (sock) {
 				sshConn.forwardOut(sock.remoteAddress, sock.remotePort, config.host, config.port, (err, stream) => {
 					if (err) {
-						$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+						klog.error(err.message);
 						sock.end();
 					} else {
 						sock.pipe(stream).pipe(sock)
@@ -131,13 +150,13 @@ app.factory('redisConn', function () {
 					port: sshServer.address().port
 				});
 				redis.on("error", function (err) {
-					$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+					klog.error(err.message);
 					// redis.end(true);
 				});
 				callBack(redis, sshConn);
 			})
 		}).on('error', err => {
-			$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+			klog.error(err.message);
 		});
 
 		try {
@@ -159,7 +178,7 @@ app.factory('redisConn', function () {
 				}))
 			}
 		} catch (err) {
-			$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+			klog.error(err.message);
 		}
 	}
 	let me = this;

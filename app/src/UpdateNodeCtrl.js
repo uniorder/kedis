@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller("UpdateNodeCtrl", function ($scope, local, redisConn, electron, $timeout) {
+app.controller("UpdateNodeCtrl", function ($scope, local, redisConn, electron, $timeout,klog) {
 	$scope.testText = "测试";
 	let timeout;
 	let sshConn;
@@ -61,7 +61,7 @@ app.controller("UpdateNodeCtrl", function ($scope, local, redisConn, electron, $
 				sshConn.forwardOut(sock.remoteAddress, sock.remotePort, $scope.node.host, $scope.node.port, (err, stream) => {
 					if (err) {
                         $timeout.cancel(timeout);
-                        $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+                        klog.error(err.message);
 						sock.end();
 					} else {
 						sock.pipe(stream).pipe(sock)

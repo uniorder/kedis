@@ -6,7 +6,7 @@
  * @author Kehaw
  * @version 2.0.0
  */
-app.controller("StringValueCtrl", function ($scope, $stateParams, $state, redisConn) {
+app.controller("StringValueCtrl", function ($scope, $stateParams, $state, redisConn,klog) {
 	$scope.data = null;
 
 	$scope.key = $stateParams.key;
@@ -42,7 +42,7 @@ app.controller("StringValueCtrl", function ($scope, $stateParams, $state, redisC
 		}
 		redis.exists($scope.keyName, function (err, data) {
 			if (err) {
-                $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+                klog.error(err.message);
 				return;
 			}
 			if (data) {
@@ -53,7 +53,7 @@ app.controller("StringValueCtrl", function ($scope, $stateParams, $state, redisC
 			}
 			redis.rename(oldKeyName, $scope.keyName, function (err, data) {
 				if (err) {
-                    $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+                    klog.error(err.message);
                     return;
 				}
 				oldKeyName = $scope.keyName;

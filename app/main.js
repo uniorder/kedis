@@ -1,8 +1,15 @@
 const {
 	app,
 	BrowserWindow,
-	Menu
+	Menu,
+	TouchBar
 } = require('electron');
+
+const {
+	TouchBarLabel,
+	TouchBarButton,
+	TouchBarSpacer
+} = TouchBar;
 
 const ipc = require('electron').ipcMain;
 
@@ -14,9 +21,9 @@ function createWindow() {
 	// 创建浏览器窗口。
 	win = new BrowserWindow({
 		width: 1260,
-        height: 800,
-        minHeight: 300,
-        minWidth: 1000
+		height: 800,
+		minHeight: 300,
+		minWidth: 1000
 	});
 
 
@@ -46,29 +53,32 @@ function createWindow() {
 
 	ipc.on("nodeUpdated", (event, message) => {
 		win.webContents.send('electron-msg', "nodeUpdated");
-	})
+	});
 
 	ipc.on("keyCreated", (event, message) => {
 		win.webContents.send("electron-msg", "keyCreated");
-	})
+	});
+
+	let lang = app.getLocale();
+
 
 	//创建自定义菜单
 	const template = [{
 		label: "链接",
 		submenu: [{
-			label: "新建链接",
+			label: "新建",
 			accelerator: 'CmdOrCtrl+N',
 			click() {
 				win.webContents.send('electron-msg', "createServer");
 			}
 		}, {
-			label: "编辑链接",
+			label: "编辑",
 			accelerator: 'CmdOrCtrl+E',
 			click() {
 				win.webContents.send('electron-msg', "editSelectedServer");
 			}
 		}, {
-			label: "删除链接",
+			label: "删除",
 			accelerator: 'Ctrl+Delete',
 			click() {
 				win.webContents.send('electron-msg', "deleteSelectedServer");
@@ -219,10 +229,49 @@ function createWindow() {
 				require('electron').shell.openExternal('https://gitee.com/hbase_admin/Kedis')
 			}
 		}]
-	}]
+    }]
+    
+    let touchBar;
 
 	// Mac OS 菜单附加项
 	if (process.platform === 'darwin') {
+		let newString = new TouchBarButton({
+			label: "新建 STRING",
+			backgroundColor: "#E2132F",
+			click: () => {
+                win.webContents.send('electron-msg', "showCreateStringWin");
+			}
+		});
+		let newHash = new TouchBarButton({
+			label: "新建 HASH",
+			backgroundColor: "#027AB4",
+			click: () => {
+                win.webContents.send('electron-msg', "showCreateHashWin");
+			}
+		});
+		let newSet = new TouchBarButton({
+			label: "新建 SET",
+			backgroundColor: "#222D33",
+			click: () => {
+                win.webContents.send('electron-msg', "showCreateSetWin");
+			}
+		});
+		let newZset = new TouchBarButton({
+			label: "新建 ZSET",
+			backgroundColor: "#18AA6E",
+			click: () => {
+                win.webContents.send('electron-msg', "showCreateZsetWin");
+			}
+		});
+		let newList = new TouchBarButton({
+			label: "新建 List",
+			backgroundColor: "#742787",
+			click: () => {
+                win.webContents.send('electron-msg', "showCreateListWin");
+			}
+		});
+		touchBar = new TouchBar([newString,newHash,newSet,newZset,newList]);
+        win.setTouchBar(touchBar);
 		template.unshift({
 			label: app.getName(),
 			submenu: [{
@@ -279,9 +328,9 @@ function createWindow() {
 		}]
 	}
 
-	const menu = Menu.buildFromTemplate(template)
-	Menu.setApplicationMenu(menu)
-
+	const menu = Menu.buildFromTemplate(template);
+	Menu.setApplicationMenu(menu);
+    
 }
 
 // Electron 会在初始化后并准备

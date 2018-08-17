@@ -6,7 +6,7 @@
  * @author Kehaw
  * @version 2.0.0
  */
-app.controller("ZsetValueCtrl", function ($scope, $stateParams, $state, redisConn) {
+app.controller("ZsetValueCtrl", function ($scope, $stateParams, $state, redisConn, klog) {
 	$scope.items = [];
 
 	$scope.key = $stateParams.key;
@@ -86,16 +86,16 @@ app.controller("ZsetValueCtrl", function ($scope, $stateParams, $state, redisCon
 
 
 	$scope.updateName = function () {
-        if($scope.key.redisHost) {
-            alert("暂不支持集群模式下的RENAME操作。");
-            return;
-        }
+		if ($scope.key.redisHost) {
+			alert("暂不支持集群模式下的RENAME操作。");
+			return;
+		}
 		if (oldKeyName === $scope.keyName) {
 			return;
 		}
 		redis.exists($scope.keyName, function (err, data) {
 			if (err) {
-                $("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+				klog.error(err.message);
 				return;
 			}
 			if (data) {

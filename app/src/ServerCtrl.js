@@ -6,7 +6,7 @@
  * @author Kehaw
  * @version 2.0.0
  */
-app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, local, redisConn, electron) {
+app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, local, redisConn, klog) {
 
 	let win = remote.getCurrentWindow();
 
@@ -415,7 +415,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		interval = $interval(function () {
 			redis.info(function (err, result) {
 				if (err) {
-					$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+					klog.error(err.message);
 					return;
 				}
 
@@ -461,7 +461,7 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		interval = $interval(function () {
 			clusterR.cluster("info", function (err, result) {
 				if (err) {
-					$("#lastError").html("<i class='fas fa-exclamation-triangle'></i>" + err.message);
+					klog.error(err.message);
 					return;
 				}
 

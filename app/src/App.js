@@ -68,9 +68,12 @@ app.config(function ($stateProvider) {
 	});
 });
 
-app.factory('klog', function () {
+app.factory('klog', function ($timeout) {
 	let me = this;
 	this.lastMsg = "";
+	$timeout(() => {
+		this.lastMsg = "";
+	}, 5000);
 	return {
 		error: function (msg) {
 			if (msg === me.lastMsg) {

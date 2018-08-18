@@ -49,7 +49,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, klog)
 				if (serverInfo.isCluster) {
 					showClusterKeys($scope.selectedDatabase);
 				} else {
-					showKeys($scope.selectedDatabase);
+					showKeys(redis, $scope.selectedDatabase);
 				}
 
 				break;
@@ -65,7 +65,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, klog)
 
 	function showCreateWin(type) {
 		if (!serverInfo) {
-            alert("请先选择一个Redis连接再进行操作。")
+			alert("请先选择一个Redis连接再进行操作。")
 			return;
 		}
 
@@ -122,7 +122,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, klog)
 
 		redis.config("get", "databases", function (err, result) {
 			if (err) {
-                klog.error(err.message);
+				klog.error(err.message);
 				return;
 			}
 			let size = result[1];
@@ -133,8 +133,6 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, klog)
 					index: i
 				});
 			}
-			// $scope.databases[0].selected = true;
-			// showKeys($scope.databases[0], true);
 			$scope.$apply();
 		});
 	});
@@ -155,83 +153,100 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, klog)
 		if (serverInfo.isCluster) {
 			showClusterKeys(database, true);
 		} else {
-			showKeys(database, true);
+			showKeys(redis, database, true);
 		}
 	}
 
+	let markedIndex = 0; //用來標記已經Type到那裡的下標
+
 	function showClusterKeys(database, clearKeys) {
 		$scope.keys = []; //清空以前的
-
+		markedIndex = 0;
 		let conns = redisConn.getClusterConn();
 		let rs = conns.redisConns;
 
 		let i = 0;
 		for (; i < rs.length; i++) {
 			let r = rs[i];
-			r.select(database.index, () => {
-				r.keys($scope.keyParttern + "*", (e, keys) => {
-					let selected = false;
-					if (!clearKeys && $scope.selectedKey && $scope.selectedKey.name === keys[i]) {
-						selected = true;
-					}
-					for (let j = 0; j < keys.length; j++) {
-						r.type(keys[j], (err, data) => {
-							$scope.keys.push({
-								name: keys[j],
-								type: data,
-								selected: selected,
-								redisHost: r.options.rawHost,
-								redisPort: r.options.rawPort
-							});
-							if (j === keys.length - 1) {
-								$scope.$apply();
-							}
-						})
-					}
-				});
-			});
+			showKeys(r, database, clearKeys, true);
 		}
 	}
 
+	/**
+	 * 显示所有的键
+	 * @param {*} r redis链接
+	 * @param {*} database 选中的服务器
+	 * @param {*} clearKeys 是否清除选中状态
+	 * @param {*} cluster 是否是集群，如果是集群的话，就不需要清空$scope.keys因为在showClusterKeys中已经清空，markedIndex同理
+	 */
+	function showKeys(r, database, clearKeys, cluster) {
+		if (!cluster) {
+			$scope.keys = []; //清空以前的
+			markedIndex = 0;
+		}
 
-
-	function showKeys(database, clearKeys) {
-		$scope.keys = []; //清空以前的
-
-		redis.select(database.index, function (err, result) {
+		r.select(database.index, function (err, result) {
 			if (err) {
-                klog.error(err.message);
+				klog.error(err.message);
 				return;
 			}
-			redis.keys($scope.keyParttern + "*", function (err, keys) {
+			r.keys($scope.keyParttern + "*", function (err, keys) {
 				if (err) {
-                    klog.error(err.message);
+					klog.error(err.message);
 					return;
 				}
 
 				$scope.$emit("keyCount", keys.length);
-
+				let pipeline = r.pipeline();
 				for (let i = 0; i < keys.length; i++) {
+					let selected = false;
+					if (!clearKeys && $scope.selectedKey && $scope.selectedKey.name === keys[i]) {
+						selected = true;
+					}
 
-					redis.type(keys[i], function (err, data) {
-						let selected = false;
-						if (!clearKeys && $scope.selectedKey && $scope.selectedKey.name === keys[i]) {
-							selected = true;
-						}
+					let obj = {
+						name: keys[i],
+						selected: selected
+					}
 
-						$scope.keys.push({
-							name: keys[i],
-							type: data,
-							selected: selected
-						});
+					if (cluster) {
+						obj.redisHost = r.options.rawHost;
+						obj.redisPort = r.options.rawPort;
+					}
 
-						if (i === keys.length - 1) {
-							$scope.$apply();
-						}
-					});
-				}
-				$scope.keys.sort();
+					$scope.keys.push(obj);
 
+					pipeline.type(keys[i]);
+					// r.type(keys[i], function (err, data) {
+					// 	let selected = false;
+					// 	if (!clearKeys && $scope.selectedKey && $scope.selectedKey.name === keys[i]) {
+					// 		selected = true;
+					// 	}
+
+					// 	$scope.keys.push({
+					// 		name: keys[i],
+					// 		type: data,
+					//         selected: selected,
+					//         redisHost: r.options.rawHost,
+					//         redisPort: r.options.rawPort
+					// 	});
+
+					// 	if (i === keys.length - 1) {
+					// 		$scope.$apply();
+					// 	}
+					// });
+                }
+                //通过Pipeline的形式来降低Redis交互次数
+				pipeline.exec((err, results) => {
+					for (let i = 0; i < results.length; i++) {
+						$scope.keys[markedIndex].type = results[i][1];
+						markedIndex++;
+					}
+					if (markedIndex === $scope.keys.length) {
+						// $scope.keys.sort();
+						$scope.$apply();
+					}
+				});
 			});
 		});
 	}
@@ -304,7 +319,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, klog)
 						$scope.selectedKey = null;
 						$state.go("default");
 					}
-					showKeys($scope.selectedDatabase);
+					showKeys(redis, $scope.selectedDatabase);
 				});
 			}
 
@@ -325,7 +340,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, klog)
 		if (serverInfo.isCluster) {
 			showClusterKeys($scope.selectedDatabase);
 		} else {
-			showKeys($scope.selectedDatabase);
+			showKeys(redis, $scope.selectedDatabase);
 		}
 	}
 });

@@ -62,8 +62,8 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 	}
 
 	/**
-	 * 刷新服务器列表
-	 */
+     * 刷新服务器列表
+     */
 	let refreshServerList = function () {
 		$scope.serverList = local.getObject("SERVER_LIST");
 		//重新加载服务器列表的时候回导致之前选中的样式都丢掉，这里重新补一下。
@@ -74,6 +74,10 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		$scope.$apply();
 	}
 
+    /**
+     * 点击服务器的处理句柄
+     * @param {*} server 
+     */
 	let serverClick = function (server) {
 		$scope.$emit('clearAllKeys');
 		if (interval) {
@@ -156,9 +160,8 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		}
 
 		if (server.ssh) {
-
 			if (server.isCluster) {
-
+                //如果服务器是集群模式，则创建多个SSH通道
 				redisConn.createClusterSSHConn(server, function (initRedisList, initSSHConnList) {
 					if (initRedisList === null) {
 						serverClick(server);
@@ -191,7 +194,8 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 	function createSeerver() {
 		let createServerWin = new BrowserWindow({
 			parent: win,
-			width: 400,
+            width: 400,
+            height:640,
 			resizable: false,
 			minimizable: false,
 			maximizable: false,
@@ -289,6 +293,10 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		});
 	}
 
+    /**
+     * 显示集群的右键菜单
+     * @param {*} node 
+     */
 	$scope.showClusterContextMenu = function (node) {
 		//非SSH模式不应该显示菜单
 		if ($scope.selectedServer.ssh) {
@@ -305,6 +313,11 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 		}
 	}
 
+    /**
+     * 编辑集群节点
+     * @param {*} server 
+     * @param {*} node 
+     */
 	function editNode(server, node) {
 		let updateNodeWin = new BrowserWindow({
 			parent: win,
@@ -449,6 +462,10 @@ app.controller("ServerCtrl", function ($rootScope, $scope, $state, $interval, lo
 
 	let clusterR;
 
+    /**
+     * 显示集群中的所有节点
+     * @param {*} server 
+     */
 	function showCluster(server) {
 		$scope.showChart = false;
 		$interval.cancel(interval);

@@ -157,7 +157,7 @@ app.controller("KeyCtrl", function ($rootScope, $scope, $state, redisConn, klog)
 		}
 	}
 
-	let markedIndex = 0; //用來標記已經Type到那裡的下標
+	let markedIndex = 0; //用來標記已經Type到那裡的下標，主要原因是兼容普通和集群，集群会遍历所以有服务器，所以只能讲下标记在外面
 
 	function showClusterKeys(database, clearKeys) {
 		$scope.keys = []; //清空以前的

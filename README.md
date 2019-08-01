@@ -1,3 +1,5 @@
+### 我想回复大家，但是Gitee说我的手机号码已经被别的账号绑定，不能进行回复，目前我一脸懵逼状态中。
+
 ![kedis](https://images.gitee.com/uploads/images/2018/0805/014413_924d3efa_115307.png "LOGO2.png")
 
 # Kedis

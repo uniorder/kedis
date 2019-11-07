@@ -12,6 +12,10 @@ Kedis is a free Redis desktop manager app, it is based on Electron. Thanks for t
 
 The other projects please check `package.json`.
 
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/1.png "Screen shot 1")
+
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/2.png "Screen shot 2")
+
 ## Thanks
 
 These guys donate me:

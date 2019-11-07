@@ -2,7 +2,9 @@
 
 你没有见过的全新版本
 
-<img src='https://gitee.com/kehaw9818/Kedis/blob/master/logo.png' style="width:200px" />
+更多信息移步[这里](!https://github.com/uniorder/kedis)
+
+欢迎参观我的[博客](!http://www.kehaw.com)
 
 ## Thanks
 

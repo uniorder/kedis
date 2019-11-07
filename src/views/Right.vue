@@ -95,7 +95,7 @@ export default class Right extends Vue {
   }
 
   public hideAll(): void {
-    this.type = "";
+    this.type = "default";
   }
   public openBrowser(url: string): void {
     electron.shell.openExternal(url);

@@ -1,8 +1,8 @@
 # Kedis
 
-[中文](https://github.com/uniorder/kedis/blob/master/README_CN.md)
+[English](https://github.com/uniorder/kedis/blob/master/README.md)
 
-Kedis is a free Redis desktop manager app, it is based on Electron. Thanks for these open source projects:
+Kedis 是一个免费的Redis桌面管理工具，它基于Electron开发，特别感谢以下开源项目：
 
 - [Electron](https://electronjs.org/)
 - [ioredis](https://github.com/luin/ioredis)
@@ -10,7 +10,7 @@ Kedis is a free Redis desktop manager app, it is based on Electron. Thanks for t
 - [vue-cli-plugin-electron-builder](https://github.com/nklayman/vue-cli-plugin-electron-builder)
 - [Bootstrap](https://getbootstrap.com/)
 
-The other projects please check `package.json`.
+更多的依赖参看 `package.json` 文件.
 
 ![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/1.png "Screen shot 1")
 
@@ -18,7 +18,7 @@ The other projects please check `package.json`.
 
 ## Thanks
 
-These guys donate me:
+捐助我的人:
 
 | Donator | Date       |
 | ------- | ---------- |
@@ -30,13 +30,13 @@ These guys donate me:
 | \*泽涛  | 2018-12-05 |
 | A\*d    | 2018-12-05 |
 
-## Tips
+## 提示
 
-Each collection only displays a maximum of 1000 pieces of data, e.g `keys *`, `hgetall`, if you wants to get more items, please use filter.
+每一个集合，例如key、hset、set等，最多只显示1000条数据，如果想要查看更多的数据，请使用过滤功能。
 
-## Mac OS Prepares
+## Mac OS 上的一些问题
 
-If you are using macOS Catalina, please install xcode command line tools first:
+如果你使用的是最新版的 macOS，可能会遇到gyp编译错误问题，此时你可以先安装Xcode命令行工具：
 
 ```
 xcode-select --install
@@ -44,13 +44,13 @@ xcode-select --install
 
 ## node-sass rebuild
 
-Some times you could get an error like:
+如果在构建过程中发生了关于node-sass的错误，例如：
 
 ```
 Error: ENOENT: no such file or directory, scandir '**/node_modules/node-sass/vendor'
 ```
 
-You should do this:
+你可以尝试以下操作：
 
 ```
 npm update
@@ -58,19 +58,19 @@ npm install
 npm rebuild node-sass
 ```
 
-## Project setup
+## 初始化
 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 运行
 
 ```
 npm run electron:serve
 ```
 
-### Compiles and minifies for production
+### 编译
 
 ```
 npm run electron:build

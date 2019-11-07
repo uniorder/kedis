@@ -1,54 +1,81 @@
-# kedis
+最新的BUG将会在[https://github.com/uniorder/kedis](https://github.com/uniorder/kedis)进行维护
 
-你没有见过的全新版本
 
-更多信息移步[https://github.com/uniorder/kedis](https://github.com/uniorder/kedis)
+# Kedis
 
-欢迎参观我的[博客http://www.kehaw.com](http://www.kehaw.com)
+[English](https://github.com/uniorder/kedis/blob/master/README.md)
+
+Kedis 是一个免费的Redis桌面管理工具，它基于Electron开发，特别感谢以下开源项目：
+
+- [Electron](https://electronjs.org/)
+- [ioredis](https://github.com/luin/ioredis)
+- [vuejs](https://github.com/vuejs/vue)
+- [vue-cli-plugin-electron-builder](https://github.com/nklayman/vue-cli-plugin-electron-builder)
+- [Bootstrap](https://getbootstrap.com/)
+
+更多的依赖参看 `package.json` 文件.
+
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/1.png "Screen shot 1")
+
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/2.png "Screen shot 2")
 
 ## Thanks
 
-- \*煜 2019-03-17 捐赠
-- F\*s 2018 年 7 月 30 日捐赠
-- \*羽 2018 年 4 月 23 日捐赠
-- \*🐟 2018 年 4 月 22 日捐赠
-- \*语 2018-08-04
-- \*泽涛 2018-12-05 捐赠
-- A\*d 2018-12-05 捐赠
+捐助我的人:
 
-## Mac OS Prepare
+| Donator | Date       |
+| ------- | ---------- |
+| \*煜    | 2019-03-17 |
+| F\*s    | 2018-07-30 |
+| \*羽    | 2018-04-23 |
+| \*🐟    | 2018-04-22 |
+| \*语    | 2018-08-04 |
+| \*泽涛  | 2018-12-05 |
+| A\*d    | 2018-12-05 |
 
-install xcode command line tools first, [download link](!https://developer.apple.com/download/more/).
-And then, run command:
+## 提示
+
+每一个集合，例如key、hset、set等，最多只显示1000条数据，如果想要查看更多的数据，请使用过滤功能。
+
+## Mac OS 上的一些问题
+
+如果你使用的是最新版的 macOS，可能会遇到gyp编译错误问题，此时你可以先安装Xcode命令行工具：
 
 ```
 xcode-select --install
 ```
 
-## Project setup
+## node-sass rebuild
+
+如果在构建过程中发生了关于node-sass的错误，例如：
+
+```
+Error: ENOENT: no such file or directory, scandir '**/node_modules/node-sass/vendor'
+```
+
+你可以尝试以下操作：
+
+```
+npm update
+npm install
+npm rebuild node-sass
+```
+
+## 初始化
 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 运行
 
 ```
-npm run serve
+npm run electron:serve
 ```
 
-### Compiles and minifies for production
+### 编译
 
 ```
-npm run build
+npm run electron:build
 ```
 
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -2,6 +2,8 @@
 
 [中文](https://github.com/uniorder/kedis/blob/master/README_CN.md)
 
+This application powered by [Kehaw](http://www.kehaw.com)
+
 Kedis is a free Redis desktop manager app, it is based on Electron. Thanks for these open source projects:
 
 - [Electron](https://electronjs.org/)

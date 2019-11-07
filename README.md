@@ -1,5 +1,9 @@
 # kedis
 
+你没有见过的全新版本
+
+<img src='https://gitee.com/kehaw9818/Kedis/blob/master/logo.png' style="width:200px" />
+
 ## Thanks
 
 - \*煜 2019-03-17 捐赠

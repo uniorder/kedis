@@ -2,3 +2,5 @@ node_modules
 app/node_modules
 /.git-credentials
 dist
+
+dist_electron

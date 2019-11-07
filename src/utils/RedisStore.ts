@@ -767,7 +767,10 @@ export default class RedisStore {
         port: server.port,
         host: server.host,
         family: server.family,
-        password: server.password
+        password: server.password,
+        retryStrategy: () => {
+          return false
+        }
       }
       if (server.useSSH) {
         this.sshClient = new SSH2.Client()

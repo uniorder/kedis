@@ -19,7 +19,13 @@ module.exports = {
 		electronBuilder: {
 			builderOptions: {
 				win: {
-					icon: './icon.ico'
+					icon: './logo.ico'
+				},
+				mac: {
+					icon: './logo.icns'
+				},
+				linux: {
+					icon: './logo.png'
 				}
 			}
 		}

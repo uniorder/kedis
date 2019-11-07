@@ -2,9 +2,9 @@
 
 你没有见过的全新版本
 
-更多信息移步[这里](!https://github.com/uniorder/kedis)
+更多信息移步[https://github.com/uniorder/kedis](https://github.com/uniorder/kedis)
 
-欢迎参观我的[博客](!http://www.kehaw.com)
+欢迎参观我的[博客http://www.kehaw.com](http://www.kehaw.com)
 
 ## Thanks
 

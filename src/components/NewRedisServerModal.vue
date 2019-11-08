@@ -11,7 +11,7 @@
               v-model="server.name"
               class="form-control"
               id="newRedisServerComment"
-              placeholder="Enter server name"
+              :placeholder="$t('newRedisServerModalInputCommentPlacholder')"
               aria-describedby="newRedisServerCommentHelp"
             />
             <small
@@ -35,7 +35,7 @@
                   v-model="server.host"
                   class="form-control"
                   id="newRedisServerHost"
-                  placeholder="Enter server host"
+                  :placeholder="$t('newRedisServerModalInputServerHostPlacholder')"
                   aria-describedby="newRedisServerHostHelp"
                 />
                 <small
@@ -59,7 +59,7 @@
                   v-model="server.port"
                   class="form-control"
                   id="newRedisServerPort"
-                  placeholder="Enter server port"
+                  :placeholder="$t('newRedisServerModalInputServerPortPlacholder')"
                   aria-describedby="newRedisServerPortHelp"
                 />
                 <small
@@ -177,7 +177,7 @@
                     v-model="server.sshUsername"
                     class="form-control"
                     id="newRedisServerSSHUsername"
-                    placeholder="Enter ssh server username"
+                    :placeholder="$t('newRedisServerModalInputSSHUsernamePlacholder')"
                     aria-describedby="newRedisServerSSHUsernameHelp"
                   />
                   <small
@@ -200,7 +200,6 @@
                 type="password"
                 class="form-control"
                 id="newRedisServerSSHPassword"
-                placeholder="Enter ssh server password"
               />
             </div>
           </div>
@@ -213,7 +212,7 @@
               }}</label>
               <b-form-file
                 v-model="file"
-                placeholder="Choose a key file..."
+                :placeholder="$t('newRedisServerModalInputSSHKeyPathPlacholder')"
                 drop-placeholder="Drop file here..."
               ></b-form-file>
             </div>
@@ -228,7 +227,6 @@
                 type="password"
                 class="form-control"
                 id="newRedisServerSSHPassphrase"
-                placeholder="Enter ssh private key passphrase"
               />
             </div>
           </div>

@@ -9,7 +9,7 @@
         class="form-control"
         v-model="appendFilter"
         @keypress="keypress($event)"
-        placeholder="Enter filter"
+        :placeholder="$t('midEnterFilter')"
       />
       <div class="input-group-append">
         <button class="btn btn-primary" type="button" @click="doFilter">
@@ -44,7 +44,7 @@
         @click="disableMidLargeKeyWarningToast"
         class="btn btn-sm btn-primary"
       >
-        <i class="fa fa-check"></i> Don't show this again
+        <i class="fa fa-check"></i> {{$t("dontShowAgain")}}
       </button>
     </b-toast>
     <new-key-modal @keyCreated="reload" ref="newKeyModal"></new-key-modal>

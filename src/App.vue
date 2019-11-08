@@ -28,6 +28,7 @@ import FootBar from "@/views/FooterBar.vue";
 import ResizeManager from "@/utils/ResizeManager";
 import { ISlTreeNode } from "./plugins/tree/tree";
 import RedisServer from "./models/RedisServer";
+import { app } from "electron";
 
 @Component({
   components: {
@@ -39,6 +40,13 @@ import RedisServer from "./models/RedisServer";
   mounted() {
     const manager: ResizeManager = new ResizeManager();
     manager.resize();
+  },
+  created() {
+    let lang: string = (window as any).process.env.LANG || "";
+    if (lang === "zh_CN.UTF-8") {
+      lang = "zh_CN";
+    }
+    this.$i18n.locale = lang;
   }
 })
 export default class App extends Vue {
@@ -48,6 +56,12 @@ export default class App extends Vue {
     mid: Mid;
     footBar: FootBar;
   };
+
+  public getEnvLocale(env: any) {
+    env = env || process.env;
+
+    return env.LC_ALL || env.LC_MESSAGES || env.LANG || env.LANGUAGE;
+  }
 
   private treeChangeHandler(node: ISlTreeNode<any>, filter: string): void {
     this.$refs.mid.reload(node, filter);

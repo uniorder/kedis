@@ -181,7 +181,7 @@ export default class Right extends Vue {
     let time = new Date().getTime();
     time -= 10 * 24 * 60 * 60 * 1000;
 
-    let since = new Date(time);
+    const since = new Date(time);
     axios
       .get("https://api.github.com/repos/uniorder/kedis")
       .then((response: any) => {

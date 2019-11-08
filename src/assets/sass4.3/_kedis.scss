@@ -76,3 +76,35 @@
         text-overflow: ellipsis;
     }
 }
+
+
+.avatar {
+    text-align: center;
+    margin-top: 10px;
+
+    img {
+        border-radius: 68px;
+    }
+}
+
+.social {
+    a {
+        text-decoration-line: none;
+        padding: 7px;
+    }
+
+    text-align: center;
+    padding:10px;
+
+    span {
+        font-size: 14px;
+    }
+
+    svg {
+        margin-top: -4px;
+    }
+}
+
+.description {
+    padding: 10px;
+}

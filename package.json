@@ -19,6 +19,7 @@
     "@types/jqueryui": "^1.12.9",
     "@types/js-yaml": "^3.12.1",
     "@types/ssh2": "^0.5.39",
+    "axios": "^0.19.0",
     "bootstrap-vue": "^2.0.4",
     "core-js": "^3.4.0",
     "hiredis": "^0.5.0",

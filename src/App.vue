@@ -42,7 +42,7 @@ import { app } from "electron";
     manager.resize();
   },
   created() {
-    let lang: string = window.process.env.LANG || "";
+    let lang: string = (window as any).process.env.LANG || "";
     if (lang === "zh_CN.UTF-8") {
       lang = "zh_CN";
     }

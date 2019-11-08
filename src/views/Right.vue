@@ -8,56 +8,54 @@
     <value-set v-show="this.type === 'set'" ref="valueSet"></value-set>
     <value-z-set v-show="this.type === 'zset'" ref="valueZSet"></value-z-set>
     <value-list v-show="this.type === 'list'" ref="valueList"></value-list>
-    <div style="width:400px; margin:0 auto;" v-show="this.type === 'default'">
-      <div class="row mt-3">
+    <div class="container mt-4" v-show="this.type === 'default'">
+      <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-          <div class="card post-list">
-            <div class="avatar">
-              <img :src="repoData.owner.avatar_url" alt="Kehaw" width="126" />
-              <h3>👨‍💻Ke Haw 🇨🇳👨‍👩‍👧‍👦</h3>
-              <small>风吹云散去，夜色好观星</small>
-            </div>
-            <div class="social">
-              <a
-                href="javascript:;"
-                @click="openBrowser('https://twitter.com/Kehaw2')"
-                class="text-success"
-              >
-                <i class="fab fa-twitter-square"></i> &nbsp;&nbsp;
-                <span>@Kehaw2</span>
-              </a>
-              <a
-                href="javascript:;"
-                @click="openBrowser('https://github.com/uniorder')"
-                class="text-warning"
-              >
-                <i class="fab fa-github-square"></i> &nbsp;&nbsp;
-                <span>Uniorder</span>
-              </a>
-              <a
-                href="javascript:;"
-                @click="openBrowser('http://www.kehaw.com')"
-                class="text-info"
-              >
-                <i class="fa fa-home"></i> &nbsp;&nbsp;
-                <span>Kehaw.com</span>
-              </a>
-            </div>
-            <div class="description border-top">
-              <div class="row">
-                <div class="col-4" style="text-align:center;">
-                  <img src="@/assets/redis.png" style="width:100%;" />
+          <div class="card">
+            <div class="row">
+              <div class="col-6">
+                <div class="avatar">
+                  <img src="@/assets/avatar.jpeg" alt="Kehaw" width="126" />
+                  <h3>👨‍💻Ke Haw 🇨🇳👨‍👩‍👧‍👦</h3>
+                  <small>风吹云散去，夜色好观星</small>
+                </div>
+                <div class="social">
                   <a
                     href="javascript:;"
-                    style="font-size:18px;"
-                    @click="openBrowser(repoData.html_url)"
-                    >{{ repoData.name }}</a
+                    @click="openBrowser('https://twitter.com/Kehaw2')"
+                    class="text-success"
                   >
+                    <i class="fab fa-twitter-square"></i> &nbsp;&nbsp;
+                    <span>@Kehaw2</span>
+                  </a>
+                  <a
+                    href="javascript:;"
+                    @click="openBrowser('https://github.com/uniorder')"
+                    class="text-warning"
+                  >
+                    <i class="fab fa-github-square"></i> &nbsp;&nbsp;
+                    <span>Uniorder</span>
+                  </a>
+                  <a
+                    href="javascript:;"
+                    @click="openBrowser('http://www.kehaw.com')"
+                    class="text-info"
+                  >
+                    <i class="fa fa-home"></i> &nbsp;&nbsp;
+                    <span>Kehaw.com</span>
+                  </a>
                 </div>
-                <div class="col-8">
-                  <p>{{ repoData.description }}</p>
-                  <p>{{ repoData.license.key }}</p>
+                <div class="description border-top">
+                  <p>
+                    <a
+                      href="javascript:;"
+                      style="font-size:18px;"
+                      @click="openBrowser(repoData.html_url)"
+                      >{{ repoData.name }}: </a
+                    >{{ repoData.description }}
+                  </p>
+                  <p>{{ repoData.license ? repoData.license.key : "" }}</p>
                   <button
                     class="btn btn-sm btn-success"
                     @click="
@@ -73,23 +71,40 @@
                     class="btn btn-sm btn-primary"
                     @click="openBrowser(repoData.forks_url)"
                   >
-                    <i class="fa fa-code-branch"></i> {{ repoData.forks }} forks
+                    <i class="fa fa-code-branch"></i>
+                    {{ repoData.forks }} forks
                   </button>
                 </div>
               </div>
-            </div>
-            <div class="description border-top">
-              <h3 style="text-align:center">Donate via:</h3>
-              <div class="row">
-                <div class="col" style="text-align: center;">
-                  <img src="@/assets/wx.png" style="width: 100%;" />
-                  <p></p>
-                  <h3>Wechat</h3>
-                </div>
-                <div class="col" style="text-align: center;">
-                  <img src="@/assets/zfb.png" style="width: 100%;" />
-                  <p></p>
-                  <h3>Alipay</h3>
+              <div class="col-6 bl">
+                <div class="description">
+                  <h3 style="text-align:center">Donate via:</h3>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6" style="text-align: center;">
+                      <img src="@/assets/wx.png" style="width: 100%;" />
+                      <p></p>
+                      <h4>Wechat</h4>
+                    </div>
+                    <div class="col-sm-12 col-md-6" style="text-align: center;">
+                      <img src="@/assets/zfb.png" style="width: 100%;" />
+                      <p></p>
+                      <h4>Alipay</h4>
+                    </div>
+                    <div class="col-12" style="text-align:center;">
+                      <a
+                        href="javascript:;"
+                        @click="
+                          openBrowser(
+                            'https://www.paypal.me/kehaw9818?utm_source=unp&utm_medium=email&utm_campaign=PPC000654&utm_unptid=75d157a2-01c2-11ea-ba33-b875c0e5d5b1&ppid=PPC000654&cnac=C2&rsta=zh_C2&cust=5XY36QD32GNQJ&unptid=75d157a2-01c2-11ea-ba33-b875c0e5d5b1&calc=13d9420a54f49&unp_tpcid=ppme-social-business-profile-created&page=main:email:PPC000654:::&pgrp=main:email&e=cl&mchn=em&s=ci&mail=sys'
+                          )
+                        "
+                      >
+                        <img src="@/assets/paypal.png" style="width:100%;" />
+                      </a>
+                      <p></p>
+                      <h4>Paypal</h4>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -138,6 +153,7 @@ export default class Right extends Vue {
   private type: string = "default";
   private repoData: any = {};
   private commits: any[] = [];
+  private avatar?: string;
   public showValue(server: RedisServer, dbIndex: number, key: string): void {
     RedisStore.type(server, dbIndex, key).then(type => {
       this.type = type;
@@ -170,15 +186,7 @@ export default class Right extends Vue {
       .get("https://api.github.com/repos/uniorder/kedis")
       .then((response: any) => {
         this.repoData = response.data;
-      });
-
-    axios
-      .get(
-        "https://api.github.com/repos/uniorder/kedis/commits?since=" +
-          since.toISOString()
-      )
-      .then(response => {
-        this.commits = response.data;
+        this.avatar = this.repoData.owner.avatar_url;
       });
   }
 

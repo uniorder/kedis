@@ -287,7 +287,8 @@ export default class NewRedisServerModal extends Vue {
       this.modalTitle = this.$t("editRedisServerModalTitle").toString();
       this.server = node.data;
     } else {
-      this.modalType = this.$t("newRedisServerModalTitle").toString();
+      this.modalType = "new";
+      this.modalTitle = this.$t("newRedisServerModalTitle").toString();
     }
     this.$refs.modal.show();
   }

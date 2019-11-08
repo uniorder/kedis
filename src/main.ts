@@ -5,7 +5,6 @@ import Tree from "@/plugins/tree/tree.vue"
 import ContextMenuComponent from "@/components/ContextMenuComponent.vue"
 import BootstrapVue from "bootstrap-vue"
 import i18n from "./i18n"
-
 import "./assets/sass4.3/bootstrap.scss"
 // import "bootstrap-vue/dist/bootstrap-vue.css"
 import "./assets/sass4.3/over-write.scss"

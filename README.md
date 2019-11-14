@@ -1,3 +1,5 @@
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/src/assets/slogen.png "Kedis")
+
 # Kedis
 
 [中文](https://github.com/uniorder/kedis/blob/master/README_CN.md)

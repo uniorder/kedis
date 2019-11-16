@@ -67,7 +67,8 @@
 //
 
 .card-header {
-  padding: $card-spacer-y $card-spacer-x;
+//   padding: 0 10;
+  height:21px;
   margin-bottom: 0; // Removes the default margin-bottom of <hN>
   color: $card-cap-color;
   background-color: $card-cap-bg;

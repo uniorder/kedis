@@ -2,6 +2,10 @@
     outline: none;
 }
 
+body {
+    overflow: hidden;
+}
+
 .main-left {
     width: 300px;
     border-right: 1px solid $gray-700;
@@ -53,8 +57,8 @@
 
 ::-webkit-scrollbar-thumb {
     background: $darken;
-    min-height: 150px;
-    min-width: 150px;
+    // min-height: 150px;
+    // min-width: 150px;
     border-radius: 10px;
 }
 
@@ -69,6 +73,7 @@
 .main-foot {
     background-color: $primary;
     line-height: 30px;
+    width: 100%;
 
     div {
         white-space: nowrap;
@@ -107,4 +112,57 @@
 
 .description {
     padding: 10px;
+}
+
+.console-input {
+    background: transparent;
+    border: none;
+    width: 100%;
+    color: $white;
+    cursor: default;
+    caret-color: $primary;
+}
+
+.bl-bold-success {
+    border-left: 3px solid $success;
+}
+
+.bl-bold-primary {
+    border-left: 3px solid $primary;
+}
+
+.bl-bold-warning {
+    border-left: 3px solid $warning;
+}
+
+.bl-bold-danger {
+    border-left: 3px solid $danger;
+}
+
+.console-panel {
+    height: 100%;
+    overflow: auto;
+    display: block;
+
+    .console-panel-info {
+        width: 150px;
+        text-align: right;
+        padding-right: 10px;
+    }
+
+    .console-panel-result {
+        padding-left: 10px;
+        width: calc(100% - 150px);
+    }
+
+    pre {
+        font-size: 100%;
+    }
+}
+
+.my-descriptions {
+    max-width: 600px;
+    min-width: 300px;
+    width: 40%;
+    margin: 0 auto;
 }

@@ -1,5 +1,5 @@
 import RedisServer from "@/models/RedisServer"
-import IORedis, { RedisOptions, Redis } from "ioredis"
+import IORedis, { RedisOptions } from "ioredis"
 import SSH2 from "ssh2"
 import Net, { Socket, Server, AddressInfo } from "net"
 import KeyInfo from "@/models/KeyInfo"
@@ -19,6 +19,23 @@ export default class RedisStore {
           .catch(err => {
             reject(err)
           })
+      })
+    })
+  }
+
+  public static async runCommand(server: RedisServer, command: string, args: any[], index: number): Promise<any> {
+    return new Promise<string>((resolve, reject) => {
+      this.create(server).then(() => {
+        this.redis.select(index).then(() => {
+          this.redis
+            .send_command(command, args)
+            .then((result: any) => {
+              resolve(result)
+            })
+            .catch((error: any) => {
+              reject(error)
+            })
+        })
       })
     })
   }

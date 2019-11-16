@@ -12,8 +12,9 @@
 }
 
 .nav-link {
+  color:$white;
   display: block;
-  padding: $nav-link-padding-y $nav-link-padding-x;
+  padding: 0 $nav-link-padding-x;
 
   @include hover-focus {
     text-decoration: none;
@@ -43,7 +44,7 @@
     @include border-top-radius($nav-tabs-border-radius);
 
     @include hover-focus {
-      border-color: $nav-tabs-link-hover-border-color;
+    //   border-color: $nav-tabs-link-hover-border-color;
     }
 
     &.disabled {
@@ -56,7 +57,7 @@
   .nav-link.active,
   .nav-item.show .nav-link {
     color: $nav-tabs-link-active-color;
-    background-color: $nav-tabs-link-active-bg;
+    // background-color: $nav-tabs-link-active-bg;
     border-color: $nav-tabs-link-active-border-color;
   }
 

@@ -30,9 +30,11 @@ The other projects please check `package.json`.
 
 `.dmg` here: [Donwload](https://gitee.com/kehaw9818/Kedis/attach_files/294751/download)
 
-![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/1.png "Screen shot 1")
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/1.png "Kedis")
 
-![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/2.png "Screen shot 2")
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/2.png "Kedis")
+
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/3.png "Kedis")
 
 ## Thanks
 

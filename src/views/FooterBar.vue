@@ -69,7 +69,7 @@
       &nbsp;
       <span>{{ server.info.Server.redis_version }}</span>
     </div>
-    <div class="br px-2 ml-auto">Kedis: 2.3.0</div>
+    <div class="br px-2 ml-auto">Kedis: 2.4.2</div>
     <div class="br px-2">
       <i class="fab fa-github"></i>
     </div>

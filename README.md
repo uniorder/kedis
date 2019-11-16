@@ -1,3 +1,5 @@
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/src/assets/slogen.png "Kedis")
+
 # Kedis
 ```
 👇🏿👇🏿👇🏿👇🏿👇🏿👇🏿👇🏿👇🏿👇🏿👇🏿👇🏿
@@ -25,6 +27,8 @@ Kedis is a free Redis desktop manager app, it is based on Electron. Thanks for t
 - [Bootstrap](https://getbootstrap.com/)
 
 The other projects please check `package.json`.
+
+`.dmg` here: [Donwload](https://gitee.com/kehaw9818/Kedis/attach_files/294751/download)
 
 ![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/1.png "Screen shot 1")
 

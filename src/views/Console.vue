@@ -72,8 +72,8 @@ export default class Console extends Vue {
   private currentServer: any
 
   public active(server: RedisServer): void {
-	this.currentServer = server
-	
+    this.currentServer = server
+
     for (let i = 0; i < this.tabs.length; i++) {
       if (this.tabs[i].name === server.name) {
         this.tabIndex = i

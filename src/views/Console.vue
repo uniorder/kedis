@@ -10,8 +10,8 @@
           <div class="console-panel" :id="'server-console-' + server.name" @click="focus(server)">
             <div style="overflow:hidden;" v-for="(commandLine, index) in server.commandLines" v-bind:Key="index">
               <div class="pull-left console-panel-info">
-                <span v-if="commandLine.type === 'command' || commandLine.type === 'error'">{{ server.host }}:{{ server.port }} &gt;</span>
-                <span v-if="commandLine.type === 'result' || commandLine.type === 'resultText'">&lt;</span>
+                <span v-if="commandLine.type === 'command'">{{ server.host }}:{{ server.port }} &gt;</span>
+                <span v-if="commandLine.type === 'result' || commandLine.type === 'resultText' || commandLine.type === 'error'">&lt;</span>
               </div>
               <div class="pull-left console-panel-result" :class="getClass(commandLine)">
                 <span v-if="commandLine.type === 'command'" class="text-success">{{ commandLine.text }}</span>

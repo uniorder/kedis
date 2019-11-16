@@ -29,9 +29,11 @@ Kedis 是一个免费的Redis桌面管理工具，它基于Electron开发，特�
 
 更多的依赖参看 `package.json` 文件.
 
-![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/1.png "Screen shot 1")
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/1.png "Kedis")
 
-![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/2.png "Screen shot 2")
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/2.png "Kedis")
+
+![Image](https://raw.githubusercontent.com/uniorder/kedis/master/screen-shot/3.png "Kedis")
 
 ## Thanks
 
